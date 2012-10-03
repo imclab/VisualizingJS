@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="styles/base.css" />
+		<title>Paper template</title>
+	</head>
+	<body>
+		<canvas id="myCanvas" resize></canvas>
+		<div id="help">See <a target="_blank" href="http://paperjs.org/examples">Paper.js examples</a>.</div>
+	</body>
+	<script charset="utf-8" src="scripts/paper.js"></script>
+	<script charset="utf-8" src="scripts/skip.js"></script>
+	<script charset="utf-8" type="text/paperscript" canvas="myCanvas">
+	
+	//create object with paths
+	var myPath = new Path()
+	myPath.strokeColor = "blue"
+	myPath.add(new Point (30,30), new Point (60,30), new Point(60,60), new Point (30,60))
+	myPath.closed = true;
+	myPath.smooth(); //toggles between being a square and a circl
+	myPath.flatten(2); //flattens the path
+	
+	
+	//create filled rectangle
+	var rectangle = new Rectangle(new Point(250, 250), new Point(300, 300))
+	var rectPath = new Path.Rectangle(rectangle)
+	rectPath.strokeColor = '#ff0000'
+	rectPath.fillColor = '#e9e9ff'
+	//rectPath.selected = true //shows points in wireframe way
+	rectPath.strokeWidth = 2
+	rectPath.strokeCap = 'round' //rounded stroke tips
+		rectPath.smooth();
+		rectPath.flatten(60);
+	rectPath.dashArray = [10, 12]; //dashed stroke
+	
+	
+	//create a style object
+	var myStyle = { //can do project.currentStyle if I prefer
+	    strokeColor: '#FFFFFF',
+	    fillColor: '#00FF00',
+	    strokeWidth: 2
+	};
+	var firstPath = new Path.Circle(new Point(100, 100), 50); //path that uses style
+	firstPath.style = myStyle //apply style to object
+	
+	
+	//text
+	var text = new PointText(view.center)
+	text.paragraphStyle.justification = 'center'
+	text.characterStyle.fontSize =  40
+	text.fillColor = 'white'
+	//go to onFrame function to see how text is used
+	
+	
+	//rotating cube
+	var rectTopLeft = new Point (300,300)
+	var rectSize = new Size(75,75)
+	var rectRotater = new Path.Rectangle(rectTopLeft, rectSize)
+	rectRotater.strokeColor = 'white'
+	rectRotater.fillColor = 'purple'
+	
+	
+	//circle to animate colors
+	var circleColorLerp = new Path.Circle(600,600, 70)
+	circleColorLerp.fillColor = 'red'
+	
+	
+	//moving object text
+	var movingText = new PointText(view.center)
+	movingText.paragraphStyle.justification = 'center'
+	movingText.characterStyle.fontSize = 20
+	movingText.fillColor = 'orange'
+	var movingTextDestination = Point.random() * view.size
+	
+	
+	//Snow - lots of circles falling
+	var count = 150;
+	var objectArray = [];
+	// Create a symbol, which we will use to place instances of later:
+	var snowPath = new Path.Circle(new Point(0, 0), 10);
+	snowPath.style = {
+	    fillColor: 'white',
+	    strokeColor: 'black'
+	};
+	var symbol = new Symbol(snowPath)
+	
+	for (var i = 0; i < count; i++) {
+	    // The center position is a random point in the view:
+	    var center = Point.random() * view.size;
+	    var placedSymbol = symbol.place(center);
+	    placedSymbol.scale(i / count);
+		objectArray.push(placedSymbol)
+	}
+	
+	
+	//sine wave snake chain
+	var amount = 10 //number of segment points
+	var height = 60 //max height of wave
+	var sinPath = new Path()
+	sinPath.style ={
+		strokeColor: new GrayColor(0.2),
+		strokeWidth: 30,
+		strokeCap: 'square'
+	}
+	for(var j = 0; j <= amount; j++){
+		sinPath.add(new Point(j / amount, 1) * view.size) //add points along view
+	}
+	sinPath.selected = true;
+	
+	
+	
+	
+	//animation frames
+	function onFrame(event){	
+		//text counters
+		// text.content = "Frame count: " + event.count
+		// text.content = "Time since last frame: " + event.delta
+		text.content = "Seconds: " + Math.round(event.time)
+		
+		//square rotation
+		rectRotater.rotate(3)
+		
+		//circle with color transitions
+		circleColorLerp.fillColor.hue +=1
+		
+		//text moving around
+		var vector = movingTextDestination - movingText.position
+		movingText.position += vector/30
+		movingText.content = Math.round(vector.length)
+		if (vector.length < 1) {
+		        movingTextDestination = Point.random() * view.size;
+	    }
+	
+		//snow animation
+		for (var i = 0; i < count; i++) {
+			        // Move the item 1/20th of its width to the right. This way
+			        // larger circles move faster than smaller circles:
+			        objectArray[i].position.y += Math.random()*4;
+			
+			        // If the item has left the view on the right, move it back
+			        // to the left:
+			        if (objectArray[i].position.y > view.size.height) {
+			            objectArray[i].position.y = -200;
+			        }
+			 }
+			
+		//sine wave
+		for(var j=0; j<= amount; j++){//loop through segments of path
+			var segment = sinPath.segments[j]
+			var sinus = Math.sin(event.time * 3 + j);
+			segment.point.y = sinus * height + 100
+		}
+	}
+	
+	
+	//on resize do this
+	var onResize = function( event ){
+		text.position = view.center
+	}
+	onResize()
+	</script>
+</html>

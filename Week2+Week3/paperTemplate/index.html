@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="styles/base.css" />
+		<title>Paper template</title>
+	</head>
+	<body>
+		<canvas id="myCanvas" resize></canvas>
+		<div id="help">See <a target="_blank" href="http://paperjs.org/examples">Paper.js examples</a>.</div>
+	</body>
+	<script charset="utf-8" src="scripts/paper.js"></script>
+	<script charset="utf-8" src="scripts/skip.js"></script>
+	<script charset="utf-8" type="text/paperscript" canvas="myCanvas">
+	
+
+
+
+//  Create a circle shaped path with its center at the center
+//  of the view and a radius of 180:
+
+var square1 = new Path.Rectangle( view.center, 180 );
+square1.fillColor = "white"
+var square2 = new Path.Rectangle( view.center, 180 );
+square2.fillColor = "white"
+var square3 = new Path.Rectangle( view.center, 180 );
+square3.fillColor = "white"
+var square4 = new Path.Rectangle( view.center, 180 );
+square4.fillColor = "white"
+
+
+//  Paper calls the onFrame function with every tick of the clock.
+//  Ideally this is 60 frames per second.
+
+var onFrame = function( event ){
+
+	square1.rotate( 1 )
+	square2.rotate( 2 )
+	square3.rotate( 3 )
+	square4.rotate( 4 )
+}
+
+
+//  Whenever the window is resized, recenter the path.
+
+var onResize = function( event ){
+
+	square1.position = view.center
+	square2.position = view.center
+	square3.position = view.center
+	square4.position = view.center	
+}
+
+
+//  Sometimes the browser just needs a good nudge
+//  to make sure it knows where the center is.
+
+onResize()
+
+
+
+
+	</script>
+</html>
