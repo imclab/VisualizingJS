@@ -13,8 +13,9 @@ body
 
 canvas
 {
-	position: relative;
-	margin: 0 auto;
+	position: absolute;
+	left: 50%;
+	margin-left: -300px;
 	width: 600px;
 	height: 600px;
 	background-color: #222;
