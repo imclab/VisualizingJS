@@ -13,7 +13,8 @@ body
 
 canvas
 {
-	position: absolute;
+	position: relative;
+	margin: 0 auto;
 	width: 600px;
 	height: 600px;
 	background-color: #222;
