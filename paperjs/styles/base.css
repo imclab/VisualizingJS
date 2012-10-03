@@ -16,6 +16,7 @@ canvas
 	position: absolute;
 	width: 600px;
 	height: 600px;
+	background-color: #222;
 }
 #help
 {
