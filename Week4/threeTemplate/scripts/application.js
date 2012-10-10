@@ -211,7 +211,7 @@ if( demoNumber === 3 ){
 if( demoNumber === 4 ){
 
 	//left vertical line
-	addCube( { x: 0, y: 0, z: 0 } )
+	addCube( { x: 0, y: 0, z: 0, color: 0xFF0000 } )
 	addCube( { x: 0, y: -20, z: 20 } )
 	addCube( { x: 0, y: -40, z: 0 } )
 	addCube( { x: 0, y: -60, z: 20 } )
@@ -227,32 +227,6 @@ if( demoNumber === 4 ){
 	//leg
 	addCube( { x: 40, y: -60, z: -20 } )
 	addCube( { x: 60, y: -80, z: 0 } )
-	
-	// //  Top row
-	// 
-	// addCube({ x: -40, y:  60, z:   0 })
-	// addCube({ x: -20, y:  60, z:  20 })
-	// addCube({ x:   0, y:  60, z:  40 })
-	// addCube({ x:  20, y:  60, z:  20 })
-	// addCube({ x:  40, y:  60, z:   0 })
-	// 
-	// 
-	// //  Diagonal cross bar
-	// 
-	// addCube({ x:  40, y:  40, z:   0 })
-	// addCube({ x:  20, y:  20, z: -20 })
-	// addCube({ x:   0, y:   0, z: -40 })
-	// addCube({ x: -20, y: -20, z: -20 })
-	// addCube({ x: -40, y: -40, z:   0 })
-	// 
-	// 
-	// //  Bottom row 
-	// 
-	// addCube({ x: -40, y: -60, z:   0 })
-	// addCube({ x: -20, y: -60, z:  20 })
-	// addCube({ x:   0, y: -60, z:  40 })
-	// addCube({ x:  20, y: -60, z:  20 })
-	// addCube({ x:  40, y: -60, z:   0 })
 }
 
 
