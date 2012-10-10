@@ -1,7 +1,7 @@
 
 
 
-
+	
 //  Now that we've included jQuery we can use its syntax for determining if
 //  the full HTML page has been loaded. Waiting for the document to be ready
 //  helps us avoid strange errors--because if our document is ready that means
@@ -58,13 +58,12 @@ $( document ).ready( function(){
 	
 	//my custom bump map
 	var bumpImage = THREE.ImageUtils.loadTexture( "media/myBumpMap.jpeg" );
-	var bumpMaterial = new THREE.MeshPhongMaterial( { ambient: 0x552811, color: 0x552811, specular: 0x333333, shininess: 25, perPixel: true, bumpMap: bumpImage, bumpScale: 19, metal: false } );
+	var bumpMaterial = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture( 'media/myEarthTexture.jpeg' ), transparency: true, opacity: 1, ambient: 0xFFFFFF, color: 0xFFFFFF, specular: 0xFFFFFF, shininess: 25, perPixel: true, bumpMap: bumpImage, bumpScale: 19, metal: true } );
 	
-	var earthImage = THREE.ImageUtils.loadTexture( 'media/myEarthTexture.jpeg' );
-	var earthMaterial = new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( 'media/myEarthTexture.jpeg' ) })
-	
-	var materials = [earthMaterial, bumpMaterial]
-	// var earthGeo = new THREE.SphereGeometry(earthRadius, 32, 32, materials)
+	// var earthImage = THREE.ImageUtils.loadTexture( 'media/myEarthTexture.jpeg' );
+	// var earthMaterial = new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( 'media/myEarthTexture.jpeg' ) })
+	// 
+	// var materials = [earthMaterial, bumpMaterial]
 	
 	
 	// window.earth = new THREE.Mesh(
@@ -73,14 +72,15 @@ $( document ).ready( function(){
 	// 	// 		map: THREE.ImageUtils.loadTexture( 'media/myEarthTexture.jpeg' )
 	// 	// 	})
 	// )
+
+	// window.earth = new THREE.Mesh(
+	// 	new THREE.SphereGeometry(earthGeo, new THREE.MeshFaceMaterial())
+	// );
+	
 	
 	window.earth = new THREE.Mesh(
 		new THREE.SphereGeometry(earthRadius, 32, 32), bumpMaterial
 	);
-	
-	// window.earth = new THREE.Mesh(
-	// 	new THREE.SphereGeometry(earthGeo, new THREE.MeshFaceMaterial())
-	// );
 	
 	earth.position.set( 0, 0, 0 )
 	earth.receiveShadow = true
@@ -98,11 +98,11 @@ $( document ).ready( function(){
 	window.clouds = new THREE.Mesh(
 		new THREE.SphereGeometry( earthRadius + 2, 32, 32 ),
 		new THREE.MeshLambertMaterial({ 
-			map: THREE.ImageUtils.loadTexture( 'media/myClouds2.png' ),
+			map: THREE.ImageUtils.loadTexture( 'media/myClouds.png' ),
 			transparent: true,
 			blending: THREE.CustomBlending,
 			blendSrc: THREE.SrcAlphaFactor,
-			blendDst: THREE.SrcAlphaFactor,
+			blendDst: THREE.OneMinusSrcColorFactor,
 			blendEquation: THREE.AddEquation
 		})
 	)
@@ -124,22 +124,26 @@ $( document ).ready( function(){
 	//  And if you're itching to read more about sphere mapping:
 	//  http://en.wikipedia.org/wiki/Longitude
 	//  http://en.wikipedia.org/wiki/Latitude
-	
+
 	//randomally generate pins to look cool
-	for (var i=0; i < 100; i++){
-		group.add( dropPin(
-	
-			(Math.random()*180) -90,
-			 (Math.random()*360) - 180,
-			0xFFFFFF
-		))
-	}
-	
+	// for (var i=0; i < 500; i++){
+	// 	var markerLengthCool = 30+(Math.random()*30)-15;
+	// 	group.add( dropPin(
+	// 
+	// 		(Math.random()*180) -90,
+	// 		 (Math.random()*360) - 180,
+	// 		0xFFFFFF,
+	// 		markerLengthCool
+	// 	))
+	// }
+	var markerLength = 1056;
+		
 	group.add( dropPin(//  Red is hong kong -----------------------------
 	
 		22.278238,
 		 114.173162,
-		0xFF0000
+		0xFF0000,
+		markerLength
 	))
 
 
@@ -147,7 +151,8 @@ $( document ).ready( function(){
 
 		27.987762, 
 		  86.923828, 
-		0x00FF00
+		0x00FF00,
+		markerLength
 	))
 
 
@@ -155,7 +160,8 @@ $( document ).ready( function(){
 
 		27.172774, 
 		78.041655, 
-		0xFF00FF
+		0xFF00FF,
+		markerLength
 	))
 
 
@@ -163,7 +169,8 @@ $( document ).ready( function(){
 
 		 -16.500413, 
 		-151.74149, 
-		 0xFFFF00
+		 0xFFFF00,
+		markerLength
 	))
 
 
@@ -171,12 +178,28 @@ $( document ).ready( function(){
 
 		32.101655, 
 		 -40.424194, 
-		0x00CCFF
+		0x00CCFF,
+		markerLength
 	))
 
 
 
+	//skybox
+	// var axes = new THREE.AxisHelper();
+	// group.add( axes );
 
+	var skyboxMartials = [];
+	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/skybox-1.jpg')}));
+	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/skybox-2.jpg')}));
+	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/skybox-3.jpg')}));
+	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/skybox-4.jpg')}));
+	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/skybox-5.jpg')}));
+	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/skybox-6.jpg')}));	
+	var skyboxGeom = new THREE.CubeGeometry( 2000, 2000, 2000, 1, 1, 1, skyboxMartials );
+	var skybox = new THREE.Mesh( skyboxGeom, new THREE.MeshFaceMaterial() );
+	skybox.scale.x = -1;
+	group.add( skybox );
+	
 	//  Finally, we add our group of objects to the Scene.
 
 	scene.add( group )
@@ -187,6 +210,10 @@ $( document ).ready( function(){
 
 	group.rotation.y = ( -40 ).degreesToRadians()
 	group.rotation.z = (  23 ).degreesToRadians()
+
+
+
+
 
 
 
@@ -201,16 +228,30 @@ $( document ).ready( function(){
 })
 
 
-
-
+/*
+var mouseX = 0;
+var mouseY = 0;
+$(document).mousemove(function(e){
+	mouseX = ( event.clientX - $(window).width()/2 ) ;
+	mouseY = ( event.clientY - $(window).height()/2 ) ;
+ });
+*/
+			
+			
 function loop(){
-
 	//  Let's rotate the entire group a bit.
 	//  Then we'll also rotate the cloudsTexture slightly more on top of that.
 
 	group.rotation.y  += ( 0.10 ).degreesToRadians()
-	clouds.rotation.y += ( 0.05 ).degreesToRadians()
-
+	clouds.rotation.y += ( 0.07 ).degreesToRadians()
+	
+/*
+	camera.position.x += ( mouseX - camera.position.x ) * .05;
+	camera.position.y += ( - mouseY - camera.position.y ) * .05;
+	camera.lookAt( scene.position );
+*/
+	
+				
 	render()
 	controls.update()
 	
@@ -234,12 +275,11 @@ function loop(){
 //  and another for rotating on longitude. Otherwise we'd just be rotating our
 //  marker shape rather than rotating it relative to the Earth.
 
-function dropPin( latitude, longitude, color ){
+function dropPin( latitude, longitude, color, markerLength){
 
 	var 
 	group1 = new THREE.Object3D(),
 	group2 = new THREE.Object3D(),
-	markerLength = 256,
 	marker = new THREE.Mesh(
 		new THREE.CubeGeometry( .1, markerLength, .1 ),
 		new THREE.MeshBasicMaterial({ 
@@ -263,8 +303,7 @@ function dropPin( latitude, longitude, color ){
 //  Why separate this simple line of code from the loop() function?
 //  So that our controls can also call it separately.
 
-function render(){
-
+function render(){				
 	renderer.render( scene, camera )
 }
 
@@ -313,7 +352,6 @@ function setupThree(){
 	//  And now let's create a Camera object to look at our Scene.
 	//  In order to do that we need to think about some variable first
 	//  that will define the dimensions of our Camera's view.
-	var
 	WIDTH      = $(window).width(),
 	HEIGHT     = $(window).height(),
 	VIEW_ANGLE = 45,
@@ -322,7 +360,7 @@ function setupThree(){
 	FAR        = 10000
 	
 	window.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR )
-	camera.position.set( 0, 0, 300 )
+	camera.position.set( 0, 100, 400 )
 	camera.lookAt( scene.position )
 	scene.add( camera )
 
@@ -353,7 +391,6 @@ function setupThree(){
 
 
 function addControls(){
-
 	window.controls = new THREE.TrackballControls( camera )
 
 	controls.rotateSpeed = 1.0
@@ -361,7 +398,7 @@ function addControls(){
 	controls.panSpeed    = 0.8
 
 	controls.noZoom = false
-	controls.noPan  = false
+	controls.noPan  = true
 	controls.staticMoving = true
 	controls.dynamicDampingFactor = 0.3
 	controls.keys = [ 65, 83, 68 ]//  ASCII values for A, S, and D
