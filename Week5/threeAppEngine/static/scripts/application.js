@@ -24,7 +24,7 @@ $( document ).ready( function(){
 	//  Hold down 'S' and move your mouse up or down to zoom.
 	//  Hold down 'D' and move your mouse around to pan.
 
-	addControls()
+	//addControls()
 
 
 
@@ -136,7 +136,7 @@ $( document ).ready( function(){
 	// 		markerLengthCool
 	// 	))
 	// }
-	var markerLength = 1056;
+	var markerLength = 350;
 		
 	group.add( dropPin(//  Red is hong kong -----------------------------
 	
@@ -228,14 +228,14 @@ $( document ).ready( function(){
 })
 
 
-/*
+
 var mouseX = 0;
 var mouseY = 0;
 $(document).mousemove(function(e){
 	mouseX = ( event.clientX - $(window).width()/2 ) ;
 	mouseY = ( event.clientY - $(window).height()/2 ) ;
  });
-*/
+
 			
 			
 function loop(){
@@ -245,15 +245,15 @@ function loop(){
 	group.rotation.y  += ( 0.10 ).degreesToRadians()
 	clouds.rotation.y += ( 0.07 ).degreesToRadians()
 	
-/*
+
 	camera.position.x += ( mouseX - camera.position.x ) * .05;
 	camera.position.y += ( - mouseY - camera.position.y ) * .05;
 	camera.lookAt( scene.position );
-*/
+
 	
 				
 	render()
-	controls.update()
+	//controls.update() //needed if addControls is on
 	
 	
 	//  This function will attempt to call loop() at 60 frames per second.
@@ -281,7 +281,7 @@ function dropPin( latitude, longitude, color, markerLength){
 	group1 = new THREE.Object3D(),
 	group2 = new THREE.Object3D(),
 	marker = new THREE.Mesh(
-		new THREE.CubeGeometry( .1, markerLength, .1 ),
+		new THREE.CubeGeometry( .5, markerLength, .1 ),
 		new THREE.MeshBasicMaterial({ 
 			color: color
 		})
@@ -391,19 +391,19 @@ function setupThree(){
 
 
 function addControls(){
-	window.controls = new THREE.TrackballControls( camera )
-
-	controls.rotateSpeed = 1.0
-	controls.zoomSpeed   = 1.2
-	controls.panSpeed    = 0.8
-
-	controls.noZoom = false
-	controls.noPan  = true
-	controls.staticMoving = true
-	controls.dynamicDampingFactor = 0.3
-	controls.keys = [ 65, 83, 68 ]//  ASCII values for A, S, and D
-
-	controls.addEventListener( 'change', render )
+	// window.controls = new THREE.TrackballControls( camera )
+	// 
+	// controls.rotateSpeed = 1.0
+	// controls.zoomSpeed   = 1.2
+	// controls.panSpeed    = 0.8
+	// 
+	// controls.noZoom = false
+	// controls.noPan  = true
+	// controls.staticMoving = true
+	// controls.dynamicDampingFactor = 0.3
+	// controls.keys = [ 65, 83, 68 ]//  ASCII values for A, S, and D
+	// 
+	// controls.addEventListener( 'change', render )
 }
 
 
