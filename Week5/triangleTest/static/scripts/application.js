@@ -1,3 +1,11 @@
+//drawing a mesh of individual triangles
+var subdivisionsX = 10;
+var subdivisionsY = 10;
+var subdivLength  = 30.0;
+var index = 0;
+var goingUp =  true;
+// myTriangles= []; //array to hold triangles globally
+
 $( document ).ready( function(){
 	setupThree()
 	addLights()
@@ -14,9 +22,9 @@ $( document ).ready( function(){
 	// 	];
 	// 
 	// var reflectionCube = THREE.ImageUtils.loadTextureCube( urls );
-	window.cubeMaterial0 = new THREE.MeshPhongMaterial( { wireframe: true, transparency: true, opacity: 1, ambient: 0xFF00, color: 0xFFA01F, specular: 0xFFFFFF, shininess: 25, perPixel: true,  metal: false } );
 	// window.cubeMaterial1 = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xaaaaaa, envMap: reflectionCube } )
 	// window.cubeMaterial2 = new THREE.MeshLambertMaterial( { color: 0xff6600, ambient: 0x993300, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.3 } );
+	window.cubeMaterial0 = new THREE.MeshPhongMaterial( { wireframe: true, transparency: true, opacity: 1, ambient: 0xFF00, color: 0xFFA01F, specular: 0xFFFFFF, shininess: 25, perPixel: true,  metal: false } );
 	
 	
 	//drawwing a single triangle
@@ -43,10 +51,7 @@ $( document ).ready( function(){
 	// tContainer.addTriangle( t.generate( vertC, vertA, vertD ) );
 	
 	
-	//drawing a mesh of individual triangles
-	var subdivisionsX = 10;
-	var subdivisionsY = 10;
-	var subdivLength  = 30.0;
+
 	
 	// Center grid about origin
 	var startX = -(subdivisionsX * subdivLength) / 2.0; 
@@ -62,7 +67,9 @@ $( document ).ready( function(){
 			var tContainer = Object.create(trianglesContainer);
 			var t = Object.create(triangle);
 			tContainer.addTriangle( t.generate( vertA, vertB, vertD ) );
-			tContainer.addTriangle( t.generate( vertC, vertD, vertB ) );		
+			// myTriangles.push(t)
+			tContainer.addTriangle( t.generate( vertC, vertD, vertB ) );
+			// myTriangles.push(t)		
 		}
 	}
 	
@@ -99,18 +106,17 @@ var triangle = {
 		mVerts.faces.push( new THREE.Face3( 0, 1, 2 ) );
 		mVerts.computeFaceNormals();
 		
-		
-	
 		var object = new THREE.Mesh( mVerts, cubeMaterial0 );
 		object.receiveShadow = true
 		object.castShadow = true
 		group.add(object)
-	}	
+		
+		return mVerts; //return the triangle object to fill the mTriangles array in the trianglesContainer
+	}
 }
 
 var trianglesContainer = {
 	mTriangles : [],
-	test : 100,
 	
 	addTriangle : function(tri){
 		this.mTriangles.push(tri);
@@ -120,7 +126,14 @@ var trianglesContainer = {
 		for (var i = 0; i < this.mTriangles.length-1; i++) {
 			this.mTriangles[i].create();
 		}
-	}	
+	},
+	getTriangle : function(_index){
+		i = _index
+	    if( i >= 0 && i < this.mTriangles.length-1 ) {
+	      return this.mTriangles[i]; //return triangle
+	    }
+	    return null; //else return null
+	}
 }
 
 
@@ -139,7 +152,6 @@ function setupThree(){
 	scene.add( camera )
 	
 	window.renderer = new THREE.WebGLRenderer({ antialias: true })
-	//window.renderer = new THREE.CanvasRenderer({ antialias: true })
 	renderer.setSize( WIDTH, HEIGHT )
 	renderer.shadowMapEnabled = true
 	renderer.shadowMapSoft = true
@@ -177,7 +189,9 @@ function addLights(){
 }
 
 		
-function loop(){				
+function loop(){
+	animateTriangles();
+
 	render()
 	controls.update() 
 	
@@ -185,7 +199,33 @@ function loop(){
 }
 
 
-function render(){				
+//animate individual triangle objects
+function animateTriangles(){
+	var tContainerGet = Object.create(trianglesContainer);
+	currTri = tContainerGet.getTriangle( index );
+	if( currTri != null ) {
+	  for(var i = 0; i < 3; i++) {
+	    if( goingUp ){
+	      currTri.vertices[i].z -= subdivLength;  // z pozition is moved
+		}else{
+	      currTri.vertices[i].z += subdivLength;
+		}
+	  }
+	}	
+}
+//timer that updates which triangle being animated
+setInterval(function(){
+	if( index + 1 < subdivisionsX * subdivisionsY * 2 ) {
+      index++;	      // Increment triangle index
+    }
+    else {
+      index   = 0;	      // Reset triangle index
+      goingUp = !goingUp;	      // Reverse direction
+    }
+}, 1000)
+
+
+function render(){	
 	renderer.render( scene, camera )
 }
 
