@@ -53,19 +53,8 @@ $( document ).ready( function(){
 	//  with an image. The textures used in this demo come from a VERY
 	//  useful resource: http://www.celestiamotherlode.net/catalog/earth.php
 
-	window.earthRadius = 90
-	
-	
-	//my custom bump map
-	var bumpImage = THREE.ImageUtils.loadTexture( "media/myBumpMap.jpeg" );
-	var bumpMaterial = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture( 'media/myEarthTexture.jpeg' ), transparency: true, opacity: 1, ambient: 0xFFFFFF, color: 0xFFFFFF, specular: 0xFFFFFF, shininess: 25, perPixel: true, bumpMap: bumpImage, bumpScale: 19, metal: true } );
-	
-	// var earthImage = THREE.ImageUtils.loadTexture( 'media/myEarthTexture.jpeg' );
-	// var earthMaterial = new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( 'media/myEarthTexture.jpeg' ) })
-	// 
-	// var materials = [earthMaterial, bumpMaterial]
-	
-	
+
+	//version with image texture
 	// window.earth = new THREE.Mesh(
 	// 	// new THREE.SphereGeometry( earthRadius, 32, 32 ),
 	// 	// 	new THREE.MeshLambertMaterial({ 
@@ -73,13 +62,25 @@ $( document ).ready( function(){
 	// 	// 	})
 	// )
 
+	//version w/ basic texture
 	// window.earth = new THREE.Mesh(
 	// 	new THREE.SphereGeometry(earthGeo, new THREE.MeshFaceMaterial())
 	// );
 	
 	
+	window.earthRadius = 90
+	
+	//my custom bump map
+	var earthBumpImage = THREE.ImageUtils.loadTexture( "media/myBumpMap.jpeg" );
+	var earthBumpMaterial = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture( 'media/myEarthTexture.jpeg' ), transparency: true, opacity: 1, ambient: 0xFFFFFF, color: 0xFFFFFF, specular: 0xFFFFFF, shininess: 25, perPixel: true, bumpMap: earthBumpImage, bumpScale: 19, metal: true } );
+	
+	var moonBumpImage = THREE.ImageUtils.loadTexture( "media/myMoonTexture.jpeg" );
+	var moonBumpMaterial = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture( 'media/myMoonTexture.jpeg' ), transparency: true, opacity: 1, ambient: 0xFFFFFF, color: 0xFFFFFF, specular: 0xFFFFFF, shininess: 25, perPixel: true, bumpMap: moonBumpImage, bumpScale: 19, metal: true } );
+
+	
+	
 	window.earth = new THREE.Mesh(
-		new THREE.SphereGeometry(earthRadius, 32, 32), bumpMaterial
+		new THREE.SphereGeometry(earthRadius, 32, 32), earthBumpMaterial
 	);
 	
 	earth.position.set( 0, 0, 0 )
@@ -88,6 +89,14 @@ $( document ).ready( function(){
 	group.add( earth )
 
 
+	window.moon = new THREE.Mesh(
+		new THREE.SphereGeometry(earthRadius * .27, 32, 32), moonBumpMaterial
+	);
+	moon.position.set( 0,0,0 )
+	moon.receiveShadow = true;
+	moon.castShadow = true;
+	group.add(moon)
+	
 	//  But what's Earth without a few clouds? Note here how we handle 
 	//  transparency (so you can see through the gaps in the clouds down to
 	//  Earth's surface) and how we use blending modes to make it happen.
@@ -110,7 +119,6 @@ $( document ).ready( function(){
 	clouds.receiveShadow = true
 	clouds.castShadow = true
 	group.add( clouds )
-
 
 
 	//  Working with latitude and longitude can be tricky at first
@@ -136,7 +144,7 @@ $( document ).ready( function(){
 	// 		markerLengthCool
 	// 	))
 	// }
-	var markerLength = 350;
+	var markerLength = 550;
 		
 	group.add( dropPin(//  Red is hong kong -----------------------------
 	
@@ -228,7 +236,7 @@ $( document ).ready( function(){
 })
 
 
-
+//set mouseX and mouseY based on center point of screen
 var mouseX = 0;
 var mouseY = 0;
 $(document).mousemove(function(e){
@@ -237,7 +245,9 @@ $(document).mousemove(function(e){
  });
 
 			
-			
+var radius = 500;
+var angle = 1;
+var speed = .001;	
 function loop(){
 	//  Let's rotate the entire group a bit.
 	//  Then we'll also rotate the cloudsTexture slightly more on top of that.
@@ -245,6 +255,9 @@ function loop(){
 	group.rotation.y  += ( 0.10 ).degreesToRadians()
 	clouds.rotation.y += ( 0.07 ).degreesToRadians()
 	
+	moon.position.x = earth.position.y + Math.cos(angle * Math.PI/180) * radius;
+    moon.position.z = earth.position.x + Math.sin(angle * Math.PI/180) * radius;
+    angle+=speed;
 
 	camera.position.x += ( mouseX - camera.position.x ) * .05;
 	camera.position.y += ( - mouseY - camera.position.y ) * .05;
@@ -286,7 +299,7 @@ function dropPin( latitude, longitude, color, markerLength){
 			color: color
 		})
 	)
-	marker.position.y = earthRadius
+	marker.position.y = markerLength/2+earthRadius
 
 	group1.add( marker )
 	group1.rotation.x = ( 90 - latitude  ).degreesToRadians()

@@ -12,5 +12,14 @@
 		<script charset="utf-8" src="scripts/skip.js"></script>
 		<script charset="utf-8" src="scripts/application.js"></script>
 		<div id="tag">Three.Js Earth Example - Using Bump mapping from an image and plotting points based on lat/long</div>
+		
+		<script type="text/javascript">
+			$.ajax({
+				crossDomain: true,
+			    type: "GET",
+			    url: "http://www.census.gov/population/popclockworld.html",
+			    context: $('#worldnumber').text()
+			})
+		</script>
 	</body>
 </html>

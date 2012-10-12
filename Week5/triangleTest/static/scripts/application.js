@@ -12,6 +12,22 @@ $( document ).ready( function(){
 	addControls();
 	window.group = new THREE.Object3D()
 
+
+	//skybox
+	// var skyboxMartials = [];
+	// skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/negx.jpg')}));
+	// skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/posx.jpg')}));
+	// skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/posy.jpg')}));
+	// skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/negy.jpg')}));
+	// skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/negz.jpg')}));
+	// skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/posz.jpg')}));	
+	// var skyboxGeom = new THREE.CubeGeometry( 3000, 3000, 3000, 1, 1, 1, skyboxMartials );
+	// var skybox = new THREE.Mesh( skyboxGeom, new THREE.MeshFaceMaterial() );
+	// skybox.scale.x = -1;
+	// group.add( skybox );
+	
+	
+	
 	//material for triangles
 	// var path = "media/";
 	// var format = '.jpg';
@@ -67,27 +83,12 @@ $( document ).ready( function(){
 			var tContainer = Object.create(trianglesContainer);
 			var t = Object.create(triangle);
 			tContainer.addTriangle( t.generate( vertA, vertB, vertD ) );
-			// myTriangles.push(t)
-			tContainer.addTriangle( t.generate( vertC, vertD, vertB ) );
-			// myTriangles.push(t)		
+			tContainer.addTriangle( t.generate( vertC, vertD, vertB ) );	
 		}
 	}
-	
-	
-	//skybox
-	// var skyboxMartials = [];
-	// skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/negx.jpg')}));
-	// skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/posx.jpg')}));
-	// skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/posy.jpg')}));
-	// skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/negy.jpg')}));
-	// skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/negz.jpg')}));
-	// skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/posz.jpg')}));	
-	// var skyboxGeom = new THREE.CubeGeometry( 3000, 3000, 3000, 1, 1, 1, skyboxMartials );
-	// var skybox = new THREE.Mesh( skyboxGeom, new THREE.MeshFaceMaterial() );
-	// skybox.scale.x = -1;
-	// group.add( skybox );
 
-	
+
+
 	scene.add(group)
 	loop()	
 })
@@ -114,6 +115,31 @@ var triangle = {
 		return mVerts; //return the triangle object to fill the mTriangles array in the trianglesContainer
 	}
 }
+
+//attempting to add update function
+// var triangle = {
+// 	mVerts : new THREE.Geometry(),
+// 
+// 	generate : function(_vertA, _vertB, _vertC){
+// 		var vertA = _vertA;
+// 		var vertB = _vertB;
+// 		var vertC = _vertC;
+// 		
+// 		this.mVerts.vertices.push( vertA ); 
+// 		this.mVerts.vertices.push( vertB ); 
+// 		this.mVerts.vertices.push( vertC );
+// 
+// 		this.mVerts.faces.push( new THREE.Face3( 0, 1, 2 ) );
+// 		this.mVerts.computeFaceNormals();
+// 		
+// 		var object = new THREE.Mesh( this.mVerts, cubeMaterial0 );
+// 		object.receiveShadow = true
+// 		object.castShadow = true
+// 		group.add(object)
+// 		
+// 		return this.mVerts; //return the triangle object to fill the mTriangles array in the trianglesContainer
+// 	}
+// }
 
 var trianglesContainer = {
 	mTriangles : [],
@@ -190,7 +216,7 @@ function addLights(){
 
 		
 function loop(){
-	animateTriangles();
+	//animateTriangles();
 
 	render()
 	controls.update() 
