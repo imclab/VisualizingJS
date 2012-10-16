@@ -144,15 +144,16 @@ $( document ).ready( function(){
 	// 		markerLengthCool
 	// 	))
 	// }
-	var markerLength = 550;
+	var markerLength = 50;
 		
-	group.add( dropPin(//  Red is hong kong -----------------------------
+	window.drop1 = dropPin(//  Red is hong kong -----------------------------
 	
 		22.278238,
 		 114.173162,
 		0xFF0000,
 		markerLength
-	))
+	)
+	group.add(drop1)
 
 
 	group.add( dropPin(//  Green is mount everest --------------------------- 
@@ -254,6 +255,8 @@ function loop(){
 
 	group.rotation.y  += ( 0.10 ).degreesToRadians()
 	clouds.rotation.y += ( 0.07 ).degreesToRadians()
+	drop1.growMarker()
+	// console.log(drop1.growMarker())
 	
 	moon.position.x = earth.position.y + Math.cos(angle * Math.PI/180) * radius;
     moon.position.z = earth.position.x + Math.sin(angle * Math.PI/180) * radius;
@@ -307,6 +310,15 @@ function dropPin( latitude, longitude, color, markerLength){
 	group2.add( group1 )
 	group2.rotation.y = ( 90 + longitude ).degreesToRadians()
 
+	group2.markerLength = markerLength
+	
+	group2.growMarker = function(){
+		group2.markerLength += 1;
+		group2.markerScaleY = group2.markerLength / markerLength //divide current size by original size
+		marker.scale.y = group2.markerScaleY;
+		marker.position.y = group2.markerLength/2+earthRadius
+	}
+	
 	return group2
 }
 

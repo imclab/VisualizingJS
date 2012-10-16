@@ -14,12 +14,22 @@
 		<div id="tag">Three.Js Earth Example - Using Bump mapping from an image and plotting points based on lat/long</div>
 		
 		<script type="text/javascript">
+			// $.ajax({
+			// 	crossDomain: true,
+			//     type: "GET",
+			//     url: "http://www.census.gov/population/popclockworld.html?callback=",
+			//     context: $('#worldnumber').text()
+			// })
 			$.ajax({
-				crossDomain: true,
-			    type: "GET",
-			    url: "http://www.census.gov/population/popclockworld.html",
-			    context: $('#worldnumber').text()
-			})
+				     url:"http://search.twitter.com/search.json?geocode=0,0,6400km",
+				     dataType: 'jsonp', 
+				     success:function(json){
+				         console.log(json.results[0])
+				     },
+				     error:function(){
+				         alert("Error");
+				     },
+				});
 		</script>
 	</body>
 </html>
