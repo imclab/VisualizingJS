@@ -1,4 +1,7 @@
 $( document ).ready( function(){
+	//group to place objects in
+	window.group = new THREE.Object3D()
+
 	setupThree()
 	addLights()
 	//addControls() //for 'a', 's', and 'd'
@@ -12,8 +15,6 @@ $( document ).ready( function(){
 	window.tweetLocationGeo = []
 	streamTweets()
 
-	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-
 
 	//skybox
 	// var axes = new THREE.AxisHelper();
@@ -26,15 +27,10 @@ $( document ).ready( function(){
 	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/skybox-5.jpg')}));
 	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/skybox-6.jpg')}));	
 	var skyboxGeom = new THREE.CubeGeometry( 2000, 2000, 2000, 1, 1, 1, skyboxMartials );
-	var skybox = new THREE.Mesh( skyboxGeom, new THREE.MeshFaceMaterial() );
+	window.skybox = new THREE.Mesh( skyboxGeom, new THREE.MeshFaceMaterial() );
 	skybox.scale.x = -1;
-	scene.add( skybox );
+	scene.add( skybox )
 
-
-
-
-	//group to place objects in
-	window.group = new THREE.Object3D()
 
 	
 	//earth object	
@@ -92,7 +88,7 @@ $( document ).ready( function(){
 	var markerLength = 1;
 	window.tweetPin = [];
 		
-	var tweetPointMaterial = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( "media/test.png" ), color: Math.random() * 0xffffff, transparency: true, opacity: 1} );
+	var tweetPointMaterial = new THREE.MeshBasicMaterial( { transparent: true, opacity: .6, color: Math.random() * 0xffffff} );
 	window.tweetPoint = []
 	for(var i=0; i< 4; i++){
 		var lat = (Math.random()*180) -90
@@ -142,20 +138,23 @@ var distance = function( point1, point2 ){
 var cameraRadius = 400;
 var moonRadius = 500.0;
 var angle = 1.0;
-var speed = .1;	
+var speed = .03;	
 
 function loop(){
 	//rotate the group
 	// group.rotation.y  += ( 0.10 ).degreesToRadians()
-	clouds.rotation.y += ( 0.07 ).degreesToRadians()
+	skybox.rotation.y -= ( 0.07 ).degreesToRadians() 
+	clouds.rotation.y += ( 0.02 ).degreesToRadians()
 
-	for(var i=0; i< 4; i++){
+	for(var i=0; i< tweetPin.length; i++){
 		tweetPin[i].growMarker()
 	}
-	
+
+	moon.rotation.y += ( .1 ).degreesToRadians()	
 	moon.position.x = earth.position.x + Math.cos(angle * Math.PI/180) * moonRadius;
     moon.position.z = earth.position.z + Math.sin(angle * Math.PI/180) * moonRadius;
     angle+=speed;
+
 
 	//rotate the camera in circle aroud the earth
 	// camera.position.x = earth.position.x + Math.cos(angle * Math.PI/180) * cameraRadius;
@@ -170,9 +169,12 @@ function loop(){
 	camera.position.y -= cameraYDist/20
 	camera.position.z -= cameraZDist/20
 
-	directional.position.x -= cameraXDist/20
-	directional.position.y -= cameraYDist/20
-	directional.position.z -= cameraZDist/20
+	var directionalXDist = distance(tweetPoint[tweetPointIndex].cameraDestination.x, directional.position.x)
+	var directionalYDist = distance(tweetPoint[tweetPointIndex].cameraDestination.y, directional.position.y)
+	var directionalZDist = distance(tweetPoint[tweetPointIndex].cameraDestination.z, directional.position.z)
+	directional.position.x -= directionalXDist/20
+	directional.position.y -= directionalYDist/20
+	directional.position.z -= directionalZDist/20
 
 	camera.lookAt( scene.position );
 
@@ -199,9 +201,11 @@ function dropPin( latitude, longitude, color, markerLength){
 	group1 = new THREE.Object3D(),
 	group2 = new THREE.Object3D();
 	marker = new THREE.Mesh(
-		new THREE.CubeGeometry( 4, markerLength, 4 ),
+		new THREE.CubeGeometry( .5, markerLength, .5 ),
 		new THREE.MeshBasicMaterial({ 
-			color: color
+			color: color,
+			transparent: true,
+			opacity: .5
 		})
 	)
 	marker.position.y = markerLength/2+earthRadius
@@ -219,7 +223,7 @@ function dropPin( latitude, longitude, color, markerLength){
 	group2.marker = marker;
 
 	group2.growMarker = function(){
-		if(group2.markerLength < 310){ //limit length point grows
+		if(group2.markerLength < 200){ //limit length point grows
 			group2.markerLength += 1;
 			group2.markerScaleY = group2.markerLength / markerLength //divide current size by original size
 			group2.marker.scale.y = group2.markerScaleY;
@@ -258,14 +262,14 @@ function surfacePlot( params ){
 	y = params.center.y + params.latitude.sine()   * params.radius *-1,
 	z = params.center.z + params.latitude.cosine() * params.longitude.sine() * params.radius
 
-	//calculate point in space relative to point on sphere
+	//calculate point in space relative to point on sphere for camera (a sphere of 400)
 	var 
 	xC = params.center.x + params.latitude.cosine() * params.longitude.cosine() * 400,
 	yC = params.center.y + params.latitude.sine()   * 400 *-1,
 	zC = params.center.z + params.latitude.cosine() * params.longitude.sine() * 400
 
-	obj = {'x' : x, 'y' : y, 'z': z, 'xC': xC, 'yC': yC, 'zC' : zC}
-	return obj
+	this.obj = {'x' : x, 'y' : y, 'z': z, 'xC': xC, 'yC': yC, 'zC' : zC}
+	return this.obj
 }
 
 
@@ -282,9 +286,9 @@ function setupThree(){
 	FAR        = 10000
 	
 	window.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR )
-	camera.position.set( 0, 100, 400 )
+	camera.position.set( -1000, 100, 2800 ) //starting position of camera
 	camera.lookAt( scene.position )
-	scene.add( camera )
+	group.add( camera )
 
 	window.renderer = new THREE.WebGLRenderer({ antialias: true })
 	//window.renderer = new THREE.CanvasRenderer({ antialias: true })
@@ -328,40 +332,30 @@ function addLights(){
 	
 	
 	ambient = new THREE.AmbientLight( 0x666666 )
-	scene.add( ambient )	
+	group.add( ambient )	
 	
 	
 	//  Now let's create a Directional light as our pretend sunshine.
 	directional = new THREE.DirectionalLight( 0xCCCCCC )
-	directional.castShadow = true	
+	directional.castShadow = true
 	scene.add( directional )
 
 
 	directional.position.set( 100, 200, 300 )
 	directional.target.position.copy( scene.position )
-	directional.shadowCameraTop     =  600
-	directional.shadowCameraRight   =  600
-	directional.shadowCameraBottom  = -600
-	directional.shadowCameraLeft    = -600
+	directional.shadowCameraTop     =  1000
+	directional.shadowCameraRight   =  1000
+	directional.shadowCameraBottom  = -1000
+	directional.shadowCameraLeft    = -1000
 	directional.shadowCameraNear    =  600
 	directional.shadowCameraFar     = -600
 	directional.shadowBias          =   -0.0001
 	directional.shadowDarkness      =    0.3
 	directional.shadowMapWidth      = directional.shadowMapHeight = 2048
+
 	// directional.shadowCameraVisible = true
 }
 
-
-//resize method
-window.addEventListener( 'resize', onWindowResize, false );
-
-function onWindowResize(){
-
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
-}
 
 
 function streamTweets(){
@@ -463,29 +457,61 @@ function nextTweet(){
 	setTimeout( nextTweet, timePerTweet )
 }
 
-
-
+var projector = new THREE.Projector();
+document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 function onDocumentMouseDown( event ) {
-	var projector = new THREE.Projector();
 
 	event.preventDefault();
 
-	var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
+	var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, 
+		- ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
 	projector.unprojectVector( vector, camera );
 
 	var ray = new THREE.Ray( camera.position, vector.subSelf( camera.position ).normalize() );
 
 	var intersects = ray.intersectObjects( tweetPoint );
-
+	
 	if ( intersects.length > 0 ) {
-		// window.a = intersects
-		// console.log( intersects )
-		// alert(intersects[0].object.message)
+		// change the point to look at the number of the object
 		tweetPointIndex = intersects[0].object.message
-
 	}
-	// if(tweetPointIndex < tweetPoint.length-1)
-	// 	tweetPointIndex++;
-	// else
-	// 	tweetPointIndex = 0
 }
+
+
+//resize method
+window.addEventListener( 'resize', onWindowResize, false );
+function onWindowResize(){
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
+//larrow keys pressed
+$(document).keydown(function(e){
+    if (e.keyCode == 37) {  //left arrow
+    	if(tweetPointIndex>0)
+	       tweetPointIndex--
+	    else
+	   		tweetPointIndex = tweetPoint.length-1
+    }
+    if (e.keyCode == 39) { //right arrow
+    	if(tweetPointIndex < tweetPoint.length-1)
+	       tweetPointIndex++
+	    else
+	   		tweetPointIndex = 0
+    }
+    if (e.keyCode == 38) {  //up arrow
+    	if(tweetPointIndex>0)
+	       tweetPointIndex--
+	    else
+	   		tweetPointIndex = tweetPoint.length-1
+    }
+    if (e.keyCode == 40) { //down arrow
+    	if(tweetPointIndex < tweetPoint.length-1)
+	       tweetPointIndex++
+	    else
+	   		tweetPointIndex = 0
+    }
+});
