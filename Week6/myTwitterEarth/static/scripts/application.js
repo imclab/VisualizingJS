@@ -88,7 +88,7 @@ $( document ).ready( function(){
 	var markerLength = 1;
 	window.tweetPin = [];
 		
-	var tweetPointMaterial = new THREE.MeshBasicMaterial( { transparent: true, opacity: .6, color: Math.random() * 0xffffff} );
+	window.tweetPointMaterial = new THREE.MeshBasicMaterial( { transparent: true, opacity: .6, color: Math.random() * 0xffffff} );
 	window.tweetPoint = []
 	for(var i=0; i< 4; i++){
 		var lat = (Math.random()*180) -90
@@ -398,7 +398,8 @@ function streamTweets(){
 }
 
 
-
+var j = 4;
+var markerLength = 2
 function locateWithGoogleMaps( text ){	
 
 	geocoder.geocode( { 'address': text }, function( results, status ){
@@ -407,11 +408,32 @@ function locateWithGoogleMaps( text ){
 
 			console.log( '\nGoogle maps found a result for “'+ text +'”:' )
 			console.log( results[0].geometry.location )
-			tweetLocationGeo.push({
+			// tweetLocationGeo.push({
 
-				latitude:  results[0].geometry.location.lat(),
-				longitude: results[0].geometry.location.lng()
-			})
+			// 	latitude:  results[0].geometry.location.lat(),
+			// 	longitude: results[0].geometry.location.lng()
+			// })
+			var lat = (Math.random()*180) -90
+			var lon = (Math.random()*360) - 180
+			var vector = surfacePlot( {latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng(), center: {x:0,y:0,z:0}, radius: earthRadius} )
+			var point = new THREE.Mesh(
+				new THREE.SphereGeometry( 5, 32 , 32 ), tweetPointMaterial
+			);
+			point.position.set( vector.x, vector.y, vector.z )
+			point.cameraDestination = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
+			point.message = j
+			j++
+			tweetPoint.push(point)
+			group.add(point)
+
+			var dropName = dropPin(
+				 results[0].geometry.location.lat(),
+				 results[0].geometry.location.lng(),
+				0xFF0000,
+				markerLength
+			)
+			tweetPin.push(dropName)
+			group.add(dropName)
 		} 
 		else {
 
