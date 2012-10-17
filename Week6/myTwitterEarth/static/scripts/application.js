@@ -552,7 +552,7 @@ var dragging = false;
 $(document).mousedown(function() {
 	dragging=true
 })
-$(document).mousemove(function() {
+$(document).mousemove(function(event) {
 	if(dragging)
     cameraTracking=false        	
 });
