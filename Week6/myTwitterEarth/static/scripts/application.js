@@ -1,10 +1,12 @@
+var cameraTracking = false
+
 $( document ).ready( function(){
 	//group to place objects in
 	window.group = new THREE.Object3D()
 
 	setupThree()
 	addLights()
-	//addControls() //for 'a', 's', and 'd'
+	addControls() //for 'a', 's', and 'd'
 	
 	//twitter variables
 	window.tweetPointIndex = 0; //which point the camera should look to
@@ -160,21 +162,25 @@ function loop(){
 	// camera.position.x = earth.position.x + Math.cos(angle * Math.PI/180) * cameraRadius;
 	// camera.position.z = earth.position.z + Math.sin(angle * Math.PI/180) * cameraRadius;
 
+	if(cameraTracking){
+		// lerp the camera to the point position (camera moves w/ a radius of 400)
+		var cameraXDist = distance(tweetPoint[tweetPointIndex].cameraDestination.x, camera.position.x)
+		var cameraYDist = distance(tweetPoint[tweetPointIndex].cameraDestination.y, camera.position.y)
+		var cameraZDist = distance(tweetPoint[tweetPointIndex].cameraDestination.z, camera.position.z)
+		camera.position.x -= cameraXDist/20
+		camera.position.y -= cameraYDist/20
+		camera.position.z -= cameraZDist/20
 
-	// lerp the camera to the point position (camera moves w/ a radius of 400)
-	var cameraXDist = distance(tweetPoint[tweetPointIndex].cameraDestination.x, camera.position.x)
-	var cameraYDist = distance(tweetPoint[tweetPointIndex].cameraDestination.y, camera.position.y)
-	var cameraZDist = distance(tweetPoint[tweetPointIndex].cameraDestination.z, camera.position.z)
-	camera.position.x -= cameraXDist/20
-	camera.position.y -= cameraYDist/20
-	camera.position.z -= cameraZDist/20
-
-	var directionalXDist = distance(tweetPoint[tweetPointIndex].cameraDestination.x, directional.position.x)
-	var directionalYDist = distance(tweetPoint[tweetPointIndex].cameraDestination.y, directional.position.y)
-	var directionalZDist = distance(tweetPoint[tweetPointIndex].cameraDestination.z, directional.position.z)
-	directional.position.x -= directionalXDist/20
-	directional.position.y -= directionalYDist/20
-	directional.position.z -= directionalZDist/20
+		var directionalXDist = distance(tweetPoint[tweetPointIndex].cameraDestination.x, directional.position.x)
+		var directionalYDist = distance(tweetPoint[tweetPointIndex].cameraDestination.y, directional.position.y)
+		var directionalZDist = distance(tweetPoint[tweetPointIndex].cameraDestination.z, directional.position.z)
+		directional.position.x -= directionalXDist/20
+		directional.position.y -= directionalYDist/20
+		directional.position.z -= directionalZDist/20
+	}else{
+		controls.update() //needed if addControls is on
+		// console.log('test')
+	}
 
 	camera.lookAt( scene.position );
 
@@ -183,7 +189,6 @@ function loop(){
 	// });
 			
 	render()
-	//controls.update() //needed if addControls is on
 	
 	
 	//  This function will attempt to call loop() at 60 frames per second.
@@ -286,7 +291,7 @@ function setupThree(){
 	FAR        = 10000
 	
 	window.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR )
-	camera.position.set( -1000, 100, 2800 ) //starting position of camera
+	camera.position.set( 100, 100, 400 ) //starting position of camera
 	camera.lookAt( scene.position )
 	group.add( camera )
 
@@ -307,12 +312,13 @@ function setupThree(){
 
 function addControls(){
 	window.controls = new THREE.TrackballControls( camera )
-	
+	// controls.target.set( 0, 0, 0 )
+
 	controls.rotateSpeed = 1.0
 	controls.zoomSpeed   = 1.2
 	controls.panSpeed    = 0.8
 	
-	controls.noZoom = false
+	controls.noZoom = true
 	controls.noPan  = true
 	controls.staticMoving = true
 	controls.dynamicDampingFactor = 0.3
@@ -494,6 +500,7 @@ function onDocumentMouseDown( event ) {
 	var intersects = ray.intersectObjects( tweetPoint );
 	
 	if ( intersects.length > 0 ) {
+		if(!cameraTracking)cameraTracking=true
 		// change the point to look at the number of the object
 		tweetPointIndex = intersects[0].object.message
 	}
@@ -512,6 +519,8 @@ function onWindowResize(){
 
 //larrow keys pressed
 $(document).keydown(function(e){
+	if(!cameraTracking)cameraTracking=true
+
     if (e.keyCode == 37) {  //left arrow
     	if(tweetPointIndex>0)
 	       tweetPointIndex--
@@ -537,3 +546,16 @@ $(document).keydown(function(e){
 	   		tweetPointIndex = 0
     }
 });
+
+
+var dragging = false;
+$(document).mousedown(function() {
+	dragging=true
+})
+$(document).mousemove(function() {
+	if(dragging)
+    cameraTracking=false        	
+});
+$(document).mouseup(function() {
+	dragging=false
+})
