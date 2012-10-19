@@ -6,7 +6,7 @@ $( document ).ready( function(){
 
 	setupThree()
 	addLights()
-	addControls() //for 'a', 's', and 'd'
+	// addControls() //for 'a', 's', and 'd'
 	
 	//twitter variables
 	window.tweetPointIndex = 0; //which point the camera should look to
@@ -36,7 +36,7 @@ $( document ).ready( function(){
 
 	
 	//earth object	
-	window.earthRadius = 90
+	window.earthRadius = 100
 	//my custom bump map
 	var earthBumpImage = THREE.ImageUtils.loadTexture( "media/myBumpMap.jpeg" );
 	var earthBumpMaterial = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture( 'media/myEarthTexture.jpeg' ), transparency: true, opacity: 1, ambient: 0xFFFFFF, color: 0xFFFFFF, specular: 0xFFFFFF, shininess: 25, perPixel: true, bumpMap: earthBumpImage, bumpScale: 19, metal: true } );
@@ -61,7 +61,7 @@ $( document ).ready( function(){
 	moon.position.set( 0,0,0 )
 	moon.receiveShadow = true;
 	moon.castShadow = true;
-	group.add(moon)
+	scene.add(moon)
 	
 
 	//clouds object
@@ -100,7 +100,7 @@ $( document ).ready( function(){
 			new THREE.SphereGeometry( 5, 32 , 32 ), tweetPointMaterial
 		);
 		point.position.set( vector.x, vector.y, vector.z )
-		point.cameraDestination = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
+		// point.cameraDestination = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
 		point.message = i
 		tweetPoint.push(point)
 		group.add(point)
@@ -164,29 +164,43 @@ function loop(){
 
 	if(cameraTracking){
 		// lerp the camera to the point position (camera moves w/ a radius of 400)
-		var cameraXDist = distance(tweetPoint[tweetPointIndex].cameraDestination.x, camera.position.x)
-		var cameraYDist = distance(tweetPoint[tweetPointIndex].cameraDestination.y, camera.position.y)
-		var cameraZDist = distance(tweetPoint[tweetPointIndex].cameraDestination.z, camera.position.z)
-		camera.position.x -= cameraXDist/20
-		camera.position.y -= cameraYDist/20
-		camera.position.z -= cameraZDist/20
+		var cameraXDist = distance(tweetPoint[tweetPointIndex].matrixWorld.getPosition().x*4, camera.position.x)
+		var cameraYDist = distance(tweetPoint[tweetPointIndex].matrixWorld.getPosition().y*4, camera.position.y)
+		var cameraZDist = distance(tweetPoint[tweetPointIndex].matrixWorld.getPosition().z*4, camera.position.z)
+		camera.position.x -= cameraXDist/10
+		camera.position.y -= cameraYDist/10
+		camera.position.z -= cameraZDist/10
 
-		var directionalXDist = distance(tweetPoint[tweetPointIndex].cameraDestination.x, directional.position.x)
-		var directionalYDist = distance(tweetPoint[tweetPointIndex].cameraDestination.y, directional.position.y)
-		var directionalZDist = distance(tweetPoint[tweetPointIndex].cameraDestination.z, directional.position.z)
-		directional.position.x -= directionalXDist/20
-		directional.position.y -= directionalYDist/20
-		directional.position.z -= directionalZDist/20
+		//update lighting
+		var directionalXDist = distance(tweetPoint[tweetPointIndex].matrixWorld.getPosition().x*4, directional.position.x)
+		var directionalYDist = distance(tweetPoint[tweetPointIndex].matrixWorld.getPosition().y*4, directional.position.y)
+		var directionalZDist = distance(tweetPoint[tweetPointIndex].matrixWorld.getPosition().z*4, directional.position.z)
+		directional.position.x -= directionalXDist/10
+		directional.position.y -= directionalYDist/10
+		directional.position.z -= directionalZDist/10
 	}else{
-		controls.update() //needed if addControls is on
-		// console.log('test')
-	}
+		// controls.update() //needed if addControls is on
+		rotateX += rotateVX
+		rotateY += rotateVY
+		rotateVX *= 0.6;
+		rotateVY *= 0.6;
 
+		if(rotateX < -rotateXMax){
+			rotateX = -rotateXMax;
+		}
+		if(rotateX > rotateXMax){
+			rotateX = rotateXMax;
+		}	
+		group.rotation.x = rotateX
+		group.rotation.y = rotateY
+		// group.rotation.y = 45
+	}   
+
+
+	camera.up = new THREE.Vector3(0, 1, 0)
 	camera.lookAt( scene.position );
 
-	// $(tweetPoint[tweetPointIndex]).click(function() {
-	// 	alert(this)
-	// });
+
 			
 	render()
 	
@@ -195,8 +209,6 @@ function loop(){
 	//  See  this Mozilla developer page for details: https://developer.mozilla.org/en-US/docs/DOM/window.requestAnimationFrame
 	window.requestAnimationFrame( loop )
 }
-
-
 
 
 
@@ -268,12 +280,12 @@ function surfacePlot( params ){
 	z = params.center.z + params.latitude.cosine() * params.longitude.sine() * params.radius
 
 	//calculate point in space relative to point on sphere for camera (a sphere of 400)
-	var 
-	xC = params.center.x + params.latitude.cosine() * params.longitude.cosine() * 400,
-	yC = params.center.y + params.latitude.sine()   * 400 *-1,
-	zC = params.center.z + params.latitude.cosine() * params.longitude.sine() * 400
+	// var 
+	// xC = params.center.x + params.latitude.cosine() * params.longitude.cosine() * 400,
+	// yC = params.center.y + params.latitude.sine()   * 400 *-1,
+	// zC = params.center.z + params.latitude.cosine() * params.longitude.sine() * 400
 
-	this.obj = {'x' : x, 'y' : y, 'z': z, 'xC': xC, 'yC': yC, 'zC' : zC}
+	this.obj = {'x' : x, 'y' : y, 'z': z} //'xC': xC, 'yC': yC, 'zC' : zC
 	return this.obj
 }
 
@@ -293,7 +305,7 @@ function setupThree(){
 	window.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR )
 	camera.position.set( 100, 100, 400 ) //starting position of camera
 	camera.lookAt( scene.position )
-	group.add( camera )
+	scene.add( camera )
 
 	window.renderer = new THREE.WebGLRenderer({ antialias: true })
 	//window.renderer = new THREE.CanvasRenderer({ antialias: true })
@@ -548,13 +560,31 @@ $(document).keydown(function(e){
 });
 
 
+
 var dragging = false;
+var rotateX = 0, rotateY = 0;
+var rotateVX = 0, rotateVY = 0;
+var rotateXMax = 90 * Math.PI/180;
+var mouseX = 0, mouseY = 0, pmouseX = 0, pmouseY = 0;
+
 $(document).mousedown(function() {
 	dragging=true
 })
 $(document).mousemove(function(event) {
-	if(dragging)
-    cameraTracking=false        	
+	//set mouse variables
+	pmouseX = mouseX;
+	pmouseY = mouseY;
+
+	mouseX = event.clientX - window.innerWidth * 0.5;
+	mouseY = event.clientY - window.innerHeight * 0.5;
+
+	if(dragging){
+	    cameraTracking=false  
+
+	    //rotate the sphere by
+	    rotateVY += (mouseX - pmouseX) / 2 * Math.PI / 180 * 0.3;
+		rotateVX += (mouseY - pmouseY) / 2 * Math.PI / 180 * 0.3;
+	}     	
 });
 $(document).mouseup(function() {
 	dragging=false
