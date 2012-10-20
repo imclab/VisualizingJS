@@ -10,12 +10,12 @@ $( document ).ready( function(){
 	
 	//twitter variables
 	window.tweetPointIndex = 0; //which point the camera should look to
-	window.geocoder = new google.maps.Geocoder()
+	// window.geocoder = new google.maps.Geocoder()
 	window.tweetsIndex   = -1
 	window.timePerTweet = 300
 	window.tweetsLocation = []
 	window.tweetLocationGeo = []
-	streamTweets()
+	// streamTweets()
 
 
 	//skybox
@@ -119,13 +119,10 @@ $( document ).ready( function(){
 	scene.add( group )
 
 
-	//start earth looking at different point
-	// group.rotation.y = ( 0 ).degreesToRadians()
-	// group.rotation.z = (  23 ).degreesToRadians()
 
 	loop()	
 
-	nextTweet()
+	// nextTweet()
 })
 
 
@@ -158,10 +155,6 @@ function loop(){
     angle+=speed;
 
 
-	//rotate the camera in circle aroud the earth
-	// camera.position.x = earth.position.x + Math.cos(angle * Math.PI/180) * cameraRadius;
-	// camera.position.z = earth.position.z + Math.sin(angle * Math.PI/180) * cameraRadius;
-
 	if(cameraTracking){
 		// lerp the camera to the point position (camera moves w/ a radius of 400)
 		var cameraXDist = distance(tweetPoint[tweetPointIndex].matrixWorld.getPosition().x*4, camera.position.x)
@@ -172,39 +165,41 @@ function loop(){
 		camera.position.z -= cameraZDist/10
 
 		//update lighting
-		var directionalXDist = distance(tweetPoint[tweetPointIndex].matrixWorld.getPosition().x*4, directional.position.x)
-		var directionalYDist = distance(tweetPoint[tweetPointIndex].matrixWorld.getPosition().y*4, directional.position.y)
-		var directionalZDist = distance(tweetPoint[tweetPointIndex].matrixWorld.getPosition().z*4, directional.position.z)
-		directional.position.x -= directionalXDist/10
-		directional.position.y -= directionalYDist/10
-		directional.position.z -= directionalZDist/10
+		// var directionalXDist = distance(tweetPoint[tweetPointIndex].matrixWorld.getPosition().x*4, directional.position.x)
+		// var directionalYDist = distance(tweetPoint[tweetPointIndex].matrixWorld.getPosition().y*4, directional.position.y)
+		// var directionalZDist = distance(tweetPoint[tweetPointIndex].matrixWorld.getPosition().z*4, directional.position.z)
+		// directional.position.x -= directionalXDist/10
+		// directional.position.y -= directionalYDist/10
+		// directional.position.z -= directionalZDist/10
+
+		rotateX = tweetPin[tweetPointIndex].rotY;
+		rotateY = tweetPin[tweetPointIndex].rotX;
+
+		// rotateX = tweetPoint[tweetPointIndex].matrixWorld.getPosition().y
 	}else{
 		// controls.update() //needed if addControls is on
-		rotateX += -rotateVX
-		rotateY += rotateVY
+		rotateX += rotateVX
+		rotateY += -rotateVY
 
 		rotateVX *= 0.3;
 		rotateVY *= 0.3;
-		/*
-		if(rotateY < -180){
-			rotateY = 0;
+
+		if(rotateX > 360){
+			rotateX = 0
+		}
+		if(rotateX < 0){
+			rotateX = 360
+		}
+		if(rotateY < 0){
+			rotateY = 0
 		}
 		if(rotateY > 180){
-			rotateY = 0;
+			rotateY = 180
 		}
-		if(rotateX < -360){
-			rotateX = 0;
-		}
-		if(rotateX > 360){
-			rotateX = 0;
-		}
-		*/
-		console.log(rotateX + " " + rotateY)	
-		// group.rotation.x = rotateX
-		// group.rotation.y = rotateY
+
 		
+		//roate jsut x axes
 		// camera.position.x = earth.position.x + Math.cos(rotateX * Math.PI/180) * cameraRadius;
-		// camera.position.y = earth.position.x + Math.cos(rotateY * Math.PI/180) * cameraRadius;
 		// camera.position.z = earth.position.z + Math.sin(rotateX * Math.PI/180) * cameraRadius;
 
 		camera.position.x = earth.position.x + cameraRadius * Math.sin(rotateY * Math.PI/180) * Math.cos(rotateX * Math.PI/180)
@@ -253,6 +248,8 @@ function dropPin( latitude, longitude, color, markerLength){
 	group2.markerLength = markerLength
 	group2.latitude = latitude
 	group2.longitude = longitude
+	group2.rotX = Math.abs( 90 - latitude  )
+	group2.rotY = Math.abs(longitude)
 
 	group2.marker = marker;
 
@@ -435,84 +432,84 @@ function streamTweets(){
 
 var j = 4;
 var markerLength = 2
-function locateWithGoogleMaps( text ){	
+// function locateWithGoogleMaps( text ){	
 
-	geocoder.geocode( { 'address': text }, function( results, status ){
+// 	geocoder.geocode( { 'address': text }, function( results, status ){
 
-		if( status == google.maps.GeocoderStatus.OK ){
+// 		if( status == google.maps.GeocoderStatus.OK ){
 
-			console.log( '\nGoogle maps found a result for “'+ text +'”:' )
-			console.log( results[0].geometry.location )
-			// tweetLocationGeo.push({
+// 			console.log( '\nGoogle maps found a result for “'+ text +'”:' )
+// 			console.log( results[0].geometry.location )
+// 			// tweetLocationGeo.push({
 
-			// 	latitude:  results[0].geometry.location.lat(),
-			// 	longitude: results[0].geometry.location.lng()
-			// })
-			var lat = (Math.random()*180) -90
-			var lon = (Math.random()*360) - 180
-			var vector = surfacePlot( {latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng(), center: {x:0,y:0,z:0}, radius: earthRadius} )
-			var point = new THREE.Mesh(
-				new THREE.SphereGeometry( 5, 32 , 32 ), tweetPointMaterial
-			);
-			point.position.set( vector.x, vector.y, vector.z )
-			point.cameraDestination = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
-			point.message = j
-			j++
-			tweetPoint.push(point)
-			group.add(point)
+// 			// 	latitude:  results[0].geometry.location.lat(),
+// 			// 	longitude: results[0].geometry.location.lng()
+// 			// })
+// 			var lat = (Math.random()*180) -90
+// 			var lon = (Math.random()*360) - 180
+// 			var vector = surfacePlot( {latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng(), center: {x:0,y:0,z:0}, radius: earthRadius} )
+// 			var point = new THREE.Mesh(
+// 				new THREE.SphereGeometry( 5, 32 , 32 ), tweetPointMaterial
+// 			);
+// 			point.position.set( vector.x, vector.y, vector.z )
+// 			point.cameraDestination = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
+// 			point.message = j
+// 			j++
+// 			tweetPoint.push(point)
+// 			group.add(point)
 
-			var dropName = dropPin(
-				 results[0].geometry.location.lat(),
-				 results[0].geometry.location.lng(),
-				0xFF0000,
-				markerLength
-			)
-			tweetPin.push(dropName)
-			group.add(dropName)
-		} 
-		else {
+// 			var dropName = dropPin(
+// 				 results[0].geometry.location.lat(),
+// 				 results[0].geometry.location.lng(),
+// 				0xFF0000,
+// 				markerLength
+// 			)
+// 			tweetPin.push(dropName)
+// 			group.add(dropName)
+// 		} 
+// 		else {
 
-			console.log( '\nNOPE. Even Google cound’t find “'+ text +'.”' )
-			console.log( 'Status code: '+ status )
-		}
-	})
-}
+// 			console.log( '\nNOPE. Even Google cound’t find “'+ text +'.”' )
+// 			console.log( 'Status code: '+ status )
+// 		}
+// 	})
+// }
 
 
-function nextTweet(){
+// function nextTweet(){
 	
-	if( tweetsIndex + 1 < tweetLocationGeo.length-1 ){
+// 	if( tweetsIndex + 1 < tweetLocationGeo.length-1 ){
 
-		tweetsIndex ++
+// 		tweetsIndex ++
 
-		//  Ideas for you crazy kids to spruce up your homework:
-		//  1. Only shine the sun on the part of Earth that is actually
-		//     currently experience daylight!
-		//  2. Rotate the globe to face the tweet you’re plotting.
-		//  3. Don’t just place the pin, but animate its appearance;
-		//     maybe it grows out of the Earth?
-		//  4. Display the contents of the tweet. I know, I know. We haven’t
-		//     even talked about text in Three.js yet. That’s why you’d get
-		//     über bragging rights.
+// 		//  Ideas for you crazy kids to spruce up your homework:
+// 		//  1. Only shine the sun on the part of Earth that is actually
+// 		//     currently experience daylight!
+// 		//  2. Rotate the globe to face the tweet you’re plotting.
+// 		//  3. Don’t just place the pin, but animate its appearance;
+// 		//     maybe it grows out of the Earth?
+// 		//  4. Display the contents of the tweet. I know, I know. We haven’t
+// 		//     even talked about text in Three.js yet. That’s why you’d get
+// 		//     über bragging rights.
 
-		earth.add( dropPin(
+// 		earth.add( dropPin(
 
-			tweetLocationGeo[ tweetsIndex ].latitude,
-			tweetLocationGeo[ tweetsIndex ].longitude,
-			0xFFFF00,
-			100
-		))
+// 			tweetLocationGeo[ tweetsIndex ].latitude,
+// 			tweetLocationGeo[ tweetsIndex ].longitude,
+// 			0xFFFF00,
+// 			100
+// 		))
 		
 
-		//  I’m trying to be very mindful of Twitter’s rate limiting.
-		//  Let’s only try fetching more tweets only when we’ve exhausted our
-		//  tweets[] array supply.
-		//  But leave this commented out when testing!
+// 		//  I’m trying to be very mindful of Twitter’s rate limiting.
+// 		//  Let’s only try fetching more tweets only when we’ve exhausted our
+// 		//  tweets[] array supply.
+// 		//  But leave this commented out when testing!
 		
-		//if( tweetsIndex === tweets.length - 1 ) fetchTweets()
-	}	
-	setTimeout( nextTweet, timePerTweet )
-}
+// 		//if( tweetsIndex === tweets.length - 1 ) fetchTweets()
+// 	}	
+// 	setTimeout( nextTweet, timePerTweet )
+// }
 
 var projector = new THREE.Projector();
 document.addEventListener( 'mousedown', onDocumentMouseDown, false );
@@ -580,7 +577,7 @@ $(document).keydown(function(e){
 
 var dragging = false;
 var rotateX = 0, rotateY = 0;
-var rotateVX = 0, rotateVY = 0;
+var rotateVX = 0, rotateVY = 0; //starting point of rotation -180 50
 var rotateYMax = 90;
 var mouseX = 0, mouseY = 0, pmouseX = 0, pmouseY = 0;
 
@@ -599,8 +596,8 @@ $(document).mousemove(function(event) {
 	    cameraTracking=false  
 
 	    //rotate the sphere by
-		rotateVX += (mouseX - pmouseX) / 2 * Math.PI / 180 * 5;
-	    rotateVY += (mouseY - pmouseY) / 2 * Math.PI / 180 * 5;
+		rotateVX += (mouseX - pmouseX) / 2 * Math.PI / 180 * 10;
+	    rotateVY += (mouseY - pmouseY) / 2 * Math.PI / 180 * 10;
 	}     	
 });
 $(document).mouseup(function() {
