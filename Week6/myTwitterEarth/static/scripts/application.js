@@ -180,20 +180,37 @@ function loop(){
 		directional.position.z -= directionalZDist/10
 	}else{
 		// controls.update() //needed if addControls is on
-		rotateX += rotateVX
+		rotateX += -rotateVX
 		rotateY += rotateVY
-		rotateVX *= 0.6;
-		rotateVY *= 0.6;
 
-		if(rotateX < -rotateXMax){
-			rotateX = -rotateXMax;
+		rotateVX *= 0.3;
+		rotateVY *= 0.3;
+		/*
+		if(rotateY < -180){
+			rotateY = 0;
 		}
-		if(rotateX > rotateXMax){
-			rotateX = rotateXMax;
-		}	
-		group.rotation.x = rotateX
-		group.rotation.y = rotateY
-		// group.rotation.y = 45
+		if(rotateY > 180){
+			rotateY = 0;
+		}
+		if(rotateX < -360){
+			rotateX = 0;
+		}
+		if(rotateX > 360){
+			rotateX = 0;
+		}
+		*/
+		console.log(rotateX + " " + rotateY)	
+		// group.rotation.x = rotateX
+		// group.rotation.y = rotateY
+		
+		// camera.position.x = earth.position.x + Math.cos(rotateX * Math.PI/180) * cameraRadius;
+		// camera.position.y = earth.position.x + Math.cos(rotateY * Math.PI/180) * cameraRadius;
+		// camera.position.z = earth.position.z + Math.sin(rotateX * Math.PI/180) * cameraRadius;
+
+		camera.position.x = earth.position.x + cameraRadius * Math.sin(rotateY * Math.PI/180) * Math.cos(rotateX * Math.PI/180)
+		camera.position.z = earth.position.y + cameraRadius * Math.sin(rotateY * Math.PI/180) * Math.sin(rotateX * Math.PI/180)
+		camera.position.y = earth.position.z + cameraRadius * Math.cos(rotateY * Math.PI/180)
+
 	}   
 
 
@@ -564,7 +581,7 @@ $(document).keydown(function(e){
 var dragging = false;
 var rotateX = 0, rotateY = 0;
 var rotateVX = 0, rotateVY = 0;
-var rotateXMax = 90 * Math.PI/180;
+var rotateYMax = 90;
 var mouseX = 0, mouseY = 0, pmouseX = 0, pmouseY = 0;
 
 $(document).mousedown(function() {
@@ -582,8 +599,8 @@ $(document).mousemove(function(event) {
 	    cameraTracking=false  
 
 	    //rotate the sphere by
-	    rotateVY += (mouseX - pmouseX) / 2 * Math.PI / 180 * 0.3;
-		rotateVX += (mouseY - pmouseY) / 2 * Math.PI / 180 * 0.3;
+		rotateVX += (mouseX - pmouseX) / 2 * Math.PI / 180 * 5;
+	    rotateVY += (mouseY - pmouseY) / 2 * Math.PI / 180 * 5;
 	}     	
 });
 $(document).mouseup(function() {
