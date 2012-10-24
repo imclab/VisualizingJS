@@ -105,28 +105,57 @@ $( document ).ready( function(){
 		
 	window.tweetPointMaterial = new THREE.MeshBasicMaterial( { transparent: true, opacity: .6, color: 0xff0000} );
 	window.tweetPoint = []
-	for(var i=0; i< 40; i++){
-		var lat = (Math.random()*180) -90
-		var lon = (Math.random()*360) - 180
-		var vector = surfacePlot( {latitude: lat, longitude: lon, center: {x:0,y:0,z:0}, radius: earthRadius} )
-		var point = new THREE.Mesh(
-			new THREE.SphereGeometry( 4, 32 , 32 ), tweetPointMaterial
-		);
-		point.position.set( vector.x, vector.y, vector.z )
-		// point.cameraDestination = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
-		point.message = i
-		tweetPoint.push(point)
-		group.add(point)
+	// for(var i=0; i< 40; i++){
+	// 	var lat = (Math.random()*180) -90
+	// 	var lon = (Math.random()*360) - 180
+	// 	var vector = surfacePlot( {latitude: lat, longitude: lon, center: {x:0,y:0,z:0}, radius: earthRadius} )
+	// 	var point = new THREE.Mesh(
+	// 		new THREE.SphereGeometry( 4, 32 , 32 ), tweetPointMaterial
+	// 	);
+	// 	point.position.set( vector.x, vector.y, vector.z )
+	// 	// point.cameraDestination = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
+	// 	point.message = i
+	// 	tweetPoint.push(point)
+	// 	group.add(point)
 
-		var dropName = dropPin(
-			 lat,
-			 lon,
-			0xFF0000,
-			markerLength
-		)
-		tweetPin.push(dropName)
-		group.add(dropName)
-	}
+	// 	var dropName = dropPin(
+	// 		 lat,
+	// 		 lon,
+	// 		0xFF0000,
+	// 		markerLength
+	// 	)
+	// 	tweetPin.push(dropName)
+	// 	group.add(dropName)
+	// }
+
+	$.getJSON('media/countries.json', function(data) {
+		var i = 0
+		$.each(data, function(key, val) {
+			// console.log(val.latitude)
+				var lat = (Math.random()*180) -90
+				var lon = (Math.random()*360) - 180
+				var vector = surfacePlot( {latitude: parseFloat(val.latitude), longitude: parseFloat(val.longitude), center: {x:0,y:0,z:0}, radius: earthRadius} )
+				var point = new THREE.Mesh(
+					new THREE.SphereGeometry( 4, 32 , 32 ), tweetPointMaterial
+				);
+				point.position.set( vector.x, vector.y, vector.z )
+				// point.cameraDestination = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
+				point.message = i
+				point.country = val.country
+				tweetPoint.push(point)
+				group.add(point)
+
+				var dropName = dropPin(
+					 parseFloat(val.latitude),
+					 parseFloat(val.longitude),
+					0xFF0000,
+					markerLength
+				)
+				i++
+				tweetPin.push(dropName)
+				group.add(dropName)
+		});
+	})
 
 	//add everything to scene
 	scene.add( group )
@@ -190,8 +219,8 @@ function loop(){
 		rotateX += rotateVX
 		rotateY += -rotateVY
 
-		rotateVX *= 0.8;
-		rotateVY *= 0.8;
+		rotateVX *= 0.85;
+		rotateVY *= 0.85;
 
 		if(rotateX > 360){
 			rotateX = 0
@@ -205,7 +234,7 @@ function loop(){
 		if(rotateY >= 179){
 			rotateY = 179
 		}
-		console.log(rotateX+" "+rotateY)
+		// console.log(rotateX+" "+rotateY)
 		
 		//roate just on the x axes
 		// camera.position.x = earth.position.x + Math.cos(rotateX * Math.PI/180) * cameraRadius;
@@ -544,6 +573,7 @@ function onDocumentMouseDown( event ) {
 		if(!cameraTracking)cameraTracking=true
 		// change the point to look at the number of the object
 		tweetPointIndex = intersects[0].object.message
+		console.log(intersects[0].object.country)
 	}
 }
 
