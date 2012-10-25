@@ -34,17 +34,18 @@ $( document ).ready( function(){
 	scene.add( skybox )
 
    // create the floor
-    planeGeometry = new THREE.PlaneGeometry( 400, 400, 1 );
-    planeMaterial = new THREE.MeshBasicMaterial({
-		color: 0xFFFFFF,
-		map: THREE.ImageUtils.loadTexture("media/floor.png"),
-		transparent: true,
-    });
+  //   planeGeometry = new THREE.PlaneGeometry( 400, 400, 1 );
+  //   planeMaterial = new THREE.MeshBasicMaterial({
+		// color: 0xFFFFFF,
+		// map: THREE.ImageUtils.loadTexture("media/floor.png"),
+		// transparent: true,
+  //   });
 
-    plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    plane.rotation.x = Math.PI * -0.5;
-    plane.position.y = -160;
-    scene.add(plane);
+  //   plane = new THREE.Mesh(planeGeometry, planeMaterial);
+  //   plane.rotation.x = Math.PI * -0.5;
+  //   plane.position.y = -160;
+  //   scene.add(plane);
+
 
 
 	
@@ -52,7 +53,7 @@ $( document ).ready( function(){
 	window.earthRadius = 100
 	//my custom bump map
 	var earthBumpImage = THREE.ImageUtils.loadTexture( "media/earthBumpMap.jpg" );
-	var earthBumpMaterial = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture( 'media/earthSpecTexture2.jpg' ), transparency: true, opacity: 1, ambient: 0xFFFFFF, color: 0xFFFFFF, specular: 0xFFFFFF, shininess: 25, perPixel: true, bumpMap: earthBumpImage, bumpScale: 19, metal: true } );
+	var earthBumpMaterial = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture( 'media/earthSatTexture.jpg' ), transparency: true, opacity: 1, ambient: 0xFFFFFF, color: 0xFFFFFF, specular: 0xFFFFFF, shininess: 25, perPixel: true, bumpMap: earthBumpImage, bumpScale: 19, metal: true } );
 	
 	window.earth = new THREE.Mesh(
 		new THREE.SphereGeometry(earthRadius, 32, 32), earthBumpMaterial
@@ -157,6 +158,32 @@ $( document ).ready( function(){
 		});
 	})
 
+
+	//timeout to allow array of countries to populate
+	// setTimeout(function(){
+	//   	//material for text
+	// 	var path = "media/";
+	// 	var format = '.jpg';
+	// 	var urls = [
+	// 			path + 'posx' + format, path + 'negx' + format,
+	// 			path + 'posy' + format, path + 'negy' + format,
+	// 			path + 'posz' + format, path + 'negz' + format
+	// 		];
+		
+	// 	var reflectionCube = THREE.ImageUtils.loadTextureCube( urls );
+	// 	// var textMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xFFFFFF, envMap: reflectionCube } )
+	// 	var textMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0x993300, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.3 } );
+	// 	//create text
+	// 	var shape = new THREE.TextGeometry(tweetPoint[tweetPointIndex].country, {font: 'helvetiker', size: 8, height: 10});
+	// 	window.words = new THREE.Mesh(shape, textMaterial);
+	// 	words.rotation.z = Math.PI/2
+	// 	words.position.z = -150
+	// 	camera.add( words )
+	// }, 100)
+
+
+
+
 	//add everything to scene
 	scene.add( group )
 
@@ -253,7 +280,7 @@ function loop(){
 
 	camera.up = new THREE.Vector3(0, 1, 0)
 	camera.lookAt( scene.position );
-
+	// words.lookAt( camera )
 
 			
 	render()
