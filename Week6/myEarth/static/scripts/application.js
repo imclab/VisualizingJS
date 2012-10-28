@@ -18,6 +18,8 @@ $( document ).ready( function(){
 	// streamTweets()
 
 
+
+
 	//skybox
 	// var axes = new THREE.AxisHelper();
 	// scene.add( axes );
@@ -45,6 +47,7 @@ $( document ).ready( function(){
   //   plane.rotation.x = Math.PI * -0.5;
   //   plane.position.y = -160;
   //   scene.add(plane);
+
 
 
 
@@ -159,27 +162,28 @@ $( document ).ready( function(){
 	})
 
 
-	//timeout to allow array of countries to populate
+	// timeout to allow array of countries to populate
 	// setTimeout(function(){
-	//   	//material for text
-	// 	var path = "media/";
-	// 	var format = '.jpg';
-	// 	var urls = [
-	// 			path + 'posx' + format, path + 'negx' + format,
-	// 			path + 'posy' + format, path + 'negy' + format,
-	// 			path + 'posz' + format, path + 'negz' + format
-	// 		];
+	// //   	//material for text
+	// // 	// var path = "media/";
+	// // 	// var format = '.jpg';
+	// // 	// var urls = [
+	// // 	// 		path + 'posx' + format, path + 'negx' + format,
+	// // 	// 		path + 'posy' + format, path + 'negy' + format,
+	// // 	// 		path + 'posz' + format, path + 'negz' + format
+	// // 	// 	];
 		
-	// 	var reflectionCube = THREE.ImageUtils.loadTextureCube( urls );
-	// 	// var textMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xFFFFFF, envMap: reflectionCube } )
-	// 	var textMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0x993300, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.3 } );
+	// // 	// var reflectionCube = THREE.ImageUtils.loadTextureCube( urls );
+	// // 	// // var textMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xFFFFFF, envMap: reflectionCube } )
+	// // 	// var textMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0x993300, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.3 } );
 	// 	//create text
-	// 	var shape = new THREE.TextGeometry(tweetPoint[tweetPointIndex].country, {font: 'helvetiker', size: 8, height: 10});
-	// 	window.words = new THREE.Mesh(shape, textMaterial);
-	// 	words.rotation.z = Math.PI/2
+	// 	var shape = new THREE.TextGeometry(tweetPoint[tweetPointIndex].country, {font: 'helvetiker', size: 3, height: 1});
+	// 	window.words = new THREE.Mesh(shape, new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.DoubleSide } ));
+	// 	// words.rotation.z = Math.PI/2
 	// 	words.position.z = -150
+	// 	words.posx = -100
 	// 	camera.add( words )
-	// }, 100)
+	// }, 500)
 
 
 

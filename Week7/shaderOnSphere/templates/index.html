@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="styles/base.css" />
+		<title>Three.js Shader Example</title>
+	</head>
+	<body>
+		<div id="three"></div>
+		<script charset="utf-8" src="scripts/jquery.js"></script>
+		<script charset="utf-8" src="scripts/three.js"></script>
+		<!--
+		<script id="simplefs" type="x-shader/x-fragment">
+			uniform sampler2D texture;
+	        varying vec3 vNormal;
+	        varying vec2 vUv;
+	        void main(void) {
+				vec3 diffuse = texture2D( texture, vUv ).xyz;
+				float intensity = 1.05 - dot( vNormal, vec3( 0.0, 0.0, 1.0 ) );
+				vec3 atmosphere = vec3( 1.0, 1.0, 1.0 ) * pow( intensity, 3.0 );
+				gl_FragColor = vec4(diffuse + atmosphere, 1.0);
+	        }
+		</script>
+
+		<script id="simplevs" type="x-shader/x-vertex">
+	        varying vec3 vNormal;
+	        varying vec2 vUv;
+	        void main(void) {
+	        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+	          vNormal = normalize( normalMatrix * normal );
+	          vUv = uv;
+	        }
+		</script>
+	-->
+		<script charset="utf-8" src="scripts/application.js"></script>
+
+	</body>
+</html>
