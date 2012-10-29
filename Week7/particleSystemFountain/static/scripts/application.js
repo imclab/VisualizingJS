@@ -11,7 +11,7 @@ $( document ).ready( function(){
 
 	
 	attributes = []
-	numParticles = 100
+	numParticles = 250
 
 	sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
 	material =  new THREE.ParticleBasicMaterial( {
@@ -19,7 +19,7 @@ $( document ).ready( function(){
 						size: 200, 
 						map: sprite,
 					    transparent: true,
-					    opacity: .05,
+					    opacity: .02,
 						// blending: THREE.AdditiveBlending
 					 } )
 
@@ -30,7 +30,7 @@ $( document ).ready( function(){
 		velocity = new THREE.Vector3( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5 )
 		force = new THREE.Vector3( 0, 0, 0 )
 		geometry.vertices.push( position )
-		var thisAttr = { vel: {x: 0, y: Math.random(), z: 0}, lifespan: Math.random() * 1000 }
+		var thisAttr = { vel: {x: 0, y: Math.random(), z: 0}, lifespan: Math.random() * 2000, acc: Math.random()*2-1 }
 		attributes.push(thisAttr)
 	}
 
@@ -46,9 +46,9 @@ $( document ).ready( function(){
 
 function applyForce(){
 	for(var i = 0; i< numParticles; i++){
-		wind = Math.random()
+		wind = attributes[i].acc / 2 
 		p = particleSys.geometry.vertices[i]
-		p.x += wind * p.y/100
+		p.x += wind * p.y/200
 	}
 }
 
@@ -61,10 +61,10 @@ function updateParticle(){
 		p.z += v.z
 		attributes[i].lifespan -= 2.5
 		if( isDead(i) ){
-			p.x = 0
-			p.y = 0
+			p.x = Math.random()*20-10
+			p.y = Math.random()*20-10
 			p.z = 0
-			attributes[i].lifespan = Math.random() * 1000
+			attributes[i].lifespan = Math.random() * 2000
 		}
 	}
 }
