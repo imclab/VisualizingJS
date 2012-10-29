@@ -1,32 +1,4 @@
 
-var Shaders = {
-	'earth' : {
-		  uniforms: {
-		    'texture': { type: 't', value: THREE.ImageUtils.loadTexture( "media/world.jpg" ) }
-		  },
-		  vertexShader: [
-		    'varying vec3 vNormal;',
-		    'varying vec2 vUv;',
-		    'void main(void) {',
-		    'gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);',
-		      'vNormal = normalize( normalMatrix * normal );',
-		      'vUv = uv;',
-		    '}'
-		  ].join('\n'),
-		  fragmentShader: [
-		    'uniform sampler2D texture;',
-		    'varying vec3 vNormal;',
-		    'varying vec2 vUv;',
-		    'void main(void) {',
-		        'vec3 diffuse = texture2D( texture, vUv ).xyz;',
-		        'float intensity = 1.05 - dot( vNormal, vec3( 0.0, 0.0, 1.0 ) );',
-		        'vec3 atmosphere = vec3( 1.0, 1.0, 1.0 ) * pow( intensity, 3.0 );',
-		        'gl_FragColor = vec4(diffuse + atmosphere, 1.0);',
-		    '}'
-		  ].join('\n')
-	}
-};
-
 
 $( document ).ready( function(){
 	//group to place objects in
@@ -34,27 +6,61 @@ $( document ).ready( function(){
 
 	setupThree()
 	addLights()
-	addControls() //for 'a', 's', and 'd' //not in r52
+	addControls() //for 'a', 's', and 'd'
 	
 
 
-	var geometry = new THREE.SphereGeometry(250, 40, 40)
 
-	var shader = Shaders['earth'];
-	uniforms = shader.uniforms;
+	// create the particle variables
+	var pMaterial =
+	  new THREE.ParticleBasicMaterial({
+	    color: 0xFFFFFF,
+	    size: 20,
+	    map: THREE.ImageUtils.loadTexture(
+	      "media/particle.png"
+	    ),
+	    transparent: true,
+		blending: THREE.CustomBlending,
+		blendSrc: THREE.SrcAlphaFactor,
+		blendDst: THREE.OneMinusSrcColorFactor,
+		blendEquation: THREE.AddEquation
+	  });
 
-	material = new THREE.ShaderMaterial({
 
-	      uniforms: uniforms,
-	      vertexShader: shader.vertexShader,
-	      fragmentShader: shader.fragmentShader
+	// create the particle variables
+	window.particleCount = 1800,
+    window.particles = new THREE.Geometry(), pMaterial
+    // pMaterial = new THREE.ParticleBasicMaterial({
+    //     color: 0xFFFFFF,
+    //     size: 20
+    //   });
 
-	    });
+	// now create the individual particles
+	for(var p = 0; p < particleCount; p++) {
 
-	mesh = new THREE.Mesh(
-	new THREE.SphereGeometry(250, 40, 40), material);
-	mesh.matrixAutoUpdate = false;
-	scene.add(mesh);
+	  // create a particle with random
+	  // position values, -250 -> 250
+	  var pX = Math.random() * 500 - 250,
+	      pY = Math.random() * 500 - 250,
+	      pZ = Math.random() * 500 - 250,
+	      particle = new THREE.Vector3(pX, pY, pZ)
+
+	  // add it to the geometry
+	  particles.vertices.push(particle);
+	}
+
+	scene.add(particles)
+
+	// create the particle system
+	window.particleSystem = new THREE.ParticleSystem(particles, pMaterial);
+	// also update the particle system to
+	// sort the particles which enables
+	// the behaviour we want
+	particleSystem.sortParticles = true;
+
+	// add it to the scene
+	scene.add(particleSystem);
+
 
 
 
@@ -65,10 +71,17 @@ $( document ).ready( function(){
 
 function loop(){
 
+  // add some rotation to the system
+  // particleSystem.rotation.y += 0.0001;
+	for(var i =0; i < particleCount; i++){
+		particles.vertices[i].x += Math.random() * 10 - 5
+		particles.vertices[i].y += Math.random() * 10 - 5
+		particles.vertices[i].z += Math.random() * 10 - 5 
+		particles.color
+	}
 
 	camera.up = new THREE.Vector3(0, 1, 0)
 	camera.lookAt( scene.position );
-	// words.lookAt( camera )
 
 			
 	render()
@@ -134,7 +147,7 @@ function addControls(){
 	controls.zoomSpeed   = 1.2
 	controls.panSpeed    = 0.8
 	
-	controls.noZoom = false
+	controls.noZoom = true
 	controls.noPan  = true
 	controls.staticMoving = true
 	controls.dynamicDampingFactor = 0.3

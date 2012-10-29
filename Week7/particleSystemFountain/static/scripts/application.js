@@ -1,32 +1,4 @@
 
-var Shaders = {
-	'earth' : {
-		  uniforms: {
-		    'texture': { type: 't', value: THREE.ImageUtils.loadTexture( "media/world.jpg" ) }
-		  },
-		  vertexShader: [
-		    'varying vec3 vNormal;',
-		    'varying vec2 vUv;',
-		    'void main(void) {',
-		    'gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);',
-		      'vNormal = normalize( normalMatrix * normal );',
-		      'vUv = uv;',
-		    '}'
-		  ].join('\n'),
-		  fragmentShader: [
-		    'uniform sampler2D texture;',
-		    'varying vec3 vNormal;',
-		    'varying vec2 vUv;',
-		    'void main(void) {',
-		        'vec3 diffuse = texture2D( texture, vUv ).xyz;',
-		        'float intensity = 1.05 - dot( vNormal, vec3( 0.0, 0.0, 1.0 ) );',
-		        'vec3 atmosphere = vec3( 1.0, 1.0, 1.0 ) * pow( intensity, 3.0 );',
-		        'gl_FragColor = vec4(diffuse + atmosphere, 1.0);',
-		    '}'
-		  ].join('\n')
-	}
-};
-
 
 $( document ).ready( function(){
 	//group to place objects in
@@ -37,38 +9,81 @@ $( document ).ready( function(){
 	addControls() //for 'a', 's', and 'd' //not in r52
 	
 
+	
+	attributes = []
+	numParticles = 100
 
-	var geometry = new THREE.SphereGeometry(250, 40, 40)
-
-	var shader = Shaders['earth'];
-	uniforms = shader.uniforms;
-
-	material = new THREE.ShaderMaterial({
-
-	      uniforms: uniforms,
-	      vertexShader: shader.vertexShader,
-	      fragmentShader: shader.fragmentShader
-
-	    });
-
-	mesh = new THREE.Mesh(
-	new THREE.SphereGeometry(250, 40, 40), material);
-	mesh.matrixAutoUpdate = false;
-	scene.add(mesh);
+	sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
+	material =  new THREE.ParticleBasicMaterial( {
+						color: 0xFFFFFF,
+						size: 200, 
+						map: sprite,
+					    transparent: true,
+					    opacity: .05,
+						// blending: THREE.AdditiveBlending
+					 } )
 
 
+	geometry = new THREE.Geometry()
+	for(var i=0; i < numParticles; i++){
+		position = new THREE.Vector3( Math.random()*20-10, Math.random()*20-10, Math.random()*20-10 )
+		velocity = new THREE.Vector3( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5 )
+		force = new THREE.Vector3( 0, 0, 0 )
+		geometry.vertices.push( position )
+		var thisAttr = { vel: {x: 0, y: Math.random(), z: 0}, lifespan: Math.random() * 1000 }
+		attributes.push(thisAttr)
+	}
 
+
+	particleSys = new THREE.ParticleSystem( geometry, material )
+	particleSys.sortParticles = true
+	group.add(particleSys)
+
+
+	scene.add(group)
 	loop()	
 })
 
+function applyForce(){
+	for(var i = 0; i< numParticles; i++){
+		wind = Math.random()
+		p = particleSys.geometry.vertices[i]
+		p.x += wind * p.y/100
+	}
+}
+
+function updateParticle(){
+	for(var i = 0; i< numParticles; i++){
+		v = attributes[i].vel
+		p = particleSys.geometry.vertices[i]
+		p.x += v.x
+		p.y += v.y
+		p.z += v.z
+		attributes[i].lifespan -= 2.5
+		if( isDead(i) ){
+			p.x = 0
+			p.y = 0
+			p.z = 0
+			attributes[i].lifespan = Math.random() * 1000
+		}
+	}
+}
+
+function isDead(thisone){
+	if(attributes[thisone].lifespan <= 0.0){
+		return true
+	}else{
+		return false
+	}
+}
 
 
 function loop(){
-
+	updateParticle()
+	applyForce() //wind
 
 	camera.up = new THREE.Vector3(0, 1, 0)
 	camera.lookAt( scene.position );
-	// words.lookAt( camera )
 
 			
 	render()

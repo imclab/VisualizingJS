@@ -1,74 +1,97 @@
-
-var Shaders = {
-	'earth' : {
-		  uniforms: {
-		    'texture': { type: 't', value: THREE.ImageUtils.loadTexture( "media/world.jpg" ) }
-		  },
-		  vertexShader: [
-		    'varying vec3 vNormal;',
-		    'varying vec2 vUv;',
-		    'void main(void) {',
-		    'gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);',
-		      'vNormal = normalize( normalMatrix * normal );',
-		      'vUv = uv;',
-		    '}'
-		  ].join('\n'),
-		  fragmentShader: [
-		    'uniform sampler2D texture;',
-		    'varying vec3 vNormal;',
-		    'varying vec2 vUv;',
-		    'void main(void) {',
-		        'vec3 diffuse = texture2D( texture, vUv ).xyz;',
-		        'float intensity = 1.05 - dot( vNormal, vec3( 0.0, 0.0, 1.0 ) );',
-		        'vec3 atmosphere = vec3( 1.0, 1.0, 1.0 ) * pow( intensity, 3.0 );',
-		        'gl_FragColor = vec4(diffuse + atmosphere, 1.0);',
-		    '}'
-		  ].join('\n')
-	}
-};
-
-
 $( document ).ready( function(){
-	//group to place objects in
-	window.group = new THREE.Object3D()
 
 	setupThree()
 	addLights()
-	addControls() //for 'a', 's', and 'd' //not in r52
+	addControls() //for 'a', 's', and 'd'
 	
 
+	//group to place objects in
+	window.group = new THREE.Object3D()
 
-	var geometry = new THREE.SphereGeometry(250, 40, 40)
+	attributes = []
+	colors = []
+	mass = 1
+	numParticles = 1000
 
-	var shader = Shaders['earth'];
-	uniforms = shader.uniforms;
+	geometry = new THREE.Geometry()
+	for(var i=0; i < numParticles; i++){
+		position = new THREE.Vector3( Math.random()*20-10, Math.random()*20-10, Math.random()*20-10 )
+		velocity = new THREE.Vector3( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5 )
+		force = new THREE.Vector3( 0, 0, 0 )
+		geometry.vertices.push( position )
+		attributes[i] = { mass: mass, velocity: velocity, force: force }
+		colors[i] = new THREE.Color( 0xffffff )
+		colors[i].setHSV( Math.random() * .9 + 0.1, 1.0, 1.0 )
+	}
 
-	material = new THREE.ShaderMaterial({
+	geometry.colors = colors
+	sprite = THREE.ImageUtils.loadTexture('media/particle.png')
+	material =  new THREE.ParticleBasicMaterial( {
+						color: 0xFFFFFF,
+						size: 10, 
+						map: sprite,
+					    transparent: true,
+						blending: THREE.AdditiveBlending
+					 } )
 
-	      uniforms: uniforms,
-	      vertexShader: shader.vertexShader,
-	      fragmentShader: shader.fragmentShader
-
-	    });
-
-	mesh = new THREE.Mesh(
-	new THREE.SphereGeometry(250, 40, 40), material);
-	mesh.matrixAutoUpdate = false;
-	scene.add(mesh);
+	particles = new THREE.ParticleSystem( geometry, material )
+	particles.sortParticles = true
+	group.add(particles)
 
 
-
+	scene.add(group)
 	loop()	
 })
 
 
+var rest = 15, k = 1, drag = 0.5
+function update_force(dt){
+	p0 = particles.geometry.vertices[0]
+	for (var j = 1; j < numParticles; j++){
+		pj = particles.geometry.vertices[j]
+		u = new THREE.Vector3( p0.x - pj.x, p0.y - pj.y, p0.z - pj.z )
+		d = u.length()
+		u.normalize()
+		F = new THREE.Vector3(-k * (d-rest) * u.x, -k * (d-rest) * u.y, -k * (d-rest) * u.z )
+		attributes[0].force.addSelf(F)
+		attributes[j].force.addSelf(F)
+	}
+}
+
+function update_position(dt){
+	for(var i = 0; i< numParticles; i++){
+		v = attributes[i].velocity
+		p = particles.geometry.vertices[i]
+		p.x += v.x * dt
+		p.y += v.y * dt
+		p.z += v.z * dt
+	}
+}
+
+// function update_velocity(dt){
+// 	for(var i = 0; i < numParticles; i++){
+// 		attr = attributes[i]
+// 		v = attr.velocity
+// 		speed = v.length()
+// 		v.normalize()
+// 		attr.force.x += -drag * speed * v.x
+// 		attr.force.y += -drag * speed * v.y
+// 		attr.force.z += -drag * speed * v.z
+// 		v.x += attr.force.x/attr.mass * dt
+// 		v.y += attr.force.y/attr.mass * dt
+// 		v.z += attr.force.z/attr.mass * dt
+// 	}
+// }
+
 
 function loop(){
-
+	dt = 0.1
+	update_force(dt)
+	update_position(dt)
+	particles.geometry.__dirtyVertices = true
 
 	camera.up = new THREE.Vector3(0, 1, 0)
 	camera.lookAt( scene.position );
-	// words.lookAt( camera )
 
 			
 	render()
@@ -86,7 +109,6 @@ function loop(){
 //  Why separate this simple line of code from the loop() function?
 //  So that our controls can also call it separately.
 function render(){		
-	renderer.clear()		
 	renderer.render( scene, camera )
 }
 

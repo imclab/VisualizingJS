@@ -1,33 +1,4 @@
 
-var Shaders = {
-	'earth' : {
-		  uniforms: {
-		    'texture': { type: 't', value: THREE.ImageUtils.loadTexture( "media/world.jpg" ) }
-		  },
-		  vertexShader: [
-		    'varying vec3 vNormal;',
-		    'varying vec2 vUv;',
-		    'void main(void) {',
-		    'gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);',
-		      'vNormal = normalize( normalMatrix * normal );',
-		      'vUv = uv;',
-		    '}'
-		  ].join('\n'),
-		  fragmentShader: [
-		    'uniform sampler2D texture;',
-		    'varying vec3 vNormal;',
-		    'varying vec2 vUv;',
-		    'void main(void) {',
-		        'vec3 diffuse = texture2D( texture, vUv ).xyz;',
-		        'float intensity = 1.05 - dot( vNormal, vec3( 0.0, 0.0, 1.0 ) );',
-		        'vec3 atmosphere = vec3( 1.0, 1.0, 1.0 ) * pow( intensity, 3.0 );',
-		        'gl_FragColor = vec4(diffuse + atmosphere, 1.0);',
-		    '}'
-		  ].join('\n')
-	}
-};
-
-
 $( document ).ready( function(){
 	//group to place objects in
 	window.group = new THREE.Object3D()
@@ -38,23 +9,23 @@ $( document ).ready( function(){
 	
 
 
-	var geometry = new THREE.SphereGeometry(250, 40, 40)
+	start_time = new Date().getTime()
+	uniforms = {
+		time: 	{ type: "f", value: 1.0 },
+		scale: 	{ type: "f", value: 1.5 }
+	};
 
-	var shader = Shaders['earth'];
-	uniforms = shader.uniforms;
+	var material = new THREE.ShaderMaterial( {
+		uniforms: uniforms,
+		vertexShader: document.getElementById( 'vertexShader' ).textContent,
+		fragmentShader: document.getElementById( 'fragmentShader' ).textContent
 
-	material = new THREE.ShaderMaterial({
+	} );
 
-	      uniforms: uniforms,
-	      vertexShader: shader.vertexShader,
-	      fragmentShader: shader.fragmentShader
+	var size = 0.75;
 
-	    });
-
-	mesh = new THREE.Mesh(
-	new THREE.SphereGeometry(250, 40, 40), material);
-	mesh.matrixAutoUpdate = false;
-	scene.add(mesh);
+	mesh = new THREE.Mesh( new THREE.SphereGeometry( size, 64, 32 ), material );
+	scene.add( mesh );
 
 
 
