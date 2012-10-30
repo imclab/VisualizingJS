@@ -179,7 +179,8 @@ $( document ).ready( function(){
 				// particleSys.sortParticles = true;
 				// group.add( particleSys )
 				// window.valr = val
-				console.log( val.pollution["2009"] )
+				
+				thisPollution = val.pollution["2009"]
 				position = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
 				geometry.vertices.push( position )
 
