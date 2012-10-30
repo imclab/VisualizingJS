@@ -75,8 +75,6 @@ $( document ).ready( function(){
     });
 
     plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    // plane.rotation.x = Math.PI * -0.5;
-    // plane.position.y = -160;
     plane.position.z = -1000
     plane.scale.x = plane.scale.y = 1.55
     camera.add(plane);
@@ -127,11 +125,11 @@ $( document ).ready( function(){
 	var markerLength = 1;
 	window.tweetPin = [];
 		
-	window.tweetPointMaterial = new THREE.MeshBasicMaterial( { transparent: true, opacity: .2, color: 0xff0000} ); //visible: false
+	window.tweetPointMaterial = new THREE.MeshBasicMaterial( { transparent: true, opacity: .2, visible: false, color: 0xff0000} ); //visible: false
 	window.tweetPoint = []
 	var sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
 	var particlemMaterial =  new THREE.ParticleBasicMaterial( {
-						color: 0xFFFFFF,
+						color: 0xFF0000,
 						size: 100, 
 						map: sprite,
 					    transparent: true,
@@ -142,17 +140,20 @@ $( document ).ready( function(){
 		color: 0xFFFFFF,
 		map: THREE.ImageUtils.loadTexture("media/smoke.png"),
 		transparent	: true,
-		// opacity: .1,
+		// opacity: .3,
+		blending: THREE.CustomBlending,
+						blendSrc: THREE.OneMinusDstAlphaFactor,
+						blendDst: THREE.OneMinusDstAlphaFactor,
+						blendEquation: THREE.AddEquation ,
     });
 
     var geometry = new THREE.Geometry()
-	$.getJSON('media/countries.json', function(data) {
+	$.getJSON('scripts/countries.json', function(data) {
 		var i = 0
 		attributes = []
 		geometry = new THREE.Geometry()
 
 		$.each(data, function(key, val) {
-			// console.log(val.latitude)
 				var lat = (Math.random()*180) -90
 				var lon = (Math.random()*360) - 180
 				var vector = surfacePlot( {latitude: parseFloat(val.latitude), longitude: parseFloat(val.longitude), center: {x:0,y:0,z:0}, radius: earthRadius} )
@@ -166,12 +167,12 @@ $( document ).ready( function(){
 				group.add(point)
 
 				// planeGeometry = new THREE.PlaneGeometry( 128, 128, 1 );
-				// point = new THREE.Mesh( planeGeometry, planeMaterial2 );
-				// point.position.set(vector.x,vector.y, vector.z)
+				// point = new THREE.Mesh( planeGeometry, particlemMaterial2 );
+				// point.position.set(vector.xC,vector.yC, vector.zC)
 				// group.add(point)
 
 				// var geometry = new THREE.Geometry()
-				// var position = new THREE.Vector3( vector.x, vector.y, vector.z )
+				// var position = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
 				// // var velocity = new THREE.Vector3( 0, 0, 0 )
 				// geometry.vertices.push( position )
 				// particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
@@ -180,6 +181,14 @@ $( document ).ready( function(){
 				
 				position = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
 				geometry.vertices.push( position )
+
+
+				// var cloud = new THREE.Mesh(new THREE.SphereGeometry( 4, 6 ,6 ), particlemMaterial2);
+				// cloud.position.set( vector.xC, vector.yC, vector.zC )
+				// point.message = i
+				// cloud.country = val.country
+				// tweetPoint.push(point)
+				// group.add(cloud)
 
 
 				var dropName = dropPin(
@@ -293,14 +302,11 @@ var speed = .03;
 
 function loop(){
 	// updateParticle()
-	// setTimeout(function(){
-	// 	applyForce() //wind
-	// }, 100)
+	// setTimeout(applyForce, 500)
 
 	// for(var i=0; i< tweetPin.length; i++){
 	// 	tweetPin[i].growMarker()
 	// }
-
 
 
 	if(cameraTracking){
@@ -447,9 +453,9 @@ function surfacePlot( params ){
 
 	//calculate point in space relative to point on sphere for camera (a sphere of 400)
 	var 
-	xC = params.center.x + params.latitude.cosine() * params.longitude.cosine() * (params.radius+20),
-	yC = params.center.y + params.latitude.sine()   * (params.radius+20) *-1,
-	zC = params.center.z + params.latitude.cosine() * params.longitude.sine() * (params.radius+20)
+	xC = params.center.x + params.latitude.cosine() * params.longitude.cosine() * (params.radius+30),
+	yC = params.center.y + params.latitude.sine()   * (params.radius+30) *-1,
+	zC = params.center.z + params.latitude.cosine() * params.longitude.sine() * (params.radius+30)
 
 	this.obj = {'x' : x, 'y' : y, 'z': z, 'xC': xC, 'yC': yC, 'zC' : zC} //'xC': xC, 'yC': yC, 'zC' : zC
 	return this.obj
