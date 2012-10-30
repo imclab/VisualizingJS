@@ -132,13 +132,13 @@ $( document ).ready( function(){
 	var sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
 	var particlemMaterial =  new THREE.ParticleBasicMaterial( {
 						color: 0xFFFFFF,
-						size: 200, 
+						size: 100, 
 						map: sprite,
 					    transparent: true,
-					    // opacity: .02,
+					    opacity: .2,
 						// blending: THREE.AdditiveBlending
 						 } )
-    planeMaterial2 = new THREE.MeshBasicMaterial({
+    particlemMaterial2 = new THREE.MeshBasicMaterial({
 		color: 0xFFFFFF,
 		map: THREE.ImageUtils.loadTexture("media/smoke.png"),
 		transparent	: true,
@@ -148,6 +148,9 @@ $( document ).ready( function(){
     var geometry = new THREE.Geometry()
 	$.getJSON('media/countries.json', function(data) {
 		var i = 0
+		attributes = []
+		geometry = new THREE.Geometry()
+
 		$.each(data, function(key, val) {
 			// console.log(val.latitude)
 				var lat = (Math.random()*180) -90
@@ -174,6 +177,10 @@ $( document ).ready( function(){
 				// particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
 				// particleSys.sortParticles = true;
 				// group.add( particleSys )
+				
+				position = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
+				geometry.vertices.push( position )
+
 
 				var dropName = dropPin(
 					 parseFloat(val.latitude),
@@ -185,6 +192,11 @@ $( document ).ready( function(){
 				group.add(dropName)
 				i++
 		});
+
+
+		particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
+		particleSys.sortParticles = true
+		group.add(particleSys)
 	})
 
 
@@ -213,36 +225,13 @@ $( document ).ready( function(){
 	// }, 500)
 
 
-setTimeout(function(){
-	attributes = []
-	numParticles = 179
-
-	sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
-	material =  new THREE.ParticleBasicMaterial( {
-						color: 0xFFFFFF,
-						size: 200, 
-						map: sprite,
-					    transparent: true,
-					    opacity: .02,
-						// blending: THREE.AdditiveBlending
-					 } )
 
 
-	geometry = new THREE.Geometry()
-	for(var i=0; i < numParticles; i++){
-		position = new THREE.Vector3( tweetPoint[i].position.x, tweetPoint[i].position.y, tweetPoint[i].position.z )
-		velocity = new THREE.Vector3( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5 )
-		force = new THREE.Vector3( 0, 0, 0 )
-		geometry.vertices.push( position )
-		var thisAttr = { vel: {x: 0, y: 0, z: 0}, lifespan: Math.random() * 2000, acc: Math.random()*2-1 }
-		attributes.push(thisAttr)
-	}
+
+	
 
 
-	particleSys = new THREE.ParticleSystem( geometry, material )
-	particleSys.sortParticles = true
-	group.add(particleSys)
-}, 50)
+
 
 	//add everything to scene
 	scene.add( group )
@@ -255,8 +244,7 @@ setTimeout(function(){
 })
 
 function applyForce(){
-	for(var i = 0; i< numParticles; i++){
-		wind = attributes[i].acc / 2 
+	for(var i = 0; i< 179; i++){
 		p = particleSys.geometry.vertices[i]
 		p.x += Math.random()*2-1
 		p.y += Math.random()*2-1
@@ -305,7 +293,9 @@ var speed = .03;
 
 function loop(){
 	// updateParticle()
-	// applyForce() //wind
+	// setTimeout(function(){
+	// 	applyForce() //wind
+	// }, 100)
 
 	// for(var i=0; i< tweetPin.length; i++){
 	// 	tweetPin[i].growMarker()
@@ -456,34 +446,16 @@ function surfacePlot( params ){
 	z = params.center.z + params.latitude.cosine() * params.longitude.sine() * params.radius
 
 	//calculate point in space relative to point on sphere for camera (a sphere of 400)
-	// var 
-	// xC = params.center.x + params.latitude.cosine() * params.longitude.cosine() * 400,
-	// yC = params.center.y + params.latitude.sine()   * 400 *-1,
-	// zC = params.center.z + params.latitude.cosine() * params.longitude.sine() * 400
-
-	this.obj = {'x' : x, 'y' : y, 'z': z} //'xC': xC, 'yC': yC, 'zC' : zC
-	return this.obj
-}
-
-
-function surfacePlotParticle( params ){
-	params = cascade( params, {} )
-	params.latitude  = cascade( params.latitude.degreesToRadians(),  0 ) * -1
-	params.longitude = cascade( params.longitude.degreesToRadians(), 0 ) * -1
-	params.center    = cascade( params.center, new THREE.Vector3( 0, 0, 0 ))
-	params.radius    = cascade( params.radius, 60 )
-	
-	//calculate point on sphere
 	var 
-	x = params.center.x + params.latitude.cosine() * params.longitude.cosine() * params.radius,
-	y = params.center.y + params.latitude.sine()   * params.radius *-1,
-	z = params.center.z + params.latitude.cosine() * params.longitude.sine() * params.radius
+	xC = params.center.x + params.latitude.cosine() * params.longitude.cosine() * (params.radius+20),
+	yC = params.center.y + params.latitude.sine()   * (params.radius+20) *-1,
+	zC = params.center.z + params.latitude.cosine() * params.longitude.sine() * (params.radius+20)
 
-
-
-	this.obj = {'x' : x, 'y' : y, 'z': z} //'xC': xC, 'yC': yC, 'zC' : zC
+	this.obj = {'x' : x, 'y' : y, 'z': z, 'xC': xC, 'yC': yC, 'zC' : zC} //'xC': xC, 'yC': yC, 'zC' : zC
 	return this.obj
 }
+
+
 
 
 
