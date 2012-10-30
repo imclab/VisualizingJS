@@ -2,7 +2,8 @@
 	{
 		"country": "Tonga",
 		"latitude": "-21.178986",
-		"longitude": "-175.198242"
+		"longitude": "-175.198242",
+		"pollution": {"2009":"0.15"}
 	},
 	{
 		"country": "Samoa",
@@ -13,7 +14,8 @@
 	{
 		"country": "Kiribati",
 		"latitude": "1.8668577",
-		"longitude": "-157.3599202"
+		"longitude": "-157.3599202",
+		"pollution": {"2009":"0.04"}
 	},
 	{
 		"country": "Canada",
@@ -640,11 +642,6 @@
 		"pollution": {"2009":"0.29"}
 	},
 	{
-		"country": "Semalia",
-		"latitude": "5.152149",
-		"longitude": "46.199616"
-	},
-	{
 		"country": "Mozambique",
 		"latitude": "-18.665695",
 		"longitude": "35.529562",
@@ -863,7 +860,8 @@
 	{
 		"country": "Maldives",
 		"latitude": "3.9870284",
-		"longitude": "73.4977747"
+		"longitude": "73.4977747",
+		"pollution": {"2009":".92"}
 	},
 	{
 		"country": "Kyrgyzstan",

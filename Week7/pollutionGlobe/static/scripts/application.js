@@ -178,7 +178,8 @@ $( document ).ready( function(){
 				// particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
 				// particleSys.sortParticles = true;
 				// group.add( particleSys )
-				
+				// window.valr = val
+				console.log( val.pollution["2009"] )
 				position = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
 				geometry.vertices.push( position )
 
@@ -202,7 +203,7 @@ $( document ).ready( function(){
 				i++
 		});
 
-
+		
 		particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
 		particleSys.sortParticles = true
 		group.add(particleSys)
@@ -237,20 +238,16 @@ $( document ).ready( function(){
 
 
 
-	
-
-
-
-
 	//add everything to scene
 	scene.add( group )
 
-
-
 	loop()	
-
-	// nextTweet()
 })
+
+
+function addParticle(i){
+
+}
 
 function applyForce(){
 	for(var i = 0; i< 179; i++){
