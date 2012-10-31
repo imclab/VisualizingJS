@@ -1,3 +1,4 @@
+//data taken from US Engery Information Administration - http://www.eia.gov/cfapps/ipdbproject/IEDIndex3.cfm?tid=90&pid=44&aid=8
 var Shaders = {
 	'earth' : {
 		  uniforms: {
@@ -180,7 +181,8 @@ $( document ).ready( function(){
 				// group.add( particleSys )
 				// window.valr = val
 				
-				thisPollution = val.pollution["2009"]
+				thisPollution = val.pollution["2010"]
+				console.log(thisPollution)
 				position = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
 				geometry.vertices.push( position )
 

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="styles/base.css" />
+		<title>Three.js with Sparkjs - Particle System Example</title>
+	</head>
+	<body>
+		<div id="three"></div>
+		<script charset="utf-8" src="scripts/jquery.js"></script>
+		<script type="text/javascript" src="scripts/Three.js"></script>
+
+		<script type="text/javascript" src="scripts/RequestAnimationFrame.js"></script>
+		<script type="text/javascript" src="scripts/Tween.js"></script>
+		<script type="text/javascript" src="scripts/Sparks.js"></script>
+		
+		<script src="scripts/shaders/CopyShader.js"></script>
+		<script src="scripts/shaders/FilmShader.js"></script>
+		<script src="scripts/shaders/FocusShader.js"></script>
+		<script src="scripts/shaders/HorizontalBlurShader.js"></script>
+		<script src="scripts/shaders/TriangleBlurShader.js"></script>
+		<script src="scripts/shaders/VerticalBlurShader.js"></script>
+
+		<script type="text/javascript" src="scripts/postprocessing/EffectComposer.js"></script> 
+		<script type="text/javascript" src="scripts/postprocessing/RenderPass.js"></script> 
+		<script type="text/javascript" src="scripts/postprocessing/ShaderPass.js"></script> 
+		<script type="text/javascript" src="scripts/postprocessing/MaskPass.js"></script> 
+		<script type="text/javascript" src="scripts/postprocessing/BloomPass.js"></script>
+		<script type="text/javascript" src="scripts/postprocessing/FilmPass.js"></script>
+		
+		<script type="x-shader/x-vertex" id="vertexshader">
+
+				attribute float size;
+				attribute vec3 pcolor;
+
+				varying vec3 vColor;
+
+				void main() {
+
+					vColor = pcolor;
+
+					vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+
+					gl_PointSize = size * ( 200.0 / length( mvPosition.xyz ) );
+
+					gl_Position = projectionMatrix * mvPosition;
+
+				}
+
+			</script>
+
+			<script type="x-shader/x-fragment" id="fragmentshader">
+
+				uniform sampler2D texture;
+
+				varying vec3 vColor;
+
+				void main() {
+
+					vec4 outColor = texture2D( texture, gl_PointCoord );
+
+					gl_FragColor = outColor * vec4( vColor, 1.0 );
+
+				}
+
+			</script>
+		<script type="text/javascript" src="scripts/application.js"></script>
+		<div id="tag">Three.js  Sparkjs - Particle System<br/>Particles fountain</div>
+	</body>
+</html>
