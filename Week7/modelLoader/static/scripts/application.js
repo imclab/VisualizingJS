@@ -1,6 +1,10 @@
-
+var goLeft = false
+var goRight = false
+var goUp = false
+var goDown = false
 
 $( document ).ready( function(){
+	group = new THREE.Object3D()
 
 	setupThree()
 	addLights()
@@ -17,9 +21,10 @@ $( document ).ready( function(){
 	scene.add(plane);
 
 
-	group = new THREE.Object3D()
-	var modelPlane;
+	
 
+	//loading a dae collada model
+	var modelPlane;
 	var loader = new THREE.ColladaLoader();
 	loader.options.convertUpAxis = true;
 	loader.load( 'media/Av8B.dae', function ( collada ) {
@@ -37,25 +42,82 @@ $( document ).ready( function(){
 		group.add(modelPlane)
 	});
 	
-	// var loader = new THREE.JSONLoader();
-	// loader.load( {model: 'media/other-models/planeModel1.js', callback: function( geometry){
-	// 	mesh = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({color:0xff0000} ) )
-	// 	mesh.scale.set(10,10,10)
-	// 	mesh.position.x = mesh.position.y = 0
-	// 	group.add(mesh)
-	// }})
-
+	//loading a obj transformed into a js file
+	// var loader = new THREE.JSONLoader(),
+	// myModel   = function( geometry ) { createScene( geometry,  0, 0, 0, 105 ) }
+	// loader.load( "media/other-models/modelTank.js", myModel );
 
 	scene.add(group)
 	loop()	
 })
 
+//function for json loader
+function createScene( geometry, x, y, z, b ) {
+	zmesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial() );
+	zmesh.position.set( x, y, z );
+	// zmesh.rotation.z = Math.PI
+	zmesh.castShadow = true
+	zmesh.receiveShadow = true
+	scene.add( zmesh );
+}
 
 
+//larrow keys pressed
+$(document).keydown(function(e){
+    if (e.keyCode == 37) {  //left arrow
+    	goLeft = true
+    	goRight = false
+    }
+    if (e.keyCode == 39) { //right arrow
+    	goRight = true
+    	goLeft = false
+    }
+    if (e.keyCode == 38) {  //up arrow
+    	goDown = true
+    	goUp = false
+    }
+    if (e.keyCode == 40) { //down arrow
+    	goUp = true
+    	goDown = false
+    }
+});
 
+$(document).keyup(function(){
+	goLeft = false
+	goRight = false
+	goUp = false
+	goDown = false
+});
+
+var radiansToDegrees = function(convertThis){
+	return convertThis * 180 / Math.PI
+}
 
 function loop(){
-	// group.position.z--
+	group.position.z-=.03
+
+	if(goLeft)
+		group.rotation.z+=.08
+
+	if(goRight)
+		group.rotation.z-=.08
+
+	if(goUp){
+		group.position.y+=.08
+		group.position.x-=group.rotation.z
+	}
+	if(goDown){
+		group.position.y-=.08
+		group.position.x+=group.rotation.z
+	}
+		
+	//loop values within -PI to PI (180 to -180)
+	if(group.rotation.z > Math.PI)
+		group.rotation.z = -Math.PI
+	if(group.rotation.z < -Math.PI)
+		group.rotation.z = Math.PI
+
+	
 
 	camera.lookAt( scene.position );
 			
@@ -93,9 +155,10 @@ function setupThree(){
 	FAR        = 10000
 	
 	window.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR )
-	camera.position.set( 0, 140, 200 ) //starting position of camera
-	camera.lookAt( scene.position )
-	scene.add( camera )
+	// camera.target.position.copy( group.position );
+	camera.position.set( 0, 10, 160 ) //starting position of camera
+	camera.lookAt( group.position )
+	group.add( camera )
 
 	window.renderer = new THREE.WebGLRenderer({ antialias: true })
 	//window.renderer = new THREE.CanvasRenderer({ antialias: true })
@@ -115,6 +178,12 @@ function setupThree(){
 
 
 function addControls(){
+	// window.controls = new THREE.FirstPersonControls( camera ); // Handles camera control
+	// controls.movementSpeed = 2; // How fast the player can walk around
+	// controls.lookSpeed = 2; // How fast the player can look around with the mouse
+	// controls.lookVertical = false; // Don't allow the player to look up or down. This is a temporary fix to keep people from flying
+	// controls.noFly = true; // Don't allow hitting R or F to go up or down
+
 	window.controls = new THREE.TrackballControls( camera )
 	controls.target.set( 0, 0, 0 )
 
