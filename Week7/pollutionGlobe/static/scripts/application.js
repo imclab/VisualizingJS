@@ -57,7 +57,7 @@ $( document ).ready( function(){
 		// color: 0xFFFFFF,
 		// map: THREE.ImageUtils.loadTexture("media/floor.png"),
 		// transparent: true,
-		// opacity: .6
+		// opacity: .8
   //   });
 
   //   plane = new THREE.Mesh(planeGeometry, planeMaterial);
@@ -199,14 +199,14 @@ $( document ).ready( function(){
 					for(var i=0; i<thisPollution/10; i++){
 						position = new THREE.Vector3( vector.xC+Math.random()*40-20, vector.yC+Math.random()*40-20, vector.zC+Math.random()*40-20 )
 						geometry.vertices.push( position )
-						var thisAttribute = { vel: velocity, origin: new THREE.Vector3( vector.xC+Math.random()*40-20, vector.yC+Math.random()*40-20, vector.zC+Math.random()*40-20 ), lifespan : Math.random() * 600}
+						var thisAttribute = { vel: velocity, origin: new THREE.Vector3( vector.xC+Math.random()*40-20, vector.yC+Math.random()*40-20, vector.zC+Math.random()*40-20 ), lifespan : Math.random() * 300}
 						attributes.push(thisAttribute)
 						numberofParticles++
 					}
 				}else{
 					position = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
 					geometry.vertices.push( position )
-					var thisAttribute = { vel: velocity, origin: new THREE.Vector3( vector.xC, vector.yC, vector.zC ), lifespan : Math.random() * 600}
+					var thisAttribute = { vel: velocity, origin: new THREE.Vector3( vector.xC, vector.yC, vector.zC ), lifespan : Math.random() * 300}
 					attributes.push(thisAttribute)
 					numberofParticles++
 				}
@@ -270,7 +270,7 @@ $( document ).ready( function(){
 	//add everything to scene
 	scene.add( group )
 
-	loop()	
+	setTimeout(loop, 500)
 })
 
 
@@ -325,8 +325,10 @@ var angle = 1.0;
 var speed = .03;	
 
 function loop(){
-	setTimeout(updateParticle, 500)	
-	// setTimeout(applyForce, 500)
+	updateParticle()
+	// applyForce()
+	group.rotation.y+=.002
+
 
 	// for(var i=0; i< tweetPin.length; i++){
 	// 	tweetPin[i].growMarker()

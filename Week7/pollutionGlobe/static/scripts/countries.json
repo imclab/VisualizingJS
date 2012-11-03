@@ -1,5 +1,6 @@
 [
 	{
+		"region": "Asia & Oceania",
 		"country": "Tonga",
 		"latitude": "-21.178986",
 		"longitude": "-175.198242",
@@ -10,6 +11,7 @@
 		"2010": "0.15504"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Samoa",
 		"latitude": "-13.759029",
 		"longitude": "-172.104629",
@@ -20,6 +22,7 @@
 		"2010": "0.68882"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Kiribati",
 		"latitude": "1.8668577",
 		"longitude": "-157.3599202",
@@ -30,6 +33,7 @@
 		"2010": "0.04369"}
 	},
 	{
+		"region": "North America",
 		"country": "Canada",
 		"latitude": "56.130366",
 		"longitude": "-106.346771",
@@ -40,6 +44,7 @@
 		"2010": "548.75433"}
 	},
 	{
+		"region": "North America",
 		"country": "Greenland",
 		"latitude": "71.706936",
 		"longitude": "-42.604303",
@@ -50,6 +55,7 @@
 		"2010": "0.55558"}
 	},
 	{
+		"region": "North America",
 		"country": "Mexico",
 		"latitude": "23.634501",
 		"longitude": "-102.552784",
@@ -60,6 +66,7 @@
 		"2010": "445.28347"}
 	},
 	{
+		"region": "North America",
 		"country": "United States",
 		"latitude": "37.09024",
 		"longitude": "-95.712891",
@@ -70,6 +77,7 @@
 		"2010": "5610.10826"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Guatemala",
 		"latitude": "15.783471",
 		"longitude": "-90.230759",
@@ -80,6 +88,7 @@
 		"2010": "12.97181"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "El Salvador",
 		"latitude": "13.794185",
 		"longitude": "-88.89653",
@@ -90,6 +99,7 @@
 		"2010": "6.48363"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Belize",
 		"latitude": "17.189877",
 		"longitude": "-88.49765",
@@ -100,6 +110,7 @@
 		"2010": "0.98051"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Honduras",
 		"latitude": "15.199999",
 		"longitude": "-86.241905",
@@ -110,6 +121,7 @@
 		"2010": "8.28791"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Nicaragua",
 		"latitude": "12.865416",
 		"longitude": "-85.207229",
@@ -120,6 +132,7 @@
 		"2010": "4.82483"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Costa Rica",
 		"latitude": "9.748917",
 		"longitude": "-83.753428",
@@ -130,6 +143,7 @@
 		"2010": "6.41069"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Panama",
 		"latitude": "8.537981",
 		"longitude": "-80.782127",
@@ -140,6 +154,7 @@
 		"2010": "15.4553"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Ecuador",
 		"latitude": "-1.831239",
 		"longitude": "-78.183406",
@@ -150,6 +165,7 @@
 		"2010": "24.43427"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Cuba",
 		"latitude": "21.521757",
 		"longitude": "-77.781167",
@@ -160,12 +176,14 @@
 		"2010": "34.46437"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Bahamas",
 		"latitude": "25.03428",
 		"longitude": "-77.39628",
 		"pollution": {"2009":"5.25"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Jamaica",
 		"latitude": "18.109581",
 		"longitude": "-77.297508",
@@ -176,6 +194,7 @@
 		"2010": "9.21701"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Peru",
 		"latitude": "-9.189967",
 		"longitude": "-75.015152",
@@ -186,6 +205,7 @@
 		"2010": "41.88366"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Colombia",
 		"latitude": "4.570868",
 		"longitude": "-74.297333",
@@ -196,6 +216,7 @@
 		"2010": "72.3114"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Haiti",
 		"latitude": "18.971187",
 		"longitude": "-72.285215",
@@ -206,6 +227,7 @@
 		"2010": "1.45738"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Chile",
 		"latitude": "-35.675147",
 		"longitude": "-71.542969",
@@ -216,6 +238,7 @@
 		"2010": "68.75656"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Dominican Republic",
 		"latitude": "18.735693",
 		"longitude": "-70.162651",
@@ -226,6 +249,7 @@
 		"2010": "19.60066"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Antigua and Barbuda",
 		"latitude": "17.060816",
 		"longitude": "-61.796428",
@@ -236,6 +260,7 @@
 		"2010": "0.71877"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Venezuela",
 		"latitude": "6.42375",
 		"longitude": "-66.58973",
@@ -246,6 +271,7 @@
 		"2010": "158.43823"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Puerto Rico",
 		"latitude": "18.220833",
 		"longitude": "-66.590149",
@@ -256,6 +282,7 @@
 		"2010": "30.8557"}
 	},
 	{
+		"region": "North America",
 		"country": "Bermuda",
 		"latitude": "32.3078",
 		"longitude": "-64.7505",
@@ -266,6 +293,7 @@
 		"2010": "0.81281"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Bolivia",
 		"latitude": "-16.290154",
 		"longitude": "-63.588653",
@@ -276,6 +304,7 @@
 		"2010": "13.29073"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Argentina",
 		"latitude": "-38.416097",
 		"longitude": "-63.616672",
@@ -286,6 +315,7 @@
 		"2010": "169.82911"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Grenada",
 		"latitude": "12.1165",
 		"longitude": "-61.679",
@@ -296,6 +326,7 @@
 		"2010": "0.42934"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Trinidad and Tobago",
 		"latitude": "10.691803",
 		"longitude": "-61.222503",
@@ -316,6 +347,7 @@
 		"2010": "0.42934"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Saint Lucia",
 		"latitude": "13.909444",
 		"longitude": "-60.978893",
@@ -326,6 +358,7 @@
 		"2010": "0.43082"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Barbados",
 		"latitude": "13.193887",
 		"longitude": "-59.543198",
@@ -336,6 +369,7 @@
 		"2010": "1.57041"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Paraguay",
 		"latitude": "-23.442503",
 		"longitude": "-58.443832",
@@ -346,6 +380,7 @@
 		"2010": "4.39435"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Guyana",
 		"latitude": "4.860416",
 		"longitude": "-58.93018",
@@ -356,6 +391,7 @@
 		"2010": "1.52034"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Suriname",
 		"latitude": "3.919305",
 		"longitude": "-56.027783",
@@ -366,6 +402,7 @@
 		"2010": "2.34298"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Uruguay",
 		"latitude": "-32.522779",
 		"longitude": "-55.765835",
@@ -376,6 +413,7 @@
 		"2010": "7.26528"}
 	},
 	{
+		"region": "Central & South America",
 		"country": "Brazil",
 		"latitude": "-14.235004",
 		"longitude": "-51.92528",
@@ -386,6 +424,7 @@
 		"2010": "453.87038"}
 	},
 	{
+		"region": "Africa",
 		"country": "Cape Verde",
 		"latitude": "15.121729",
 		"longitude": "-23.605082",
@@ -396,6 +435,7 @@
 		"2010": "0.27141"}
 	},
 	{
+		"region": "Europe",
 		"country": "Iceland",
 		"latitude": "64.963051",
 		"longitude": "-19.020835",
@@ -406,6 +446,7 @@
 		"2010": "3.35675"}
 	},
 	{
+		"region": "Africa",
 		"country": "Gambia",
 		"latitude": "13.443182",
 		"longitude": "-15.310139",
@@ -416,6 +457,7 @@
 		"2010": "0.29103"}
 	},
 	{
+		"region": "Africa",
 		"country": "Senegal",
 		"latitude": "14.497401",
 		"longitude": "-14.452362",
@@ -426,6 +468,7 @@
 		"2010": "6.67872"}
 	},
 	{
+		"region": "Africa",
 		"country": "Sierra Leone",
 		"latitude": "8.460555",
 		"longitude": "-11.779889",
@@ -446,6 +489,7 @@
 		"2010": "2.88967"}
 	},
 	{
+		"region": "Africa",
 		"country": "Liberia",
 		"latitude": "6.428055",
 		"longitude": "-9.429499",
@@ -456,6 +500,7 @@
 		"2010": "0.73859"}
 	},
 	{
+		"region": "Europe",
 		"country": "Ireland",
 		"latitude": "53.41291",
 		"longitude": "-8.24389",
@@ -466,6 +511,7 @@
 		"2010": "40.47895"}
 	},
 	{
+		"region": "Europe",
 		"country": "Portugal",
 		"latitude": "39.399872",
 		"longitude": "-8.224454",
@@ -476,6 +522,7 @@
 		"2010": "51.43229"}
 	},
 	{
+		"region": "Africa",
 		"country": "Morocco",
 		"latitude": "31.791702",
 		"longitude": "-7.09262",
@@ -492,6 +539,7 @@
 		"pollution": {"2009":"6.63"}
 	},
 	{
+		"region": "Europe",
 		"country": "Spain",
 		"latitude": "40.463667",
 		"longitude": "-3.74922",
@@ -502,6 +550,7 @@
 		"2010": "316.42606"}
 	},
 	{
+		"region": "Europe",
 		"country": "United Kingdom",
 		"latitude": "55.378051",
 		"longitude": "-3.435973",
@@ -512,6 +561,7 @@
 		"2010": "532.44233"}
 	},	
 	{
+		"region": "Africa",
 		"country": "Ghana",
 		"latitude": "7.946527",
 		"longitude": "-1.023194",
@@ -522,6 +572,7 @@
 		"2010": "10.57525"}
 	},
 	{
+		"region": "Africa",
 		"country": "Togo",
 		"latitude": "8.619543",
 		"longitude": "0.824782",
@@ -532,6 +583,7 @@
 		"2010": "3.16644"}
 	},
 	{
+		"region": "Africa",
 		"country": "Algeria",
 		"latitude": "28.033886",
 		"longitude": "1.659626",
@@ -542,6 +594,7 @@
 		"2010": "110.9008"}
 	},
 	{
+		"region": "Europe",
 		"country": "France",
 		"latitude": "46.227638",
 		"longitude": "2.213749",
@@ -552,6 +605,7 @@
 		"2010": "395.19505"}
 	},
 	{
+		"region": "Middle East",
 		"country": "Kuwait",
 		"latitude": "29.31166",
 		"longitude": "47.481766",
@@ -562,6 +616,7 @@
 		"2010": "81.32784"}
 	},
 	{
+		"region": "Africa",
 		"country": "Benin",
 		"latitude": "9.30769",
 		"longitude": "2.315834",
@@ -572,6 +627,7 @@
 		"2010": "3.65047"}
 	},
 	{
+		"region": "Europe",
 		"country": "Belgium",
 		"latitude": "50.503887",
 		"longitude": "4.469936",
@@ -582,6 +638,7 @@
 		"2010": "127.18866"}
 	},
 	{
+		"region": "Europe",
 		"country": "Netherlands",
 		"latitude": "52.132633",
 		"longitude": "5.291266",
@@ -592,6 +649,7 @@
 		"2010": "263.43552"}
 	},
 	{
+		"region": "Europe",
 		"country": "Luxembourg",
 		"latitude": "49.815273",
 		"longitude": "6.129583",
@@ -602,6 +660,7 @@
 		"2010": "10.80025"}
 	},
 	{
+		"region": "Africa",
 		"country": "Sao Tome and Principe",
 		"latitude": "0.18636",
 		"longitude": "6.613081",
@@ -612,6 +671,7 @@
 		"2010": "0.15025"}
 	},
 	{
+		"region": "Europe",
 		"country": "Switzerland",
 		"latitude": "46.818188",
 		"longitude": "8.227512",
@@ -622,6 +682,7 @@
 		"2010": "45.54636"}
 	},
 	{
+		"region": "Europe",
 		"country": "Norway",
 		"latitude": "60.472024",
 		"longitude": "8.468946",
@@ -632,6 +693,7 @@
 		"2010": "41.79807"}
 	},
 	{
+		"region": "Africa",
 		"country": "Nigeria",
 		"latitude": "9.081999",
 		"longitude": "8.675277",
@@ -642,6 +704,7 @@
 		"2010": "80.50605"}
 	},
 	{
+		"region": "Africa",
 		"country": "Niger",
 		"latitude": "17.607789",
 		"longitude": "8.081666",
@@ -652,6 +715,7 @@
 		"2010": "1.79577"}
 	},
 	{
+		"region": "Africa",
 		"country": "Chad",
 		"latitude": "15.454166",
 		"longitude": "18.732207",
@@ -662,6 +726,7 @@
 		"2010": "0.2909"}
 	},
 	{
+		"region": "Europe",
 		"country": "Denmark",
 		"latitude": "56.26392",
 		"longitude": "9.501785",
@@ -672,6 +737,7 @@
 		"2010": "45.96204"}
 	},
 	{
+		"region": "Africa",
 		"country": "Tunisia",
 		"latitude": "33.886917",
 		"longitude": "9.537499",
@@ -682,6 +748,7 @@
 		"2010": "18.71713"}
 	},
 	{
+		"region": "Europe",
 		"country": "Germany",
 		"latitude": "51.165691",
 		"longitude": "10.451526",
@@ -692,6 +759,7 @@
 		"2010": "793.65509"}
 	},
 	{
+		"region": "Africa",
 		"country": "Equatorial Guinea",
 		"latitude": "1.650801",
 		"longitude": "10.267895",
@@ -702,6 +770,7 @@
 		"2010": "5.00486"}
 	},
 	{
+		"region": "Africa",
 		"country": "Gabon",
 		"latitude": "-0.803689",
 		"longitude": "11.609444",
@@ -712,6 +781,7 @@
 		"2010": "4.59193"}
 	},
 	{
+		"region": "Africa",
 		"country": "Cameroon",
 		"latitude": "7.369722",
 		"longitude": "12.354722",
@@ -722,6 +792,7 @@
 		"2010": "7.3606"}
 	},
 	{
+		"region": "Europe",
 		"country": "Italy",
 		"latitude": "41.87194",
 		"longitude": "12.56738",
@@ -732,6 +803,7 @@
 		"2010": "416.373"}
 	},
 	{
+		"region": "Europe",
 		"country": "Malta",
 		"latitude": "35.937496",
 		"longitude": "14.375416",
@@ -742,12 +814,14 @@
 		"2010": "3.11385"}
 	},
 	{
+		"region": "Europe",
 		"country": "Austria",
 		"latitude": "47.516231",
 		"longitude": "14.550072",
 		"pollution": {"2009":"69.24"}
 	},
 	{
+		"region": "Europe",
 		"country": "Slovenia",
 		"latitude": "46.151241",
 		"longitude": "14.995463",
@@ -758,6 +832,7 @@
 		"2010": "17.42431"}
 	},
 	{
+		"region": "Europe",
 		"country": "Czech Republic",
 		"latitude": "49.817492",
 		"longitude": "15.472962",
@@ -768,6 +843,7 @@
 		"2010": "90.82606"}
 	},
 	{
+		"region": "Europe",
 		"country": "Croatia",
 		"latitude": "45.7533427",
 		"longitude": "15.9891256",
@@ -778,6 +854,7 @@
 		"2010": "23.42614"}
 	},
 	{
+		"region": "Africa",
 		"country": "Congo",
 		"latitude": "-4.038333",
 		"longitude": "21.758664",
@@ -788,6 +865,7 @@
 		"2010": "6.51829"}
 	},
 	{
+		"region": "Africa",
 		"country": "Libya",
 		"latitude": "26.3351",
 		"longitude": "17.228331",
@@ -798,6 +876,7 @@
 		"2010": "60.60376"}
 	},
 	{
+		"region": "Europe",
 		"country": "Bosnia and Herzegovina",
 		"latitude": "43.915886",
 		"longitude": "17.679076",
@@ -808,6 +887,7 @@
 		"2010": "20.14112"}
 	},
 	{
+		"region": "Africa",
 		"country": "Angola",
 		"latitude": "-11.202692",
 		"longitude": "17.873887",
@@ -818,6 +898,7 @@
 		"2010": "24.19579"}
 	},
 	{
+		"region": "Africa",
 		"country": "Namibia",
 		"latitude": "-22.95764",
 		"longitude": "18.49041",
@@ -828,6 +909,7 @@
 		"2010": "3.81158"}
 	},
 	{
+		"region": "Europe",
 		"country": "Sweden",
 		"latitude": "60.128161",
 		"longitude": "18.643501",
@@ -838,6 +920,7 @@
 		"2010": "62.73665"}
 	},
 	{
+		"region": "Europe",
 		"country": "Poland",
 		"latitude": "51.919438",
 		"longitude": "19.145136",
@@ -848,6 +931,7 @@
 		"2010": "303.69515"}
 	},
 	{
+		"region": "Europe",
 		"country": "Montenegro",
 		"latitude": "42.708678",
 		"longitude": "19.37439",
@@ -858,6 +942,7 @@
 		"2010": "1.9411"}
 	},
 	{
+		"region": "Europe",
 		"country": "Hungary",
 		"latitude": "47.162494",
 		"longitude": "19.503304",
@@ -868,6 +953,7 @@
 		"2010": "50.39326"}
 	},
 	{
+		"region": "Europe",
 		"country": "Slovakia",
 		"latitude": "48.669026",
 		"longitude": "19.699024",
@@ -878,6 +964,7 @@
 		"2010": "34.54182"}
 	},
 	{
+		"region": "Europe",
 		"country": "Albania",
 		"latitude": "41.153332",
 		"longitude": "20.168331",
@@ -888,6 +975,7 @@
 		"2010": "4.89269"}
 	},
 	{
+		"region": "Europe",
 		"country": "Serbia",
 		"latitude": "44.016521",
 		"longitude": "21.005859",
@@ -898,6 +986,7 @@
 		"2010": "49.92353"}
 	},
 	{
+		"region": "Europe",
 		"country": "Macedonia",
 		"latitude": "41.608635",
 		"longitude": "21.745275",
@@ -908,6 +997,7 @@
 		"2010": "8.23127"}
 	},
 	{
+		"region": "Europe",
 		"country": "Greece",
 		"latitude": "39.074208",
 		"longitude": "21.824312",
@@ -918,6 +1008,7 @@
 		"2010": "92.99146"}
 	},
 	{
+		"region": "Africa",
 		"country": "South Africa",
 		"latitude": "-30.559482",
 		"longitude": "22.937506",
@@ -928,6 +1019,7 @@
 		"2010": "465.09659"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Lithuania",
 		"latitude": "55.169438",
 		"longitude": "23.881275",
@@ -938,6 +1030,7 @@
 		"2010": "15.98426"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Latvia",
 		"latitude": "56.879635",
 		"longitude": "24.603189",
@@ -948,6 +1041,7 @@
 		"2010": "9.06623"}
 	},
 	{
+		"region": "Africa",
 		"country": "Botswana",
 		"latitude": "-22.328474",
 		"longitude": "24.684866",
@@ -958,6 +1052,7 @@
 		"2010": "3.84139"}
 	},
 	{
+		"region": "Europe",
 		"country": "Romania",
 		"latitude": "45.943161",
 		"longitude": "24.96676",
@@ -968,6 +1063,7 @@
 		"2010": "78.42691"}
 	},
 	{
+		"region": "Europe",
 		"country": "Finland",
 		"latitude": "61.92411",
 		"longitude": "25.748151",
@@ -978,6 +1074,7 @@
 		"2010": "54.40388"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Estonia",
 		"latitude": "58.595272",
 		"longitude": "25.013607",
@@ -988,6 +1085,7 @@
 		"2010": "20.55844"}
 	},
 	{
+		"region": "Europe",
 		"country": "Bulgaria",
 		"latitude": "42.733883",
 		"longitude": "25.48583",
@@ -998,6 +1096,7 @@
 		"2010": "42.17476"}
 	},
 	{
+		"region": "Africa",
 		"country": "Zambia",
 		"latitude": "-13.133897",
 		"longitude": "27.849332",
@@ -1008,6 +1107,7 @@
 		"2010": "2.41637"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Belarus",
 		"latitude": "53.709807",
 		"longitude": "27.953389",
@@ -1018,6 +1118,7 @@
 		"2010": "68.24442"}
 	},
 	{
+		"region": "Africa",
 		"country": "Lesotho",
 		"latitude": "-29.609988",
 		"longitude": "28.233608",
@@ -1028,6 +1129,7 @@
 		"2010": "0.28214"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Moldova",
 		"latitude": "47.0239188",
 		"longitude": "28.8315153",
@@ -1038,6 +1140,7 @@
 		"2010": "7.38006"}
 	},
 	{
+		"region": "Africa",
 		"country": "Rwanda",
 		"latitude": "-1.940278",
 		"longitude": "29.873888",
@@ -1048,6 +1151,7 @@
 		"2010": "0.86942"}
 	},
 	{
+		"region": "Africa",
 		"country": "Egypt",
 		"latitude": "26.820553",
 		"longitude": "30.802498",
@@ -1058,6 +1162,7 @@
 		"2010": "196.547"}
 	},
 	{
+		"region": "Africa",
 		"country": "Sudan",
 		"latitude": "12.862807",
 		"longitude": "30.217636",
@@ -1068,6 +1173,7 @@
 		"2010": "13.7905"}
 	},
 	{
+		"region": "Africa",
 		"country": "West Sahara",
 		"latitude": "24.215527",
 		"longitude": "-12.885834",
@@ -1078,6 +1184,7 @@
 		"2010": "0.3146"}
 	},
 	{
+		"region": "Africa",
 		"country": "Mali",
 		"latitude": "17.570692",
 		"longitude": "-3.996166",
@@ -1088,6 +1195,7 @@
 		"2010": "0.89369"}
 	},
 	{
+		"region": "Africa",
 		"country": "Central African Republic",
 		"latitude": "6.611111",
 		"longitude": "20.939444",
@@ -1098,6 +1206,7 @@
 		"2010": "0.22736"}
 	},
 	{
+		"region": "Africa",
 		"country": "Mozambique",
 		"latitude": "-18.665695",
 		"longitude": "35.529562",
@@ -1108,6 +1217,7 @@
 		"2010": "2.72788"}
 	},
 	{
+		"region": "Africa",
 		"country": "Zimbabwe",
 		"latitude": "-19.015438",
 		"longitude": "29.154857",
@@ -1118,6 +1228,7 @@
 		"2010": "8.49298"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Ukraine",
 		"latitude": "48.379433",
 		"longitude": "31.16558",
@@ -1128,6 +1239,7 @@
 		"2010": "275.51022"}
 	},
 	{
+		"region": "Africa",
 		"country": "Swaziland",
 		"latitude": "-26.522503",
 		"longitude": "31.465866",
@@ -1138,6 +1250,7 @@
 		"2010": "1.11282"}
 	},
 	{
+		"region": "Africa",
 		"country": "Uganda",
 		"latitude": "1.373333",
 		"longitude": "32.290275",
@@ -1148,6 +1261,7 @@
 		"2010": "2.01431"}
 	},
 	{
+		"region": "Europe",
 		"country": "Cyprus",
 		"latitude": "35.126413",
 		"longitude": "33.429859",
@@ -1158,6 +1272,7 @@
 		"2010": "9.25696"}
 	},
 	{
+		"region": "Middle East",
 		"country": "Palestine",
 		"latitude": "31.952162",
 		"longitude": "35.233154",
@@ -1168,6 +1283,7 @@
 		"2010": "3.38195"}
 	},	
 	{
+		"region": "Middle East",
 		"country": "Israel",
 		"latitude": "31.046051",
 		"longitude": "34.851612",
@@ -1178,6 +1294,7 @@
 		"2010": "70.32116"}
 	},
 	{
+		"region": "Europe",
 		"country": "Turkey",
 		"latitude": "38.963745",
 		"longitude": "35.243322",
@@ -1188,6 +1305,7 @@
 		"2010": "263.54305"}
 	},
 	{
+		"region": "Middle East",
 		"country": "Lebanon",
 		"latitude": "33.854721",
 		"longitude": "35.862285",
@@ -1198,6 +1316,7 @@
 		"2010": "15.23801"}
 	},
 	{
+		"region": "Middle East",
 		"country": "Jordan",
 		"latitude": "30.585164",
 		"longitude": "36.238414",
@@ -1208,6 +1327,7 @@
 		"2010": "19.06514"}
 	},
 	{
+		"region": "Africa",
 		"country": "Kenya",
 		"latitude": "-0.023559",
 		"longitude": "37.906193",
@@ -1218,6 +1338,7 @@
 		"2010": "12.24952"}
 	},
 	{
+		"region": "Middle East",
 		"country": "Syria",
 		"latitude": "34.802075",
 		"longitude": "38.996815",
@@ -1228,6 +1349,7 @@
 		"2010": "63.10104"}
 	},
 	{
+		"region": "Africa",
 		"country": "Ethiopia",
 		"latitude": "9.145",
 		"longitude": "40.489673",
@@ -1238,6 +1360,7 @@
 		"2010": "6.73996"}
 	},
 	{
+		"region": "Africa",
 		"country": "Djibouti",
 		"latitude": "11.825138",
 		"longitude": "42.590275",
@@ -1248,6 +1371,7 @@
 		"2010": "2.35185"}
 	},
 	{
+		"region": "Africa",
 		"country": "Comoros",
 		"latitude": "-11.6455",
 		"longitude": "43.3333",
@@ -1258,6 +1382,7 @@
 		"2010": "0.14957"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Georgia",
 		"latitude": "42.315407",
 		"longitude": "43.356892",
@@ -1268,6 +1393,7 @@
 		"2010": "5.3023"}
 	},
 	{
+		"region": "Middle East",
 		"country": "Iraq",
 		"latitude": "33.223191",
 		"longitude": "43.679291",
@@ -1278,6 +1404,7 @@
 		"2010": "118.3088"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Armenia",
 		"latitude": "40.069099",
 		"longitude": "45.038189",
@@ -1288,6 +1415,7 @@
 		"2010": "11.5592"}
 	},
 	{
+		"region": "Middle East",
 		"country": "Saudi Arabia",
 		"latitude": "23.885942",
 		"longitude": "45.079162",
@@ -1298,6 +1426,7 @@
 		"2010": "478.40697"}
 	},
 	{
+		"region": "Africa",
 		"country": "Madagascar",
 		"latitude": "-18.766947",
 		"longitude": "46.869107",
@@ -1308,6 +1437,7 @@
 		"2010": "3.384"}
 	},
 	{
+		"region": "Africa",
 		"country": "Somalia",
 		"latitude": "5.152149",
 		"longitude": "46.199616",
@@ -1319,6 +1449,7 @@
 		"2010": "3.384"}
 	},
 	{
+		"region": "Middle East",
 		"country": "Iran",
 		"latitude": "38.4739835",
 		"longitude": "47.0605507",
@@ -1329,6 +1460,7 @@
 		"2010": "560.33482"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Azerbaijan",
 		"latitude": "40.143105",
 		"longitude": "47.576927",
@@ -1339,6 +1471,7 @@
 		"2010": "35.12235"}
 	},
 	{
+		"region": "Middle East",
 		"country": "Yemen",
 		"latitude": "15.552727",
 		"longitude": "48.516388",
@@ -1349,6 +1482,7 @@
 		"2010": "26.49981"}
 	},
 	{
+		"region": "Middle East",
 		"country": "Bahrain",
 		"latitude": "26.0667",
 		"longitude": "50.5577",
@@ -1359,6 +1493,7 @@
 		"2010": "30.68965"}
 	},
 	{
+		"region": "Middle East",
 		"country": "Qatar",
 		"latitude": "25.354826",
 		"longitude": "51.183884",
@@ -1369,6 +1504,7 @@
 		"2010": "64.68372"}
 	},
 	{
+		"region": "Africa",
 		"country": "Seychelles",
 		"latitude": "-4.679574",
 		"longitude": "55.491977",
@@ -1379,6 +1515,7 @@
 		"2010": "1.24534"}
 	},
 	{
+		"region": "Middle East",
 		"country": "Oman",
 		"latitude": "21.512583",
 		"longitude": "55.923255",
@@ -1389,6 +1526,7 @@
 		"2010": "55.20454"}
 	},
 	{
+		"region": "Middle East",
 		"country": "United Arab Emirates",
 		"latitude": "23.424076",
 		"longitude": "53.847818",
@@ -1399,6 +1537,7 @@
 		"2010": "199.36926"}
 	},
 	{
+		"region": "Africa",
 		"country": "Mauritius",
 		"latitude": "-20.348404",
 		"longitude": "57.552152",
@@ -1409,6 +1548,7 @@
 		"2010": "4.5454"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Turkmenistan",
 		"latitude": "38.969719",
 		"longitude": "59.556278",
@@ -1419,6 +1559,7 @@
 		"2010": "62.05142"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Uzbekistan",
 		"latitude": "41.377491",
 		"longitude": "64.585262",
@@ -1429,6 +1570,7 @@
 		"2010": "114.26581"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Afghanistan",
 		"latitude": "33.93911",
 		"longitude": "67.709953",
@@ -1439,6 +1581,7 @@
 		"2010": "0.79021"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Kazakhstan",
 		"latitude": "48.019573",
 		"longitude": "66.923684",
@@ -1449,6 +1592,7 @@
 		"2010": "184.47368"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Pakistan",
 		"latitude": "30.375321",
 		"longitude": "69.345116",
@@ -1459,6 +1603,7 @@
 		"2010": "151.64986"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Tajikistan",
 		"latitude": "38.861034",
 		"longitude": "71.276093",
@@ -1469,6 +1614,7 @@
 		"2010": "6.67765"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Maldives",
 		"latitude": "3.9870284",
 		"longitude": "73.4977747",
@@ -1479,6 +1625,7 @@
 		"2010": "0.91895"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Kyrgyzstan",
 		"latitude": "41.20438",
 		"longitude": "74.766098",
@@ -1489,6 +1636,7 @@
 		"2010": "4.13126"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "India",
 		"latitude": "20.593684",
 		"longitude": "78.96288",
@@ -1499,6 +1647,7 @@
 		"2010": "1695.62254"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Sri Lanka",
 		"latitude": "7.873054",
 		"longitude": "80.771797",
@@ -1509,6 +1658,7 @@
 		"2010": "14.08692"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Nepal",
 		"latitude": "28.394857",
 		"longitude": "84.124008",
@@ -1519,6 +1669,7 @@
 		"2010": "3.35946"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Bangladesh",
 		"latitude": "23.684994",
 		"longitude": "90.356331",
@@ -1529,6 +1680,7 @@
 		"2010": "56.7439"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Bhutan",
 		"latitude": "27.514162",
 		"longitude": "90.433601",
@@ -1539,6 +1691,7 @@
 		"2010": "0.27633"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Burma",
 		"latitude": "21.913965",
 		"longitude": "95.956223",
@@ -1549,6 +1702,7 @@
 		"2010": "12.7972"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Thailand",
 		"latitude": "15.870032",
 		"longitude": "100.992541",
@@ -1559,6 +1713,7 @@
 		"2010": "278.48984"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Malaysia",
 		"latitude": "4.210484",
 		"longitude": "101.975766",
@@ -1569,6 +1724,7 @@
 		"2010": "181.92582"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Laos",
 		"latitude": "19.85627",
 		"longitude": "102.495496",
@@ -1579,6 +1735,7 @@
 		"2010": "1.18916"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Singapore",
 		"latitude": "1.352083",
 		"longitude": "103.819836",
@@ -1589,6 +1746,7 @@
 		"2010": "172.18833"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Mongolia",
 		"latitude": "46.862496",
 		"longitude": "103.846656",
@@ -1599,6 +1757,7 @@
 		"2010": "9.43615"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "China",
 		"latitude": "35.86166",
 		"longitude": "104.195397",
@@ -1609,6 +1768,7 @@
 		"2010": "8320.96269"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Cambodia",
 		"latitude": "12.565679",
 		"longitude": "104.990963",
@@ -1619,6 +1779,7 @@
 		"2010": "3.58989"}
 	},
 	{
+		"region": "Eurasia",
 		"country": "Russia",
 		"latitude": "61.52401",
 		"longitude": "105.318756",
@@ -1629,6 +1790,7 @@
 		"2010": "1633.80431"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Vietnam",
 		"latitude": "14.058324",
 		"longitude": "108.277199",
@@ -1639,6 +1801,7 @@
 		"2010": "112.79539"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Indonesia",
 		"latitude": "-0.789275",
 		"longitude": "113.921327",
@@ -1649,6 +1812,7 @@
 		"2010": "389.42835"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Hong Kong",
 		"latitude": "22.396428",
 		"longitude": "114.109497",
@@ -1659,6 +1823,7 @@
 		"2010": "83.77519"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Brunei Darussalam",
 		"latitude": "4.535277",
 		"longitude": "114.727669",
@@ -1669,6 +1834,7 @@
 		"2010": "8.27059"}
 	},
 	{
+		"region": "Africa",
 		"country": "Tanzania",
 		"latitude": "-6.369028",
 		"longitude": "34.888822",
@@ -1679,6 +1845,7 @@
 		"2010": "7.56605"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Taiwan",
 		"latitude": "23.69781",
 		"longitude": "120.960515",
@@ -1689,6 +1856,7 @@
 		"2010": "305.37921"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Philippines",
 		"latitude": "12.879721",
 		"longitude": "121.774017",
@@ -1699,6 +1867,7 @@
 		"2010": "85.62829"}
 	},
 	{
+		"region": "Europe",
 		"country": "Gibralta",
 		"latitude": "14.454983",
 		"longitude": "120.96429",
@@ -1709,6 +1878,7 @@
 		"2010": "3.90761"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Timor-Leste",
 		"latitude": "-8.874217",
 		"longitude": "125.727539",
@@ -1719,6 +1889,7 @@
 		"2010": "0.39531"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "North Korea",
 		"latitude": "40.339852",
 		"longitude": "127.510093",
@@ -1729,6 +1900,7 @@
 		"2010": "63.68979"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "South Korea",
 		"latitude": "35.907757",
 		"longitude": "127.766922",
@@ -1739,6 +1911,7 @@
 		"2010": "578.97333"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Macau",
 		"latitude": "22.198745",
 		"longitude": "113.543873",
@@ -1749,6 +1922,7 @@
 		"2010": "2.53736"}
 	},	
 	{
+		"region": "Asia & Oceania",
 		"country": "Australia",
 		"latitude": "-25.274398",
 		"longitude": "133.775136",
@@ -1759,6 +1933,7 @@
 		"2010": "405.34226"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Japan",
 		"latitude": "36.204824",
 		"longitude": "138.252924",
@@ -1769,6 +1944,7 @@
 		"2010": "1164.46589"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Papua New Guinea",
 		"latitude": "-6.314993",
 		"longitude": "143.95555",
@@ -1779,6 +1955,7 @@
 		"2010": "5.30565"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Solomon Islands",
 		"latitude": "-9.64571",
 		"longitude": "160.156194",
@@ -1789,6 +1966,7 @@
 		"2010": "0.35899"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "New Caledonia",
 		"latitude": "-20.904305",
 		"longitude": "165.618042",
@@ -1799,6 +1977,7 @@
 		"2010": "3.02664"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Vanuatu",
 		"latitude": "-15.376706",
 		"longitude": "166.959158",
@@ -1809,6 +1988,7 @@
 		"2010": "0.14652"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "New Zealand",
 		"latitude": "-40.900557",
 		"longitude": "174.885971",
@@ -1819,6 +1999,7 @@
 		"2010": "39.57918"}
 	},
 	{
+		"region": "Asia & Oceania",
 		"country": "Fiji",
 		"latitude": "-17.713371",
 		"longitude": "178.065032",
@@ -1829,7 +2010,8 @@
 		"2010": "2.50038"}
 	},
 	{
-		"country": "Antartica",
+		"region": "Central & South America",
+		"country": "Antarctica",
 		"latitude": "-82.862752",
 		"longitude": "-135",
 		"pollution": {"2006": "0.2543",
