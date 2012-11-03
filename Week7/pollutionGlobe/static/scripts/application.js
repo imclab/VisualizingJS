@@ -70,9 +70,10 @@ $( document ).ready( function(){
     planeGeometry = new THREE.PlaneGeometry( 400, 400, 1 );
     planeMaterial = new THREE.MeshBasicMaterial({
 		color: 0xFFFFFF,
-		map: THREE.ImageUtils.loadTexture("media/bg.jpg"),
+		map: THREE.ImageUtils.loadTexture("media/bg.png"),
 		transparent: true,
-		// opacity: .6
+		opacity: .6
+		// blending: THREE.AdditiveBlending
     });
 
     plane = new THREE.Mesh(planeGeometry, planeMaterial);
@@ -129,30 +130,33 @@ $( document ).ready( function(){
 	window.tweetPointMaterial = new THREE.MeshBasicMaterial( { transparent: true, opacity: .2, visible: false, color: 0xff0000} ); //visible: false
 	window.tweetPoint = []
 	var sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
+	var sprite2 = THREE.ImageUtils.loadTexture('media/floor.png')
 	var particlemMaterial =  new THREE.ParticleBasicMaterial( {
 						color: 0xFF0000,
 						size: 100, 
 						map: sprite,
 					    transparent: true,
-					    opacity: .2,
+					    opacity: .04,
 						// blending: THREE.AdditiveBlending
 						 } )
-    particlemMaterial2 = new THREE.MeshBasicMaterial({
-		color: 0xFFFFFF,
-		map: THREE.ImageUtils.loadTexture("media/smoke.png"),
-		transparent	: true,
-		// opacity: .3,
-		blending: THREE.CustomBlending,
-						blendSrc: THREE.OneMinusDstAlphaFactor,
-						blendDst: THREE.OneMinusDstAlphaFactor,
-						blendEquation: THREE.AddEquation ,
-    });
+
+  //   particlemMaterial2 = new THREE.MeshBasicMaterial({
+		// color: 0xFFFFFF,
+		// map: THREE.ImageUtils.loadTexture("media/smoke.png"),
+		// transparent	: true,
+		// // opacity: .3,
+		// blending: THREE.CustomBlending,
+		// 				blendSrc: THREE.OneMinusDstAlphaFactor,
+		// 				blendDst: THREE.OneMinusDstAlphaFactor,
+		// 				blendEquation: THREE.AddEquation ,
+  //   });
 
     var geometry = new THREE.Geometry()
 	$.getJSON('scripts/countries.json', function(data) {
 		var i = 0
 		attributes = []
 		geometry = new THREE.Geometry()
+		numberofParticles = 0
 
 		$.each(data, function(key, val) {
 				var lat = (Math.random()*180) -90
@@ -180,11 +184,33 @@ $( document ).ready( function(){
 				// particleSys.sortParticles = true;
 				// group.add( particleSys )
 				// window.valr = val
+
+
+				//normalize the vector direction it should travel
+				var vecLength = Math.sqrt( vector.x*vector.x + vector.y*vector.y + vector.z*vector.z)
+				var velocityX = vector.x / vecLength //normalize it
+				var velocityY = vector.y / vecLength
+				var velocityZ = vector.z / vecLength
+				var velocity = new THREE.Vector3(velocityX, velocityY, velocityZ)
 				
-				thisPollution = val.pollution["2010"]
-				console.log(thisPollution)
-				position = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
-				geometry.vertices.push( position )
+				var thisPollution = val.pollution["2010"]
+
+				if(thisPollution > 1){
+					for(var i=0; i<thisPollution/10; i++){
+						position = new THREE.Vector3( vector.xC+Math.random()*40-20, vector.yC+Math.random()*40-20, vector.zC+Math.random()*40-20 )
+						geometry.vertices.push( position )
+						var thisAttribute = { vel: velocity, origin: new THREE.Vector3( vector.xC+Math.random()*40-20, vector.yC+Math.random()*40-20, vector.zC+Math.random()*40-20 ), lifespan : Math.random() * 600}
+						attributes.push(thisAttribute)
+						numberofParticles++
+					}
+				}else{
+					position = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
+					geometry.vertices.push( position )
+					var thisAttribute = { vel: velocity, origin: new THREE.Vector3( vector.xC, vector.yC, vector.zC ), lifespan : Math.random() * 600}
+					attributes.push(thisAttribute)
+					numberofParticles++
+				}
+				// console.log(thisPollution)
 
 
 				// var cloud = new THREE.Mesh(new THREE.SphereGeometry( 4, 6 ,6 ), particlemMaterial2);
@@ -210,8 +236,8 @@ $( document ).ready( function(){
 		particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
 		particleSys.sortParticles = true
 		group.add(particleSys)
-	})
 
+	})
 
 
 	// timeout to allow array of countries to populate
@@ -248,33 +274,22 @@ $( document ).ready( function(){
 })
 
 
-function addParticle(i){
-
-}
-
-function applyForce(){
-	for(var i = 0; i< 179; i++){
-		p = particleSys.geometry.vertices[i]
-		p.x += Math.random()*2-1
-		p.y += Math.random()*2-1
-		p.z += Math.random()*2-1
-	}
-}
 
 
 function updateParticle(){
-	for(var i = 0; i< numParticles; i++){
+	for(var i = 0; i< numberofParticles; i++){
 		v = attributes[i].vel
 		p = particleSys.geometry.vertices[i]
 		p.x += v.x
 		p.y += v.y
 		p.z += v.z
 		attributes[i].lifespan -= 2.5
+
 		if( isDead(i) ){
-			p.x = Math.random()*20-10
-			p.y = Math.random()*20-10
-			p.z = 0
-			attributes[i].lifespan = Math.random() * 2000
+			p.x = attributes[i].origin.x
+			p.y = attributes[i].origin.y
+			p.z = attributes[i].origin.z
+			attributes[i].lifespan = Math.random() * 600
 		}
 	}
 }
@@ -287,6 +302,15 @@ function isDead(thisone){
 	}
 }
 
+
+function applyForce(){
+	for(var i = 0; i< numberofParticles; i++){
+		p = particleSys.geometry.vertices[i]
+		p.x += Math.random()*2-1
+		p.y += Math.random()*2-1
+		p.z += Math.random()*2-1
+	}
+}
 
 
 //calc distance
@@ -301,7 +325,7 @@ var angle = 1.0;
 var speed = .03;	
 
 function loop(){
-	// updateParticle()
+	setTimeout(updateParticle, 500)	
 	// setTimeout(applyForce, 500)
 
 	// for(var i=0; i< tweetPin.length; i++){
@@ -453,9 +477,9 @@ function surfacePlot( params ){
 
 	//calculate point in space relative to point on sphere for camera (a sphere of 400)
 	var 
-	xC = params.center.x + params.latitude.cosine() * params.longitude.cosine() * (params.radius+30),
-	yC = params.center.y + params.latitude.sine()   * (params.radius+30) *-1,
-	zC = params.center.z + params.latitude.cosine() * params.longitude.sine() * (params.radius+30)
+	xC = params.center.x + params.latitude.cosine() * params.longitude.cosine() * (params.radius+20),
+	yC = params.center.y + params.latitude.sine()   * (params.radius+20) *-1,
+	zC = params.center.z + params.latitude.cosine() * params.longitude.sine() * (params.radius+20)
 
 	this.obj = {'x' : x, 'y' : y, 'z': z, 'xC': xC, 'yC': yC, 'zC' : zC} //'xC': xC, 'yC': yC, 'zC' : zC
 	return this.obj
@@ -671,27 +695,28 @@ var markerLength = 2
 // 	setTimeout( nextTweet, timePerTweet )
 // }
 
-var projector = new THREE.Projector();
-document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-function onDocumentMouseDown( event ) {
+//// code to check for mouse clicks
+// var projector = new THREE.Projector();
+// document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+// function onDocumentMouseDown( event ) {
 
-	event.preventDefault();
+// 	event.preventDefault();
 
-	var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, 
-		- ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
-	projector.unprojectVector( vector, camera );
+// 	var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, 
+// 		- ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
+// 	projector.unprojectVector( vector, camera );
 
-	var ray = new THREE.Ray( camera.position, vector.subSelf( camera.position ).normalize() );
+// 	var ray = new THREE.Ray( camera.position, vector.subSelf( camera.position ).normalize() );
 
-	var intersects = ray.intersectObjects( tweetPoint );
+// 	var intersects = ray.intersectObjects( tweetPoint );
 	
-	if ( intersects.length > 0 ) {
-		if(!cameraTracking)cameraTracking=true
-		// change the point to look at the number of the object
-		tweetPointIndex = intersects[0].object.message
-		console.log(intersects[0].object.country)
-	}
-}
+// 	if ( intersects.length > 0 ) {
+// 		if(!cameraTracking)cameraTracking=true
+// 		// change the point to look at the number of the object
+// 		tweetPointIndex = intersects[0].object.message
+// 		console.log(intersects[0].object.country)
+// 	}
+// }
 
 
 //resize method

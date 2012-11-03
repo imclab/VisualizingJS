@@ -12,7 +12,7 @@ $( document ).ready( function(){
 	
 
 
-	var planeGeo = new THREE.PlaneGeometry(500, 500, 10, 10);
+	var planeGeo = new THREE.PlaneGeometry(2048, 2048, 5, 5);
 	var planeMat = new THREE.MeshLambertMaterial({color: 0xFFFFFF});
 	var plane = new THREE.Mesh(planeGeo, planeMat);
 	plane.rotation.x = -Math.PI/2;
@@ -62,62 +62,7 @@ function createScene( geometry, x, y, z, b ) {
 }
 
 
-//larrow keys pressed
-$(document).keydown(function(e){
-    if (e.keyCode == 37) {  //left arrow
-    	goLeft = true
-    	goRight = false
-    }
-    if (e.keyCode == 39) { //right arrow
-    	goRight = true
-    	goLeft = false
-    }
-    if (e.keyCode == 38) {  //up arrow
-    	goDown = true
-    	goUp = false
-    }
-    if (e.keyCode == 40) { //down arrow
-    	goUp = true
-    	goDown = false
-    }
-});
-
-$(document).keyup(function(){
-	goLeft = false
-	goRight = false
-	goUp = false
-	goDown = false
-});
-
-var radiansToDegrees = function(convertThis){
-	return convertThis * 180 / Math.PI
-}
-
 function loop(){
-	group.position.z-=.03
-
-	if(goLeft)
-		group.rotation.z+=.08
-
-	if(goRight)
-		group.rotation.z-=.08
-
-	if(goUp){
-		group.position.y+=.08
-		group.position.x-=group.rotation.z
-	}
-	if(goDown){
-		group.position.y-=.08
-		group.position.x+=group.rotation.z
-	}
-		
-	//loop values within -PI to PI (180 to -180)
-	if(group.rotation.z > Math.PI)
-		group.rotation.z = -Math.PI
-	if(group.rotation.z < -Math.PI)
-		group.rotation.z = Math.PI
-
-	
 
 	camera.lookAt( scene.position );
 			
