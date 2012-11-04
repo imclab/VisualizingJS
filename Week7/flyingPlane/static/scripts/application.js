@@ -3,27 +3,33 @@ var goRight = false
 var goUp = false
 var goDown = false
 
-var testLeft = 100
 
 //vars
 var rotationx = rotationy = rotationz = 0
 var positionx, positiony, positionz
-var speed = 1.0
+var speed = 2.0
 
-var clamp = function(number, min, max) {
-  return Math.min(Math.max(number, min), max);
-}
+var _q1 = new THREE.Quaternion();
+var axisX = new THREE.Vector3( 1, 0, 0 )
+var axisZ = new THREE.Vector3( 0, 0, 1 )
 
-var sign = function(number){
-	if (number >= 0) return 1
-		else return -1
+function rotateOnAxis( object, axis, angle ) {
 
-}
+    _q1.setFromAxisAngle( axis, angle );
+    object.quaternion.multiplySelf( _q1 );
+
+} 
+
+function moveForward( object, speed ) {
+	// object.position.x += object.quaternion.y * speed
+	// object.position.y += object.quaternion.y * speed
+	object.position.z += object.quaternion.x * speed
+	console.log("x: "+object.quaternion.x+" y: "+object.quaternion.y+" z: "+object.quaternion.z)
+} 
 
 
 $( document ).ready( function(){
-	group = new THREE.Object3D()
-	clock = new THREE.Clock();
+	airplane = new THREE.Object3D()
 
 	setupThree()
 	addLights()
@@ -43,6 +49,9 @@ $( document ).ready( function(){
 	scene.add( skybox )
 
 
+
+
+
 	var planeGeo = new THREE.PlaneGeometry(2048, 2048, 5, 5);
 	var planeMat = new THREE.MeshLambertMaterial({color: 0xFFFFFF, map: THREE.ImageUtils.loadTexture('media/grasslight-big.jpg')});
 	var plane = new THREE.Mesh(planeGeo, planeMat);
@@ -52,8 +61,7 @@ $( document ).ready( function(){
 	scene.add(plane);
 
 
-	var axes = new THREE.AxisHelper();
-	scene.add( axes );
+
 
 	//loading a dae collada model
 	var modelPlane;
@@ -74,15 +82,19 @@ $( document ).ready( function(){
 		daemesh.receiveShadow = true;
 
 		// console.log(modelPlane)
-		group.add(modelPlane)
+		airplane.add(modelPlane)
+		airplane.useQuaternion = true;
 	});
+
+	var axes = new THREE.AxisHelper();
+	airplane.add( axes );
 	
 	//loading a obj transformed into a js file
 	// var loader = new THREE.JSONLoader(),
 	// myModel   = function( geometry ) { createScene( geometry,  0, 0, 0, 105 ) }
 	// loader.load( "media/other-models/modelTank.js", myModel );
 
-	scene.add(group)
+	scene.add(airplane)
 
 
 
@@ -125,11 +137,19 @@ $(document).keydown(function(e){
     }
 });
 
-$(document).keyup(function(){
-	goLeft = false
-	goRight = false
-	goUp = false
-	goDown = false
+$(document).keyup(function(e){
+    if (e.keyCode == 37) {  //left arrow
+    	goLeft = false
+    }
+    if (e.keyCode == 39) { //right arrow
+    	goRight = false
+    }
+    if (e.keyCode == 38) {  //up arrow
+    	goDown = false
+    }
+    if (e.keyCode == 40) { //down arrow
+    	goUp = false
+    }
 });
 
 var radiansToDegrees = function(convertThis){
@@ -139,52 +159,22 @@ var radiansToDegrees = function(convertThis){
 
 var direction = new THREE.Vector3(0  * speed,0  * speed,-1 * speed)
 function loop(){
-	
-	time = clock.getElapsedTime();
-	delta = clock.getDelta();
-
-	// console.log(group.rotation.x*Math.cos(rotationx) - group.rotation.y*Math.sin(rotationx))
 
 	if(goLeft)
-		rotationz+=.08
+		rotateOnAxis( airplane, axisZ, 0.08 )
 		
 	if(goRight)
-		rotationz-=.08
+		rotateOnAxis( airplane, axisZ, -0.08 )
 
 	if(goUp)
-		rotationx+=.08
+		rotateOnAxis( airplane, axisX, 0.03 )
 
 	if(goDown)
-		rotationx-=.05
+		rotateOnAxis( airplane, axisX, -0.03 )
 		
-	//loop values within -PI to PI (180 to -180)
-	if(rotationz > Math.PI)
-		rotationz = -Math.PI
-	if(rotationz < -Math.PI)
-		rotationz = Math.PI
 
-	if(rotationx > Math.PI)
-		rotationx = -Math.PI
-	if(rotationx < -Math.PI)
-		rotationx = Math.PI
+	moveForward(airplane, speed)
 
-	group.rotation.x = rotationx
-	group.rotation.y = rotationy
-	group.rotation.z = rotationz
-
-	// group.rotation.x = rotationx*Math.cos(group.rotation.x) - rotationy*Math.sin(group.rotation.x)
-	// group.rotation.y = rotationx*Math.sin(group.rotation.x) + rotationy*Math.cos(group.rotation.x)
-	// group.rotation.z = rotationz
-
-	// group.position.addSelf(direction)
-
-	// group.rotation.y = rotationy*Math.cos(group.rotation.z) - rotationz*Math.sin(group.rotation.z)
-	// group.rotation.z = rotationy*Math.sin(group.rotation.z) + rotationz*Math.cos(group.rotation.z)
-	// group.rotation.x = rotationx
-
-	// group.rotation.z = rotationz*Math.cos(group.rotation.x) - rotationx*Math.sin(group.rotation.x)
-	// group.rotation.x = rotationz*Math.sin(group.rotation.x) + rotationx*Math.cos(group.rotation.x)
-	// group.rotation.y = rotationy
 
 
 	camera.lookAt( scene.position );
@@ -225,8 +215,8 @@ function setupThree(){
 	window.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR )
 	// camera.target.position.copy( group.position );
 	camera.position.set( 0, 10, 160 ) //starting position of camera
-	camera.lookAt( group.position )
-	group.add( camera )
+	camera.lookAt( airplane.position )
+	airplane.add( camera )
 
 	window.renderer = new THREE.WebGLRenderer({ antialias: true })
 	//window.renderer = new THREE.CanvasRenderer({ antialias: true })
