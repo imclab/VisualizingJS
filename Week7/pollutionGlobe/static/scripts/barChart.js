@@ -17,6 +17,9 @@ $.getJSON('scripts/countries.json', function(data) {
 		countryPollution2007.push(val.pollution["2012"])
 		countryPollution2006.push(val.pollution["2012"])
 	});
+	a = countryRegions
+	b = countryNames
+	console.log(a)
 
 	for(var i = 0; i < countryPollution2010.length; i++){
 	$('#barChart').append('<div class="bar '+ countryRegions[i] + '">' + countryNames[i] + '</div>');
@@ -27,6 +30,5 @@ $.getJSON('scripts/countries.json', function(data) {
 	// }
 	}
 })	
-
 
 

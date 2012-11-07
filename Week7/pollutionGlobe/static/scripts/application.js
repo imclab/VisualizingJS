@@ -37,7 +37,6 @@ $( document ).ready( function(){
 
 	setupThree()
 	addLights()
-	// addControls() //for 'a', 's', and 'd'
 	
 	//twitter variables
 	window.tweetPointIndex = 7; //which point the camera should look to (united states is 7)
@@ -327,7 +326,7 @@ var speed = .03;
 function loop(){
 	updateParticle()
 	// applyForce()
-	group.rotation.y+=.002
+	group.rotation.y+=.004
 
 
 	// for(var i=0; i< tweetPin.length; i++){
@@ -373,7 +372,7 @@ function loop(){
 		if(rotateY >= 179){
 			rotateY = 179
 		}
-		// console.log(rotateX+" "+rotateY)
+		console.log(rotateX+" "+rotateY)
 		
 		//roate just on the x axes
 		// camera.position.x = earth.position.x + Math.cos(rotateX * Math.PI/180) * cameraRadius;
@@ -520,24 +519,6 @@ function setupThree(){
 }
 
 
-
-
-function addControls(){
-	window.controls = new THREE.TrackballControls( camera )
-	// controls.target.set( 0, 0, 0 )
-
-	controls.rotateSpeed = 1.0
-	controls.zoomSpeed   = 1.2
-	controls.panSpeed    = 0.8
-	
-	controls.noZoom = true
-	controls.noPan  = true
-	controls.staticMoving = true
-	controls.dynamicDampingFactor = 0.3
-	controls.keys = [ 65, 83, 68 ]//  ASCII values for A, S, and D
-	
-	controls.addEventListener( 'change', render )
-}
 
 
 

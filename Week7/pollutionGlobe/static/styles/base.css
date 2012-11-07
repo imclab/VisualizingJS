@@ -6,3 +6,4 @@ body{margin: 0;background-color: #FFF;padding: 0;font-family: "Lucida Grande", G
 #regionsWrapper{position: absolute; margin: 0 auto; text-align: center; width: 100%; bottom: 0px}
 #regions{list-style: none; position: absolute; bottom: 0px;}
 #regions li{float: left; display: block; padding: 30px;}
+

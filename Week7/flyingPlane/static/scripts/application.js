@@ -7,7 +7,7 @@ var goDown = false
 //vars
 var rotationx = rotationy = rotationz = 0
 var positionx, positiony, positionz
-var speed = 2.0
+var speed = 1.0
 
 var _q1 = new THREE.Quaternion();
 var axisX = new THREE.Vector3( 1, 0, 0 )
@@ -20,16 +20,37 @@ function rotateOnAxis( object, axis, angle ) {
 
 } 
 
+
 function moveForward( object, speed ) {
 	// object.position.x += object.quaternion.y * speed
 	// object.position.y += object.quaternion.y * speed
-	object.position.z += object.quaternion.x * speed
-	console.log("x: "+object.quaternion.x+" y: "+object.quaternion.y+" z: "+object.quaternion.z)
+	// object.position.z += object.quaternion.x * speed
+	// console.log("x: "+object.quaternion.x+" y: "+object.quaternion.y+" z: "+object.quaternion.z)
+	// object.position.z -= Math.cos(object.quaternion.x)
+	// if(object.quaternion.x > .7 || object.quaternion.x < -.7)
+	// 	object.position.z += speed
+	// else
+	// 	object.position.z -= speed
+
+	// if(object.quaternion.y < 0)
+	// 	object.position.x += speed
+	// else
+	// 	object.position.x -= speed
+
+	//find length of vector
+	var dirToNextCenterLength = Math.sqrt( childDirection.position.x*childDirection.position.x + childDirection.position.y*childDirection.position.y + dirToNextCenter.z*childDirection.position.z)
+	dirToNextCenter.x /= dirToNextCenterLength //normalize it
+	dirToNextCenter.y /= dirToNextCenterLength
+	dirToNextCenter.z /= dirToNextCenterLength
+	// airplane.position.x += childDirection.position.x
+	// airplane.position.y += childDirection.rotation.y
+	// airplane.position.z += childDirection.rotation.z
 } 
 
 
 $( document ).ready( function(){
 	airplane = new THREE.Object3D()
+	childDirection = new THREE.Object3D()
 
 	setupThree()
 	addLights()
@@ -81,18 +102,30 @@ $( document ).ready( function(){
 		daemesh.castShadow = true;
 		daemesh.receiveShadow = true;
 
+
 		// console.log(modelPlane)
 		airplane.add(modelPlane)
 		airplane.useQuaternion = true;
 	});
 
+	// adding cube to calculate direction
+	var cube = new THREE.Mesh( new THREE.CubeGeometry( 10, 10, 10 ), new THREE.MeshNormalMaterial() );   
+	// cube.position.z = -50
+	childDirection.add(cube)
+	scene.add(childDirection)
+
+
 	var axes = new THREE.AxisHelper();
 	airplane.add( axes );
+
+	var axes = new THREE.AxisHelper();
+	scene.add( axes );
 	
 	//loading a obj transformed into a js file
 	// var loader = new THREE.JSONLoader(),
 	// myModel   = function( geometry ) { createScene( geometry,  0, 0, 0, 105 ) }
 	// loader.load( "media/other-models/modelTank.js", myModel );
+
 
 	scene.add(airplane)
 
@@ -158,22 +191,69 @@ var radiansToDegrees = function(convertThis){
 
 
 var direction = new THREE.Vector3(0  * speed,0  * speed,-1 * speed)
+var rotateX = 90
+var rotateZ = 0
+var rotateY = 270
+var radius = 50
+var moveBy = {x: 0, y: 0, z:0}
+// var dirToNextCenter = THREE.Vector3(0,0,0)
 function loop(){
 
-	if(goLeft)
-		rotateOnAxis( airplane, axisZ, 0.08 )
+	if(goLeft){
+		// rotateOnAxis( airplane, axisZ, 0.08 )
+		rotateY -= radiansToDegrees(.08)
+	}
 		
-	if(goRight)
-		rotateOnAxis( airplane, axisZ, -0.08 )
+	if(goRight){
+		// rotateOnAxis( airplane, axisZ, -0.08 )
+		rotateY += radiansToDegrees(.08)
+	}
 
-	if(goUp)
-		rotateOnAxis( airplane, axisX, 0.03 )
+	if(goUp){
+		// rotateOnAxis( airplane, axisX, 0.03 )
+		rotateX -= radiansToDegrees(.03)
+	}
 
-	if(goDown)
-		rotateOnAxis( airplane, axisX, -0.03 )
-		
+	if(goDown){
+		// rotateOnAxis( airplane, axisX, -0.03 )
+		rotateX += radiansToDegrees(.03)
+	}
 
-	moveForward(airplane, speed)
+	// moveForward(airplane, speed)
+
+
+	if(rotateX > 360){
+		rotateX = 0
+	}
+	if(rotateX < 0){
+		rotateX = 360
+	}
+	if(rotateY >= 360){
+		rotateY = 0
+	}
+	if(rotateY < 0){
+		rotateY = 360
+	}
+	if(rotateZ >= 360){
+		rotateY = 0
+	}
+	if(rotateZ < 0){
+		rotateY = 360
+	}
+	// console.log(rotateX + " " + rotateY)
+	childDirection.position.x = radius * Math.sin(rotateX * Math.PI/180) * Math.cos(rotateY * Math.PI/180)
+	childDirection.position.z = radius * Math.sin(rotateX * Math.PI/180) * Math.sin(rotateY * Math.PI/180)
+	childDirection.position.y = radius * Math.cos(rotateX * Math.PI/180)
+
+	// var dirVecLength = Math.sqrt( childDirection.position.x*childDirection.position.x + childDirection.position.y*childDirection.position.y + childDirection.position.z*childDirection.position.z)
+	// childDirection.position.x /= dirVecLength //normalize it
+	// childDirection.position.y /= dirVecLength
+	// childDirection.position.z /= dirVecLength
+	// console.log(childDirection.position)
+	// airplane.position.x += childDirection.position.x
+	// airplane.position.y += childDirection.position.y
+	// airplane.position.z += childDirection.position.z
+
 
 
 
