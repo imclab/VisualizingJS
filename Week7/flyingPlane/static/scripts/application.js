@@ -13,6 +13,9 @@ var _q1 = new THREE.Quaternion();
 var axisX = new THREE.Vector3( 1, 0, 0 )
 var axisZ = new THREE.Vector3( 0, 0, 1 )
 
+var initialVec = new THREE.Vector3(0,0,-1)
+var matrix = new THREE.Matrix4()
+
 function rotateOnAxis( object, axis, angle ) {
 
     _q1.setFromAxisAngle( axis, angle );
@@ -22,6 +25,9 @@ function rotateOnAxis( object, axis, angle ) {
 
 
 function moveForward( object, speed ) {
+	// object.quaternion.multiplyVector3(initialVec, new THREE.Vector3(object.quaternion.x, object.quaternion.y, object.quaternion.z))
+	
+
 	// object.position.x += object.quaternion.y * speed
 	// object.position.y += object.quaternion.y * speed
 	// object.position.z += object.quaternion.x * speed
@@ -36,15 +42,20 @@ function moveForward( object, speed ) {
 	// 	object.position.x += speed
 	// else
 	// 	object.position.x -= speed
+matrix.multiplyVector3(initialVec, object.quaternion)
+airplane
+console.log(matrix)
+	// initialVec.x += object.quaternion.x
+	// initialVec.y += object.quaternion.y
+	// initialVec.z += object.quaternion.z
+	// airplane.position.x += planeDirection.x
+	// airplane.position.y = planeDirection.x
+	// airplane.position.z += planeDirection.z
+	// console.log("w: "+object.quaternion.w+" x: "+object.quaternion.x+" y: "+object.quaternion.y+" z: "+object.quaternion.z)
+	// console.log("x: "+planeDirection.x+" y: "+planeDirection.y+" z: "+planeDirection.z)
 
-	//find length of vector
-	var dirToNextCenterLength = Math.sqrt( childDirection.position.x*childDirection.position.x + childDirection.position.y*childDirection.position.y + dirToNextCenter.z*childDirection.position.z)
-	dirToNextCenter.x /= dirToNextCenterLength //normalize it
-	dirToNextCenter.y /= dirToNextCenterLength
-	dirToNextCenter.z /= dirToNextCenterLength
-	// airplane.position.x += childDirection.position.x
-	// airplane.position.y += childDirection.rotation.y
-	// airplane.position.z += childDirection.rotation.z
+
+
 } 
 
 
@@ -64,7 +75,7 @@ $( document ).ready( function(){
 	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/negy.jpg')})); //floor
 	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/negz.jpg')})); //front
 	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/posz.jpg')}));	//back
-	var skyboxGeom = new THREE.CubeGeometry( 2000, 2000, 2000, 1, 1, 1, skyboxMartials );
+	var skyboxGeom = new THREE.CubeGeometry( 4000, 4000, 4000, 1, 1, 1, skyboxMartials );
 	window.skybox = new THREE.Mesh( skyboxGeom, new THREE.MeshFaceMaterial() );
 	skybox.scale.x = -1;
 	scene.add( skybox )
@@ -73,7 +84,7 @@ $( document ).ready( function(){
 
 
 
-	var planeGeo = new THREE.PlaneGeometry(2048, 2048, 5, 5);
+	var planeGeo = new THREE.PlaneGeometry(4048, 4048, 5, 5);
 	var planeMat = new THREE.MeshLambertMaterial({color: 0xFFFFFF, map: THREE.ImageUtils.loadTexture('media/grasslight-big.jpg')});
 	var plane = new THREE.Mesh(planeGeo, planeMat);
 	plane.rotation.x = -Math.PI/2;
@@ -110,7 +121,7 @@ $( document ).ready( function(){
 
 	// adding cube to calculate direction
 	var cube = new THREE.Mesh( new THREE.CubeGeometry( 10, 10, 10 ), new THREE.MeshNormalMaterial() );   
-	// cube.position.z = -50
+	// cube.position.y = 50
 	childDirection.add(cube)
 	scene.add(childDirection)
 
@@ -121,10 +132,6 @@ $( document ).ready( function(){
 	var axes = new THREE.AxisHelper();
 	scene.add( axes );
 	
-	//loading a obj transformed into a js file
-	// var loader = new THREE.JSONLoader(),
-	// myModel   = function( geometry ) { createScene( geometry,  0, 0, 0, 105 ) }
-	// loader.load( "media/other-models/modelTank.js", myModel );
 
 
 	scene.add(airplane)
@@ -138,16 +145,6 @@ $( document ).ready( function(){
 	setTimeout(loop, 100)
 	// loop()	
 })
-
-//function for json loader
-function createScene( geometry, x, y, z, b ) {
-	zmesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial() );
-	zmesh.position.set( x, y, z );
-	// zmesh.rotation.z = Math.PI
-	zmesh.castShadow = true
-	zmesh.receiveShadow = true
-	scene.add( zmesh );
-}
 
 
 //larrow keys pressed
@@ -200,26 +197,24 @@ var moveBy = {x: 0, y: 0, z:0}
 function loop(){
 
 	if(goLeft){
-		// rotateOnAxis( airplane, axisZ, 0.08 )
+		rotateOnAxis( airplane, axisZ, 0.08 )
 		rotateY -= radiansToDegrees(.08)
 	}
 		
 	if(goRight){
-		// rotateOnAxis( airplane, axisZ, -0.08 )
+		rotateOnAxis( airplane, axisZ, -0.08 )
 		rotateY += radiansToDegrees(.08)
 	}
 
 	if(goUp){
-		// rotateOnAxis( airplane, axisX, 0.03 )
+		rotateOnAxis( airplane, axisX, 0.03 )
 		rotateX -= radiansToDegrees(.03)
 	}
 
 	if(goDown){
-		// rotateOnAxis( airplane, axisX, -0.03 )
+		rotateOnAxis( airplane, axisX, -0.03 )
 		rotateX += radiansToDegrees(.03)
 	}
-
-	// moveForward(airplane, speed)
 
 
 	if(rotateX > 360){
@@ -240,6 +235,12 @@ function loop(){
 	if(rotateZ < 0){
 		rotateY = 360
 	}
+
+	airplane.translateZ( -4 );
+
+
+
+	
 	// console.log(rotateX + " " + rotateY)
 	childDirection.position.x = radius * Math.sin(rotateX * Math.PI/180) * Math.cos(rotateY * Math.PI/180)
 	childDirection.position.z = radius * Math.sin(rotateX * Math.PI/180) * Math.sin(rotateY * Math.PI/180)
@@ -250,9 +251,9 @@ function loop(){
 	// childDirection.position.y /= dirVecLength
 	// childDirection.position.z /= dirVecLength
 	// console.log(childDirection.position)
-	// airplane.position.x += childDirection.position.x
-	// airplane.position.y += childDirection.position.y
-	// airplane.position.z += childDirection.position.z
+	// airplane.position.x += childDirection.position.x * speed
+	// airplane.position.y += childDirection.position.y * speed
+	// airplane.position.z += childDirection.position.z * speed
 
 
 
