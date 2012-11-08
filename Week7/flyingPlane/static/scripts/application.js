@@ -13,48 +13,11 @@ var _q1 = new THREE.Quaternion();
 var axisX = new THREE.Vector3( 1, 0, 0 )
 var axisZ = new THREE.Vector3( 0, 0, 1 )
 
-var initialVec = new THREE.Vector3(0,0,-1)
-var matrix = new THREE.Matrix4()
 
 function rotateOnAxis( object, axis, angle ) {
 
     _q1.setFromAxisAngle( axis, angle );
     object.quaternion.multiplySelf( _q1 );
-
-} 
-
-
-function moveForward( object, speed ) {
-	// object.quaternion.multiplyVector3(initialVec, new THREE.Vector3(object.quaternion.x, object.quaternion.y, object.quaternion.z))
-	
-
-	// object.position.x += object.quaternion.y * speed
-	// object.position.y += object.quaternion.y * speed
-	// object.position.z += object.quaternion.x * speed
-	// console.log("x: "+object.quaternion.x+" y: "+object.quaternion.y+" z: "+object.quaternion.z)
-	// object.position.z -= Math.cos(object.quaternion.x)
-	// if(object.quaternion.x > .7 || object.quaternion.x < -.7)
-	// 	object.position.z += speed
-	// else
-	// 	object.position.z -= speed
-
-	// if(object.quaternion.y < 0)
-	// 	object.position.x += speed
-	// else
-	// 	object.position.x -= speed
-matrix.multiplyVector3(initialVec, object.quaternion)
-airplane
-console.log(matrix)
-	// initialVec.x += object.quaternion.x
-	// initialVec.y += object.quaternion.y
-	// initialVec.z += object.quaternion.z
-	// airplane.position.x += planeDirection.x
-	// airplane.position.y = planeDirection.x
-	// airplane.position.z += planeDirection.z
-	// console.log("w: "+object.quaternion.w+" x: "+object.quaternion.x+" y: "+object.quaternion.y+" z: "+object.quaternion.z)
-	// console.log("x: "+planeDirection.x+" y: "+planeDirection.y+" z: "+planeDirection.z)
-
-
 
 } 
 
@@ -68,6 +31,7 @@ $( document ).ready( function(){
 	addControls() //for 'a', 's', and 'd'
 	
 
+	//SKYBOX
 	var skyboxMartials = [];
 	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/negx.jpg')})); //left
 	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/posx.jpg')})); //right
@@ -82,8 +46,7 @@ $( document ).ready( function(){
 
 
 
-
-
+	//LANDSCAPE
 	var planeGeo = new THREE.PlaneGeometry(4048, 4048, 5, 5);
 	var planeMat = new THREE.MeshLambertMaterial({color: 0xFFFFFF, map: THREE.ImageUtils.loadTexture('media/grasslight-big.jpg')});
 	var plane = new THREE.Mesh(planeGeo, planeMat);
@@ -95,7 +58,7 @@ $( document ).ready( function(){
 
 
 
-	//loading a dae collada model
+	//AIRPLANE MODEL
 	var modelPlane;
 	var loader = new THREE.ColladaLoader();
 	loader.options.convertUpAxis = true;
@@ -119,9 +82,41 @@ $( document ).ready( function(){
 		airplane.useQuaternion = true;
 	});
 
-	// adding cube to calculate direction
+
+	//PARTICLE SYSTEM
+	var sprite = THREE.ImageUtils.loadTexture('media/sprite.jpg')
+	var particlemMaterial =  new THREE.ParticleBasicMaterial( {
+						color: 0xFFFFFF,
+						size: 20, 
+						map: sprite,
+					    transparent: true,
+					    opacity: .2,
+						blending: THREE.AdditiveBlending
+						 } )
+	geometry = new THREE.Geometry()
+	numberofParticles = 200
+	attributes = []
+
+	for(var i=0; i<numberofParticles; i++){
+		if(numberofParticles < numberofParticles/2)
+			position = new THREE.Vector3( -25, 0, 50 )
+		else
+			position = new THREE.Vector3( 25, 0, 50 )
+		geometry.vertices.push( position )
+		var thisAttribute = { vel: new THREE.Vector3(0, 0, 1), lifespan : Math.random() * 300}
+		attributes.push(thisAttribute)
+	}
+	particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
+	particleSys.sortParticles = true
+	// particleSys.position.x = -25
+	// particleSys.position.z = 45
+	airplane.add(particleSys)
+
+
+
+
+	// adding cube to calculate plane direction
 	var cube = new THREE.Mesh( new THREE.CubeGeometry( 10, 10, 10 ), new THREE.MeshNormalMaterial() );   
-	// cube.position.y = 50
 	childDirection.add(cube)
 	scene.add(childDirection)
 
@@ -136,12 +131,7 @@ $( document ).ready( function(){
 
 	scene.add(airplane)
 
-
-
-
-
-
-
+	//delay loop to allow time for model to load
 	setTimeout(loop, 100)
 	// loop()	
 })
@@ -186,76 +176,66 @@ var radiansToDegrees = function(convertThis){
 	return convertThis * 180 / Math.PI
 }
 
+function updateParticle(){
+	for(var i = 0; i< numberofParticles; i++){
+		v = attributes[i].vel
+		p = particleSys.geometry.vertices[i]
+		p.x += v.x
+		p.y += v.y
+		p.z += v.z
+		attributes[i].lifespan -= 2.5
 
-var direction = new THREE.Vector3(0  * speed,0  * speed,-1 * speed)
-var rotateX = 90
-var rotateZ = 0
-var rotateY = 270
-var radius = 50
-var moveBy = {x: 0, y: 0, z:0}
-// var dirToNextCenter = THREE.Vector3(0,0,0)
+		if( isDead(i) ){
+			if(i < numberofParticles/2){
+				p.x = -25
+				p.y = 0
+				p.z = 50
+			}else{
+				p.x = 25
+				p.y = 0
+				p.z = 50
+			}
+			attributes[i].lifespan = Math.random() * 600
+		}
+	}
+}
+
+function isDead(thisone){
+	if(attributes[thisone].lifespan <= 0.0){
+		return true
+	}else{
+		return false
+	}
+}
+
+
+
+
+
 function loop(){
 
 	if(goLeft){
 		rotateOnAxis( airplane, axisZ, 0.08 )
-		rotateY -= radiansToDegrees(.08)
 	}
 		
 	if(goRight){
 		rotateOnAxis( airplane, axisZ, -0.08 )
-		rotateY += radiansToDegrees(.08)
 	}
 
 	if(goUp){
 		rotateOnAxis( airplane, axisX, 0.03 )
-		rotateX -= radiansToDegrees(.03)
 	}
 
 	if(goDown){
 		rotateOnAxis( airplane, axisX, -0.03 )
-		rotateX += radiansToDegrees(.03)
 	}
 
-
-	if(rotateX > 360){
-		rotateX = 0
-	}
-	if(rotateX < 0){
-		rotateX = 360
-	}
-	if(rotateY >= 360){
-		rotateY = 0
-	}
-	if(rotateY < 0){
-		rotateY = 360
-	}
-	if(rotateZ >= 360){
-		rotateY = 0
-	}
-	if(rotateZ < 0){
-		rotateY = 360
-	}
 
 	airplane.translateZ( -4 );
 
 
 
-	
-	// console.log(rotateX + " " + rotateY)
-	childDirection.position.x = radius * Math.sin(rotateX * Math.PI/180) * Math.cos(rotateY * Math.PI/180)
-	childDirection.position.z = radius * Math.sin(rotateX * Math.PI/180) * Math.sin(rotateY * Math.PI/180)
-	childDirection.position.y = radius * Math.cos(rotateX * Math.PI/180)
-
-	// var dirVecLength = Math.sqrt( childDirection.position.x*childDirection.position.x + childDirection.position.y*childDirection.position.y + childDirection.position.z*childDirection.position.z)
-	// childDirection.position.x /= dirVecLength //normalize it
-	// childDirection.position.y /= dirVecLength
-	// childDirection.position.z /= dirVecLength
-	// console.log(childDirection.position)
-	// airplane.position.x += childDirection.position.x * speed
-	// airplane.position.y += childDirection.position.y * speed
-	// airplane.position.z += childDirection.position.z * speed
-
-
+	updateParticle()
 
 
 	camera.lookAt( scene.position );
@@ -379,4 +359,16 @@ function addLights(){
 	directional.shadowMapWidth      = directional.shadowMapHeight = 2048
 
 	// directional.shadowCameraVisible = true
+}
+
+
+
+//resize method
+window.addEventListener( 'resize', onWindowResize, false );
+function onWindowResize(){
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
 }
