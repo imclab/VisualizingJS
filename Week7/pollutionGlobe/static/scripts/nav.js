@@ -1,7 +1,9 @@
 $('#dates li').click(function(){
 
 	if( $($(this)[0]).attr("class") == "non-active" ){
+		fadeOut = true
 		loadDataToParticles( $(this).text() )
+		setTimeout(function(){fadeIn = true}, 1000)
 		$('#dates .active').removeClass('active').addClass('non-active')
 		$(this).removeClass('non-active').addClass('active')
 	}

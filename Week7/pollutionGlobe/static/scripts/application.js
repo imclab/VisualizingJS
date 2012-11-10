@@ -30,6 +30,8 @@ var Shaders = {
 
 
 var cameraTracking = false
+var fadeOut = false
+var fadeIn = false
 
 $( document ).ready( function(){
 	//group to place objects in
@@ -116,12 +118,12 @@ $( document ).ready( function(){
 
 
 	var sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
-	var particlemMaterial =  new THREE.ParticleBasicMaterial( {
+	window.particlemMaterial =  new THREE.ParticleBasicMaterial( {
 		color: 0xFF0000,
 		size: 100, 
 		map: sprite,
 	    transparent: true,
-	    opacity: .04,
+	    opacity: .036,
 		// blending: THREE.AdditiveBlending
 	 } )
 
@@ -181,19 +183,24 @@ $( document ).ready( function(){
 })
 
 
-
+// function fadeParticlesOut( particlemMaterial ){
+// 	particlemMaterial.opacity-= .004
+// }
+// function fadeParticlesIn( particlemMaterial ){
+// 	particlemMaterial.opacity+= .005
+// }
 
 function loadDataToParticles( year ){
 	group.remove( partGroup )
 
 	//create particle material
 	var sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
-	var particlemMaterial =  new THREE.ParticleBasicMaterial( {
+	window.particlemMaterial =  new THREE.ParticleBasicMaterial( {
 		color: 0xFF0000,
 		size: 100, 
 		map: sprite,
 	    transparent: true,
-	    opacity: .04,
+	    // opacity: .036,
 		// blending: THREE.AdditiveBlending
 	 } )
 
@@ -239,7 +246,8 @@ function loadDataToParticles( year ){
 		
 
 		partGroup.remove(particleSys) //remove previous ps system
-		particlemMaterial.opacity = map(numberofParticles, 2506, 2753, .01, .04) //numberofParticles / 70000 //change opacity
+		window.particleOpacity = map(numberofParticles, 2506, 2753, .01, .04)
+		particlemMaterial.opacity = particleOpacity //numberofParticles / 70000 //change opacity
 		// console.log(numberofParticles)
 		window.particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
 		particleSys.sortParticles = true
@@ -317,10 +325,22 @@ function loop(){
 	// applyForce()
 	group.rotation.y+=.004
 
+	//smoke fade out when nav year is clicked
+	if(fadeOut){
+		if(particlemMaterial.opacity > 0)
+			particlemMaterial.opacity -= .009
+		else
+			fadeOut = false;
+	}
+console.log("fadeOut "+fadeOut+", "+particlemMaterial.opacity)
+	//smoke fade in when new nav year is loaded
+	if(fadeIn){
+		if(particlemMaterial.opacity < particleOpacity)
+			particlemMaterial.opacity += .006
+		else
+			fadeIn = false;
+	}
 
-	// for(var i=0; i< tweetPin.length; i++){
-	// 	tweetPin[i].growMarker()
-	// }
 
 
 	if(cameraTracking){
