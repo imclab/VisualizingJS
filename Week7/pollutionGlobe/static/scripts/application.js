@@ -491,7 +491,7 @@ function setupThree(){
 	FAR        = 10000
 	
 	window.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR )
-	camera.position.set( 100, 100, 400 ) //starting position of camera
+	camera.position.set( 100, 100, 400 ) //starting position of camera - this is desregarded in the loop as its using spherical coordinates
 	camera.lookAt( scene.position )
 	scene.add( camera )
 
@@ -734,7 +734,7 @@ function onWindowResize(){
 
 
 var dragging = false;
-var rotateX = 70, rotateY = 70; //starting point of rotation
+var rotateX = 50, rotateY = 70; //starting point of rotation
 var rotateVX = 0, rotateVY = 0;
 var rotateYMax = 90;
 var mouseX = 0, mouseY = 0, pmouseX = 0, pmouseY = 0;

@@ -20,7 +20,7 @@ li{display: block; float: left; padding: 0px 8px 0px 8px; cursor: pointer; opaci
 
 .non-active{opacity: .25; }
 .non-active:hover{opacity: .45; cursor: url('../media/cursor_hover.png'),default;}
-.active{color: red; opacity: 1; }
+.active{color: red; opacity: 1; cursor: url('../media/cursor.png'),default;}
 /*.non-active{opacity: .2}
 .non-active:hover{opacity: .4}*/
 #dates{position: absolute; bottom: 36px; left: 50%; margin-left:  -110px;}
