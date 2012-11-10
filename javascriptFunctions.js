@@ -11,3 +11,14 @@ var sign = function(number){
 var radiansToDegrees = function(convertThis){
 	return convertThis * 180 / Math.PI
 }
+
+function map(value, inputMin, inputMax, outputMin, outputMax){
+	outVal = ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);	
+	if(outVal >  outputMax){
+		outVal = outputMax;
+	}
+	if(outVal <  outputMin){
+		outVal = outputMin;
+	}	
+	return outVal;
+}

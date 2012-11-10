@@ -236,10 +236,11 @@ function loadDataToParticles( year ){
 
 				i++
 		});
-	
+		
+
 		partGroup.remove(particleSys) //remove previous ps system
-		particlemMaterial.opacity = numberofParticles / 70000 //change opacity
-		console.log(numberofParticles)
+		particlemMaterial.opacity = map(numberofParticles, 2506, 2753, .01, .04) //numberofParticles / 70000 //change opacity
+		// console.log(numberofParticles)
 		window.particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
 		particleSys.sortParticles = true
 		partGroup.add(particleSys)
@@ -249,6 +250,18 @@ function loadDataToParticles( year ){
 	group.add( partGroup )
 }
 
+
+
+function map(value, inputMin, inputMax, outputMin, outputMax){
+	outVal = ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);	
+	if(outVal >  outputMax){
+		outVal = outputMax;
+	}
+	if(outVal <  outputMin){
+		outVal = outputMin;
+	}	
+	return outVal;
+}
 
 
 function updateParticle(){
