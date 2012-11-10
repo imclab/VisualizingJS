@@ -33,20 +33,13 @@ var cameraTracking = false
 
 $( document ).ready( function(){
 	//group to place objects in
+	window.partGroup = new THREE.Object3D()
+	window.earthGroup = new THREE.Object3D()
 	window.group = new THREE.Object3D()
 
 	setupThree()
 	addLights()
 	
-	//twitter variables
-	window.tweetPointIndex = 7; //which point the camera should look to (united states is 7)
-	// window.geocoder = new google.maps.Geocoder()
-	// window.tweetsIndex   = -1
-	// window.timePerTweet = 300
-	// window.tweetsLocation = []
-	// window.tweetLocationGeo = []
-	// streamTweets()
-
 
 
 
@@ -113,78 +106,36 @@ $( document ).ready( function(){
 
 	earth = new THREE.Mesh( geometry, material )
 	earth.matrixAutoUpdate = false
-	group.add(earth)
+	earthGroup.add( earth )
 
 	
 
 
 
-	//  Latitude	North +90	South -90
-	//  Longitude	West -180	East +180
-	//  random point math for lat: Math.random()*180) -90
-	//  random point math for long: Math.random()*360) - 180
-	var markerLength = 1;
-	window.tweetPin = [];
-		
-	window.tweetPointMaterial = new THREE.MeshBasicMaterial( { transparent: true, opacity: .2, visible: false, color: 0xff0000} ); //visible: false
-	window.tweetPoint = []
-	var sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
-	var sprite2 = THREE.ImageUtils.loadTexture('media/floor.png')
-	var particlemMaterial =  new THREE.ParticleBasicMaterial( {
-						color: 0xFF0000,
-						size: 100, 
-						map: sprite,
-					    transparent: true,
-					    opacity: .04,
-						// blending: THREE.AdditiveBlending
-						 } )
 
-  //   particlemMaterial2 = new THREE.MeshBasicMaterial({
-		// color: 0xFFFFFF,
-		// map: THREE.ImageUtils.loadTexture("media/smoke.png"),
-		// transparent	: true,
-		// // opacity: .3,
-		// blending: THREE.CustomBlending,
-		// 				blendSrc: THREE.OneMinusDstAlphaFactor,
-		// 				blendDst: THREE.OneMinusDstAlphaFactor,
-		// 				blendEquation: THREE.AddEquation ,
-  //   });
+
+
+	var sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
+	var particlemMaterial =  new THREE.ParticleBasicMaterial( {
+		color: 0xFF0000,
+		size: 100, 
+		map: sprite,
+	    transparent: true,
+	    opacity: .04,
+		// blending: THREE.AdditiveBlending
+	 } )
+
+
 
     var geometry = new THREE.Geometry()
 	$.getJSON('scripts/countries.json', function(data) {
-		var i = 0
-		attributes = []
-		geometry = new THREE.Geometry()
-		numberofParticles = 0
+		window.attributes = []
+		window.numberofParticles = 0
 
 		$.each(data, function(key, val) {
-				var lat = (Math.random()*180) -90
-				var lon = (Math.random()*360) - 180
+			
 				var vector = surfacePlot( {latitude: parseFloat(val.latitude), longitude: parseFloat(val.longitude), center: {x:0,y:0,z:0}, radius: earthRadius} )
-				var point = new THREE.Mesh(
-					new THREE.SphereGeometry( 4, 16 ,16 ), tweetPointMaterial
-				);
-				point.position.set( vector.x, vector.y, vector.z )
-				point.message = i
-				point.country = val.country
-				tweetPoint.push(point)
-				group.add(point)
-
-				// planeGeometry = new THREE.PlaneGeometry( 128, 128, 1 );
-				// point = new THREE.Mesh( planeGeometry, particlemMaterial2 );
-				// point.position.set(vector.xC,vector.yC, vector.zC)
-				// group.add(point)
-
-				// var geometry = new THREE.Geometry()
-				// var position = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
-				// // var velocity = new THREE.Vector3( 0, 0, 0 )
-				// geometry.vertices.push( position )
-				// particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
-				// particleSys.sortParticles = true;
-				// group.add( particleSys )
-				// window.valr = val
-
-
+				
 				//normalize the vector direction it should travel
 				var vecLength = Math.sqrt( vector.x*vector.x + vector.y*vector.y + vector.z*vector.z)
 				var velocityX = vector.x / vecLength //normalize it
@@ -210,68 +161,93 @@ $( document ).ready( function(){
 					numberofParticles++
 				}
 				// console.log(thisPollution)
-
-
-				// var cloud = new THREE.Mesh(new THREE.SphereGeometry( 4, 6 ,6 ), particlemMaterial2);
-				// cloud.position.set( vector.xC, vector.yC, vector.zC )
-				// point.message = i
-				// cloud.country = val.country
-				// tweetPoint.push(point)
-				// group.add(cloud)
-
-
-				var dropName = dropPin(
-					 parseFloat(val.latitude),
-					 parseFloat(val.longitude),
-					0xFF0000,
-					markerLength
-				)
-				tweetPin.push(dropName)
-				group.add(dropName)
-				i++
 		});
 
 		
-		particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
+		window.particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
 		particleSys.sortParticles = true
-		group.add(particleSys)
+		partGroup.add(particleSys)
 
 	})
 
 
-	// timeout to allow array of countries to populate
-	// setTimeout(function(){
-	// //   	//material for text
-	// // 	// var path = "media/";
-	// // 	// var format = '.jpg';
-	// // 	// var urls = [
-	// // 	// 		path + 'posx' + format, path + 'negx' + format,
-	// // 	// 		path + 'posy' + format, path + 'negy' + format,
-	// // 	// 		path + 'posz' + format, path + 'negz' + format
-	// // 	// 	];
-		
-	// // 	// var reflectionCube = THREE.ImageUtils.loadTextureCube( urls );
-	// // 	// // var textMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0xFFFFFF, envMap: reflectionCube } )
-	// // 	// var textMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, ambient: 0x993300, envMap: reflectionCube, combine: THREE.MixOperation, reflectivity: 0.3 } );
-	// 	//create text
-	// 	var shape = new THREE.TextGeometry(tweetPoint[tweetPointIndex].country, {font: 'helvetiker', size: 3, height: 1});
-	// 	window.words = new THREE.Mesh(shape, new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.DoubleSide } ));
-	// 	// words.rotation.z = Math.PI/2
-	// 	words.position.z = -150
-	// 	words.posx = -100
-	// 	camera.add( words )
-	// }, 500)
-
-
-
-
 
 	//add everything to scene
+	group.add( earthGroup )
+	group.add( partGroup )
 	scene.add( group )
 
 	setTimeout(loop, 500)
 })
 
+
+
+
+function loadDataToParticles( year ){
+	group.remove( partGroup )
+
+	//create particle material
+	var sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
+	var particlemMaterial =  new THREE.ParticleBasicMaterial( {
+		color: 0xFF0000,
+		size: 100, 
+		map: sprite,
+	    transparent: true,
+	    opacity: .04,
+		// blending: THREE.AdditiveBlending
+	 } )
+
+
+    //load json data
+	$.getJSON('scripts/countries.json', function(data) {
+		window.attributes = []
+		window.geometry = new THREE.Geometry()
+		window.numberofParticles = 0
+
+		$.each(data, function(key, val) {
+			
+				var vector = surfacePlot( {latitude: parseFloat(val.latitude), longitude: parseFloat(val.longitude), center: {x:0,y:0,z:0}, radius: earthRadius} )
+				
+				//normalize the vector direction it should travel
+				var vecLength = Math.sqrt( vector.x*vector.x + vector.y*vector.y + vector.z*vector.z)
+				var velocityX = vector.x / vecLength //normalize it
+				var velocityY = vector.y / vecLength
+				var velocityZ = vector.z / vecLength
+				var velocity = new THREE.Vector3(velocityX, velocityY, velocityZ)
+				
+				var thisPollution = val.pollution[year]
+
+				if(thisPollution > 1){
+					for(var i=0; i<thisPollution/12; i++){
+						position = new THREE.Vector3( vector.xC+Math.random()*40-20, vector.yC+Math.random()*40-20, vector.zC+Math.random()*40-20 )
+						geometry.vertices.push( position )
+						var thisAttribute = { vel: velocity, origin: new THREE.Vector3( vector.xC+Math.random()*40-20, vector.yC+Math.random()*40-20, vector.zC+Math.random()*40-20 ), lifespan : Math.random() * 300}
+						attributes.push(thisAttribute)
+						numberofParticles++
+					}
+				}else{
+					position = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
+					geometry.vertices.push( position )
+					var thisAttribute = { vel: velocity, origin: new THREE.Vector3( vector.xC, vector.yC, vector.zC ), lifespan : Math.random() * 300}
+					attributes.push(thisAttribute)
+					numberofParticles++
+				}
+				// console.log(thisPollution)
+
+				i++
+		});
+	
+		partGroup.remove(particleSys) //remove previous ps system
+		particlemMaterial.opacity = numberofParticles / 70000 //change opacity
+		console.log(numberofParticles)
+		window.particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
+		particleSys.sortParticles = true
+		partGroup.add(particleSys)
+
+	})
+
+	group.add( partGroup )
+}
 
 
 
@@ -372,7 +348,7 @@ function loop(){
 		if(rotateY >= 179){
 			rotateY = 179
 		}
-		console.log(rotateX+" "+rotateY)
+		// console.log(rotateX+" "+rotateY)
 		
 		//roate just on the x axes
 		// camera.position.x = earth.position.x + Math.cos(rotateX * Math.PI/180) * cameraRadius;
@@ -415,7 +391,7 @@ function dropPin( latitude, longitude, color, markerLength){
 			color: color,
 			transparent: true,
 			opacity: .5,
-			visible: false
+			visible: true
 		})
 	)
 	marker.position.y = markerLength/2+earthRadius
@@ -713,34 +689,34 @@ function onWindowResize(){
 }
 
 //larrow keys pressed
-$(document).keydown(function(e){
-	if(!cameraTracking)cameraTracking=true
+// $(document).keydown(function(e){
+// 	if(!cameraTracking)cameraTracking=true
 
-    if (e.keyCode == 37) {  //left arrow
-    	if(tweetPointIndex>0)
-	       tweetPointIndex--
-	    else
-	   		tweetPointIndex = tweetPoint.length-1
-    }
-    if (e.keyCode == 39) { //right arrow
-    	if(tweetPointIndex < tweetPoint.length-1)
-	       tweetPointIndex++
-	    else
-	   		tweetPointIndex = 0
-    }
-    if (e.keyCode == 38) {  //up arrow
-    	if(tweetPointIndex>0)
-	       tweetPointIndex--
-	    else
-	   		tweetPointIndex = tweetPoint.length-1
-    }
-    if (e.keyCode == 40) { //down arrow
-    	if(tweetPointIndex < tweetPoint.length-1)
-	       tweetPointIndex++
-	    else
-	   		tweetPointIndex = 0
-    }
-});
+//     if (e.keyCode == 37) {  //left arrow
+//     	if(tweetPointIndex>0)
+// 	       tweetPointIndex--
+// 	    else
+// 	   		tweetPointIndex = tweetPoint.length-1
+//     }
+//     if (e.keyCode == 39) { //right arrow
+//     	if(tweetPointIndex < tweetPoint.length-1)
+// 	       tweetPointIndex++
+// 	    else
+// 	   		tweetPointIndex = 0
+//     }
+//     if (e.keyCode == 38) {  //up arrow
+//     	if(tweetPointIndex>0)
+// 	       tweetPointIndex--
+// 	    else
+// 	   		tweetPointIndex = tweetPoint.length-1
+//     }
+//     if (e.keyCode == 40) { //down arrow
+//     	if(tweetPointIndex < tweetPoint.length-1)
+// 	       tweetPointIndex++
+// 	    else
+// 	   		tweetPointIndex = 0
+//     }
+// });
 
 
 

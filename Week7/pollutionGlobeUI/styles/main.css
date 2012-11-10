@@ -1,6 +1,6 @@
 
 
-body{margin: 0;background-color: #FFF;padding: 0;font-family: "Lucida Grande", Geneva, Verdana, Arial, sans-serif; font-size: 12px;line-height: 20px;overflow: hidden;}
+body{margin: 0;background-color: #FF0000;padding: 0;font-family: "Lucida Grande", Geneva, Verdana, Arial, sans-serif; font-size: 12px;line-height: 20px;overflow: hidden;}
 
 
 @font-face {
@@ -15,12 +15,12 @@ body{margin: 0;background-color: #FFF;padding: 0;font-family: "Lucida Grande", G
 
 }
 
-h1{z-index: 999; color: red; font-family: 'blanch_condensedregular'; font-size: 30px; font-weight: 100; position: absolute; left: 50%; margin-left: -66px; bottom: 68px}
+h1{z-index: 999; color: black; font-family: 'blanch_condensedregular'; font-size: 30px; font-weight: 100; position: absolute; left: 50%; margin-left: -66px; bottom: 68px}
 ul{z-index: 999; list-style: none; font-family: 'blanch_condensedregular'; font-size: 22px; font-weight: 100; padding: 0px}
 li{display: block; float: left; padding: 0px 8px 0px 8px; cursor: pointer; opacity: .2;}
 
-.non-active{opacity: .25; -webkit-opacity: .25; -moz-opacity: .25; -webkit-transition: all .3s ease; -moz-transition: all .3s ease; -ms-transition: all .3s ease; -o-transition: all .3s ease; transition: all .3s ease;}
-.non-active:hover{opacity: .45; -webkit-opacity: .45; -moz-opacity: .45; -webkit-transition: all .3s ease; -moz-transition: all .3s ease; -ms-transition: all .3s ease; -o-transition: all .3s ease; transition: all .3s ease;}
+.non-active{opacity: .25; } /*-webkit-opacity: .25; -moz-opacity: .25; -webkit-transition: all .3s ease; -moz-transition: all .3s ease; -ms-transition: all .3s ease; -o-transition: all .3s ease; transition: all .3s ease;*/
+.non-active:hover{opacity: .45; } /*-webkit-opacity: .45; -moz-opacity: .45; -webkit-transition: all .3s ease; -moz-transition: all .3s ease; -ms-transition: all .3s ease; -o-transition: all .3s ease; transition: all .3s ease;*/
 .active{color: red; opacity: 1; -webkit-opacity: 1; -moz-opacity: 1;}
 /*.non-active{opacity: .2}
 .non-active:hover{opacity: .4}*/
@@ -45,17 +45,17 @@ li{display: block; float: left; padding: 0px 8px 0px 8px; cursor: pointer; opaci
 	position:absolute;
 	width:500px;
 	height:500px;
-	clip:rect(0px,500px,500px,210px);
+	clip:rect(0px,500px,500px,205px);
 }
 .pie-piece > #slice.gt50 {
 	clip:rect(auto, auto, auto, auto);
 }
 .pie-piece > #slice > .pie {
 	position:absolute;
-	border: 10px solid #444;
+	border: 8px solid #444;
 	width:400px; /* 1 - (2 * border width) */
 	height:400px; /* 1 - (2 * border width) */
-	clip:rect(0em,210px,500px,0em);
+	clip:rect(0em,205px,500px,0em);
 	-moz-border-radius:250px;
 	-webkit-border-radius:250px; 
 	border-radius:250px;
