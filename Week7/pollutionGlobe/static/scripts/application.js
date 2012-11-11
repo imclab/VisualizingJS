@@ -205,6 +205,7 @@ function loadDataToParticles( year ){
 	 } )
 
 
+
     //load json data
 	$.getJSON('scripts/countries.json', function(data) {
 		window.attributes = []
@@ -328,7 +329,7 @@ function loop(){
 	//smoke fade out when nav year is clicked
 	if(fadeOut){
 		if(particlemMaterial.opacity > 0)
-			particlemMaterial.opacity -= .009
+			particlemMaterial.opacity -= .007
 		else
 			fadeOut = false;
 	}
@@ -337,7 +338,7 @@ function loop(){
 	//smoke fade in when new nav year is loaded
 	if(fadeIn){
 		if(particlemMaterial.opacity < particleOpacity)
-			particlemMaterial.opacity += .006
+			particlemMaterial.opacity += .002
 		else
 			fadeIn = false;
 	}
