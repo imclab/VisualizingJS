@@ -28,19 +28,19 @@ $('#dates li').click(function(){
 })
 
 
-$('#nav li img').click(function(){
-
-	if($(this).parent().attr("class") == "non-active"){
-		var newActiveImg = $(this).attr("src").replace('.png', '-active.png');
-		$(this).attr("src", newActiveImg)
+$('#nav li').click(function(){
+	// console.log( $(this)[0].children() )
+	if( $($(this)[0]).attr("class") == "non-active"){
+		var newActiveImg = $($(this)[0]).find('img').attr("src").replace('.png', '-active.png');
+		$($(this)[0]).find('img').attr("src", newActiveImg)
 		
 		newNonActiveImg = $('#nav .active').children().attr('src').replace('-active.png', '.png')
 		$('#nav .active').children().attr('src', newNonActiveImg)
 
 		$('#nav .active').removeClass('active').addClass('non-active');
-		$(this).parent().removeClass('non-active').addClass('active');
+		$($(this)[0]).removeClass('non-active').addClass('active');
 		
-		var srcAttr = $(this).attr("src")
+		var srcAttr = $($(this)[0]).find('img').attr("src")
 
 		if( srcAttr == "media/icon-globe-active.png"){
 			if(barChart)
@@ -61,7 +61,7 @@ $('#nav li img').click(function(){
 		if( srcAttr == "media/icon-barchart-active.png"){
 			if(pieChart)
 				removePieChart()
-			
+
 			createBarChart( year )
 		}
 	}
@@ -122,7 +122,7 @@ function createBarChart( year ){
 
 	})
 
-	$('#barChartWrapper').delay(500).animate({width:'toggle'},2000);
+	$('#barChartWrapper').delay(500).animate({width:'toggle'},1000);
 
 	barChart = true
 }
