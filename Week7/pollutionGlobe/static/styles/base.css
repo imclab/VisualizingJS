@@ -15,6 +15,8 @@ body{margin: 0;background-color: #FFF;padding: 0;font-family: "Lucida Grande", G
 }
 
 h1{z-index: 999; color: red; font-family: 'blanch_condensedregular'; font-size: 30px; font-weight: 100; position: absolute; left: 50%; margin-left: -66px; bottom: 68px}
+h2{z-index: 999; color: white; font-family: 'blanch_condensedregular'; font-size: 30px; font-weight: 100; height: 0px; left: 4px; width: 135px; }
+h3{z-index: 999; color: white; font-family: 'blanch_condensedregular'; font-size: 20px; font-weight: 100; height: 0px; left: 4px; width: 135px; margin-top: -22px; margin-left: 140px;}
 ul{z-index: 999; list-style: none; font-family: 'blanch_condensedregular'; font-size: 22px; font-weight: 100; padding: 0px}
 li{display: block; float: left; padding: 0px 8px 0px 8px; cursor: pointer; opacity: .2;}
 
@@ -23,15 +25,15 @@ li{display: block; float: left; padding: 0px 8px 0px 8px; cursor: pointer; opaci
 .active{color: red; opacity: 1; cursor: url('../media/cursor.png'),default;}
 /*.non-active{opacity: .2}
 .non-active:hover{opacity: .4}*/
-#dates{position: absolute; bottom: 36px; left: 50%; margin-left:  -110px;}
-#nav{position: absolute; bottom: 0px; left: 50%; margin-left: -59px}
+#dates{position: absolute; bottom: 36px; left: 50%; margin-left:  -110px; z-index: 999;}
+#nav{position: absolute; bottom: 0px; left: 50%; margin-left: -59px; z-index: 999;}
 #nav li{padding: 0px 10px 0px 10px;}
 
 #three{position: absolute; top: 0px;left: 0px;width:  100%;height: 100%; background-color: white;}
 #three:active{cursor: url('../media/cursor_drag.png'),default;}
 
 
-#lightbox{display: none; width: 100%; height: 100%; background-color: black; opacity: .8; position: absolute;}
-#barChartWrapper{display: none; position: absolute; top: 10px; opacity: 1}
+#lightbox{display: none; width: 100%; height: 100%; background-color: black; opacity: .85; position: absolute;}
+#barChartWrapper{display: none; position: absolute; top: 2%; opacity: 1; z-index: 900;}
 .barContainer{color: white; float: none; opacity: 1; font-family:  "Helvetica", Arial, sans-serif; font-weight: bold; font-size: 10px; padding: 0px 0px 1px 4px; background-color: red; width: 150px; height: 18px; margin-top: 4px}
 .barLabel{color: white; opacity: 1; font-family: "Helvetica", Arial, sans-serif;font-weight: bold;font-size: 10px;padding: 0px 0px 1px 4px;height: 18px;position: relative; width: 90px;margin: -20px 0px 0px 400px;}
