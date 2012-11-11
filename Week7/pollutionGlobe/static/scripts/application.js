@@ -117,7 +117,7 @@ $( document ).ready( function(){
 
 
 
-	var sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
+	var sprite = THREE.ImageUtils.loadTexture('media/smoke2.png')
 	window.particlemMaterial =  new THREE.ParticleBasicMaterial( {
 		color: 0xFF0000,
 		size: 100, 
@@ -194,7 +194,7 @@ function loadDataToParticles( year ){
 	group.remove( partGroup )
 
 	//create particle material
-	var sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
+	var sprite = THREE.ImageUtils.loadTexture('media/smoke2.png')
 	window.particlemMaterial =  new THREE.ParticleBasicMaterial( {
 		color: 0xFF0000,
 		size: 100, 
@@ -332,7 +332,8 @@ function loop(){
 		else
 			fadeOut = false;
 	}
-console.log("fadeOut "+fadeOut+", "+particlemMaterial.opacity)
+	// console.log("fadeOut "+fadeOut+", "+particlemMaterial.opacity)
+
 	//smoke fade in when new nav year is loaded
 	if(fadeIn){
 		if(particlemMaterial.opacity < particleOpacity)
