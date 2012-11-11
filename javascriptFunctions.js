@@ -39,6 +39,7 @@ function addCommas(nStr){
 
 
 function colorToHex(color) {
+	//provide color in string like colorToHex('rgb(255, 0, 0)')
     if (color.substr(0, 1) === '#') {
         return color;
     }

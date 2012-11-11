@@ -43,22 +43,43 @@ $('#nav li img').click(function(){
 		var srcAttr = $(this).attr("src")
 
 		if( srcAttr == "media/icon-globe-active.png"){
-			globe = true
+			if(barChart)
+				removeBarChart()
+			if(pieChart)
+				removePieChart()
+
+			removeLightbox()
 		}
 
 		if( srcAttr == "media/icon-piechart-active.png"){
+			if(barChart)
+				removeBarChart()
+
 			createPieChart()
 		}
 
 		if( srcAttr == "media/icon-barchart-active.png"){
+			if(pieChart)
+				removePieChart()
+			
 			createBarChart( year )
 		}
 	}
 })
 
 
+
+function removeLightbox(){
+	$('#lightbox').fadeOut(300)
+}
+
+
+function removePieChart(){
+	console.log('remove pie chart here')
+}
+
 function createPieChart(){
-	console.log('create pie chart here')
+	$('#lightbox').fadeIn(800)
 }
 
 
