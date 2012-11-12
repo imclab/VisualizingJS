@@ -7,7 +7,7 @@ var goDown = false
 //vars
 var rotationx = rotationy = rotationz = 0
 var positionx, positiony, positionz
-var speed = 1.0
+var speed = 400.0
 
 var _q1 = new THREE.Quaternion();
 var axisX = new THREE.Vector3( 1, 0, 0 )
@@ -24,7 +24,7 @@ function rotateOnAxis( object, axis, angle ) {
 
 $( document ).ready( function(){
 	airplane = new THREE.Object3D()
-	childDirection = new THREE.Object3D()
+	group = new THREE.Object3D()
 
 	setupThree()
 	addLights()
@@ -39,7 +39,7 @@ $( document ).ready( function(){
 	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/negy.jpg')})); //floor
 	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/negz.jpg')})); //front
 	skyboxMartials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('media/posz.jpg')}));	//back
-	var skyboxGeom = new THREE.CubeGeometry( 4000, 4000, 4000, 1, 1, 1, skyboxMartials );
+	var skyboxGeom = new THREE.CubeGeometry( 400000, 400000, 400000, 1, 1, 1, skyboxMartials );
 	window.skybox = new THREE.Mesh( skyboxGeom, new THREE.MeshFaceMaterial() );
 	skybox.scale.x = -1;
 	scene.add( skybox )
@@ -47,11 +47,11 @@ $( document ).ready( function(){
 
 
 	//LANDSCAPE
-	var planeGeo = new THREE.PlaneGeometry(4048, 4048, 5, 5);
+	var planeGeo = new THREE.PlaneGeometry(400000, 400000, 5, 5);
 	var planeMat = new THREE.MeshLambertMaterial({color: 0xFFFFFF, map: THREE.ImageUtils.loadTexture('media/grasslight-big.jpg')});
 	var plane = new THREE.Mesh(planeGeo, planeMat);
 	plane.rotation.x = -Math.PI/2;
-	plane.position.y = -205;
+	plane.position.y = -12000;
 	plane.receiveShadow = true;
 	scene.add(plane);
 
@@ -81,6 +81,19 @@ $( document ).ready( function(){
 		airplane.add(modelPlane)
 		airplane.useQuaternion = true;
 	});
+
+	var modelTower
+	var loader2 = new THREE.ColladaLoader()
+	loader.options.convertUpAxis = true
+	loader.load( 'media/Archive.dae', function(collada) {
+		modelTower = collada.scene
+		modelTower.scale.x = modelTower.scale.y = modelTower.scale.z = 1000
+		modelTower.position.y = -4000
+		modelTower.rotation.set(-0.1,0,0); 
+
+		scene.add(modelTower)
+	})
+
 
 
 	//PARTICLE SYSTEM
@@ -115,17 +128,17 @@ $( document ).ready( function(){
 
 
 
-	// adding cube to calculate plane direction
-	var cube = new THREE.Mesh( new THREE.CubeGeometry( 10, 10, 10 ), new THREE.MeshNormalMaterial() );   
-	childDirection.add(cube)
-	scene.add(childDirection)
+	// // adding cube to calculate plane direction
+	// var cube = new THREE.Mesh( new THREE.CubeGeometry( 10, 10, 10 ), new THREE.MeshNormalMaterial() );   
+	// childDirection.add(cube)
+	// scene.add(childDirection)
 
 
-	var axes = new THREE.AxisHelper();
-	airplane.add( axes );
+	// var axes = new THREE.AxisHelper();
+	// airplane.add( axes );
 
-	var axes = new THREE.AxisHelper();
-	scene.add( axes );
+	// var axes = new THREE.AxisHelper();
+	// scene.add( axes );
 	
 
 
@@ -231,7 +244,7 @@ function loop(){
 	}
 
 
-	airplane.translateZ( -4 );
+	airplane.translateZ( -speed );
 
 
 
@@ -271,7 +284,7 @@ function setupThree(){
 	VIEW_ANGLE = 45,
 	ASPECT     = WIDTH / HEIGHT,
 	NEAR       = 0.1,
-	FAR        = 10000
+	FAR        = 500000
 	
 	window.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR )
 	// camera.target.position.copy( group.position );

@@ -45,7 +45,7 @@ li{display: block; float: left; padding: 0px 8px 0px 8px; cursor: pointer; opaci
 	position:absolute;
 	width:500px;
 	height:500px;
-	clip:rect(0px,500px,500px,205px);
+	clip:rect(0px,500px,500px,208px);
 }
 .pie-piece > #slice.gt50 {
 	clip:rect(auto, auto, auto, auto);
@@ -53,9 +53,9 @@ li{display: block; float: left; padding: 0px 8px 0px 8px; cursor: pointer; opaci
 .pie-piece > #slice > .pie {
 	position:absolute;
 	border: 8px solid #444;
-	width:400px; /* 1 - (2 * border width) */
-	height:400px; /* 1 - (2 * border width) */
-	clip:rect(0em,205px,500px,0em);
+	width:400px;
+	height:400px;
+	clip:rect(0px,208px,500px,0px);
 	-moz-border-radius:250px;
 	-webkit-border-radius:250px; 
 	border-radius:250px;
