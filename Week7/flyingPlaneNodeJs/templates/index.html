@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="styles/base.css" />
+		<title>Three.js Model Loader</title>
+	</head>
+	<body>
+		<div id="three"></div>
+		<script src="http:///localhost:5000/socket.io/socket.io.js"></script>
+		<script charset="utf-8" src="scripts/jquery.js"></script>
+		<script charset="utf-8" src="scripts/three.js"></script>
+		<script charset="utf-8" src="scripts/ColladaLoader.js"></script>
+		<script charset="utf-8" src="scripts/application.js"></script>
+		<div id="tag">Three.js - Model Loader<br/>click and drag to rotate</div>
+
+		<script type="text/javascript">
+			var dataZ = 0
+			var dataX = 0
+			var dataY = 0
+			var rolling = false
+			var pitching = false
+
+			var socket = io.connect('http://localhost:5000');
+			socket.on('data', function (data) {
+				dataZ = data.roll
+				dataX = data.pitch
+				dataY = -data.yaw
+				// console.log(data.pitch)
+				// rotateOnAxis(airplane, axisY, -data.yaw)
+			})
+
+			// setInterval(changeRolling, 500)
+			// setInterval(changePitching, 500)
+
+			// function changeRolling(){
+			// 	rolling = !rolling
+			// 	// console.log('rolling')
+			// }
+			// function changePitching(){
+			// 	pitching = !rolling
+			// 	// console.log('pitching')
+			// }
+
+		</script>
+	</body>
+</html>
