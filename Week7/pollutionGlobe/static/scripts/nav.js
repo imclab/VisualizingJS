@@ -134,7 +134,7 @@ function createBarChart( year ){
 
 	})
 
-	$('#barChartWrapper').delay(500).animate({width:'toggle'},1000);
+	$('#barChartWrapper').delay(300).animate({width:'toggle'},600);
 
 	barChart = true
 }
