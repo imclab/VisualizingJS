@@ -20,9 +20,14 @@ $('#dates li').click(function(){
 		// 	removeLightBox()
 		// }
 
+		//if year is changed while viewing a chart
 		if(barChart){
 			removeBarChart()
 			setTimeout(function(){  createBarChart( year )  },510)
+		}
+		if(pieChart){
+			removePieChart()
+			setTimeout(function(){  createPieChart( year )  },510)
 		}
 	}
 })
@@ -55,7 +60,7 @@ $('#nav li').click(function(){
 			if(barChart)
 				removeBarChart()
 
-			createPieChart()
+			createPieChart( year )
 		}
 
 		if( srcAttr == "media/icon-barchart-active.png"){
@@ -75,11 +80,18 @@ function removeLightbox(){
 
 
 function removePieChart(){
-	console.log('remove pie chart here')
+	$( '#pie-chart' ).fadeOut(300)
+	setTimeout(function(){
+		$( '#pie-chart' ).remove()
+	},300)
+	pieChart = false
 }
 
-function createPieChart(){
+function createPieChart(year){
 	$('#lightbox').fadeIn(800)
+	$('body').append( $( '<div>' ).attr('id','pie-chart') )
+	renderChart( year )
+	pieChart = true
 }
 
 

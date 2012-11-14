@@ -28,19 +28,18 @@ li{display: block; float: left; padding: 0px 8px 0px 8px; cursor: pointer; opaci
 #nav{position: absolute; bottom: 0px; left: 50%; margin-left: -59px}
 #nav li{padding: 0px 10px 0px 10px;}
 
-#pie-chart{position: absolute; top: 5%; left: 50%; margin-left: -220px;}
+
 #lightbox-bg{position: absolute; top: 0px; left: 0px; background-color: black; opacity: .8; width: 100%; height: 100%; z-index: 10}
 
 #three{position: absolute; top: 0px;left: 0px;width:  100%;height: 100%; background-color: white}
 
 
 
-
-
+/*
 .pie-piece {
 	position:relative;
-}
-
+}*/
+#pie-chart{position: absolute; top: 5%; left: 50%; margin-left: -220px; z-index: 999}
 .pie-piece > #slice {
 	position:absolute;
 	width:500px;
