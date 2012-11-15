@@ -107,6 +107,8 @@ function removeBarChart(){
 
 function createBarChart( year ){
 	$('#lightbox').fadeIn(800)
+
+	//create bar Chart
 	$('body').append( $( '<ul>' ).attr('id','barChartWrapper') )
 	$('#barChartWrapper').append( $('<h2>').text('Highest Emissions') )
 	.append( $('<h3>').text('(metric tons)') )
@@ -115,13 +117,15 @@ function createBarChart( year ){
 	var greenColor = 0;
 	var thisColor = colorToHex('rgb(255, 0, 0)')
 
+
 	$.getJSON('scripts/countries.json', function(data) {
 		colorToHex('rgb(120, 120, 240)')
 		data.sort(function(a,b) { return parseFloat(a.pollution[year]) - parseFloat(b.pollution[year]) } );
 
+		//highest emissions chart
 		for(var i=data.length-1; i>data.length-21; i--){
 
-			var thisWidth = Math.round( map(data[i].pollution[year], 300, 8400, 60, $(window).width()/2-100 ) ) + "px"
+			var thisWidth = Math.round( map(data[i].pollution[year], 300, 8400, 60, $(window).width()-100 	) ) + "px"
 			var thisTxt = Math.round(data[i].pollution[year] * 1000000)
 
 			$('#barChartWrapper')
@@ -135,6 +139,7 @@ function createBarChart( year ){
 	})
 
 	$('#barChartWrapper').delay(300).animate({width:'toggle'},600);
+
 
 	barChart = true
 }
