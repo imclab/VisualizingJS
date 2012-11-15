@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="styles/base.css" />
+		<title>Webcam template</title>
+	</head>
+	<body>
+
+
+
+
+		<div class="floatingBlock">
+			<video  width="320" height="240" id="camera" autoplay></video>
+			<div class="pad">
+				<strong>Camera</strong>. 
+				The raw camera feed streaming from a 
+				<code>VIDEO</code> HTML element.
+			</div>
+		</div>
+		
+
+		<div class="floatingBlock">
+			<canvas width="320" height="240" id="observer"></canvas>
+			<div class="pad">
+				<strong>Observer</strong>. 
+				We'll push frames from the <code>VIDEO</code>
+				into this <code>CANVAS</code> for easy inspection.
+			</div>
+		</div>
+		
+
+		<div class="floatingBlock">
+			<canvas width="320" height="240" id="storage"></canvas>
+			<div class="pad">
+				<strong>Storage</strong>.
+				Store an old frame in this <code>CANVAS</code>
+				so we can compare it to a subsequent frame later.
+			</div>
+		</div>
+
+
+		<div class="floatingBlock">
+			<canvas width="320" height="240" id="filter"></canvas>
+			<div class="pad">
+				<strong>Filter</strong>.
+				Display the results of our selected image filter in this
+				<code>CANVAS</code>.
+			</div>
+		</div>
+		
+
+
+
+		<div class="floatingBlock" id="allow">
+			<div class="pad">
+				Click “Allow” above to start the webcam.
+			</div>
+		</div>
+		<div class="floatingBlock" id="error">
+				Oh no! Webcam’s no good.
+			</div>
+		</div>
+		<div class="clear"></div>
+
+
+		<script charset="utf-8" src="scripts/jquery.js"></script>
+		<script charset="utf-8" src="scripts/skip.js"></script>
+		<script charset="utf-8" src="scripts/application.js"></script>
+	</body>
+</html>

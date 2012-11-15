@@ -121,7 +121,7 @@ function createBarChart( year ){
 
 		for(var i=data.length-1; i>data.length-21; i--){
 
-			var thisWidth = Math.round( map(data[i].pollution[year], 300, 8400, 60, $(window).width() -200) ) + "px"
+			var thisWidth = Math.round( map(data[i].pollution[year], 300, 8400, 60, $(window).width()/2-100 ) ) + "px"
 			var thisTxt = Math.round(data[i].pollution[year] * 1000000)
 
 			$('#barChartWrapper')
