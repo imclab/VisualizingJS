@@ -44,22 +44,6 @@ $( document ).ready( function(){
 	
 
 
-
-   // create the floor
-  //   planeGeometry = new THREE.PlaneGeometry( 400, 400, 1 );
-  //   planeMaterial = new THREE.MeshBasicMaterial({
-		// color: 0xFFFFFF,
-		// map: THREE.ImageUtils.loadTexture("media/floor.png"),
-		// transparent: true,
-		// opacity: .8
-  //   });
-
-  //   plane = new THREE.Mesh(planeGeometry, planeMaterial);
-  //   plane.rotation.x = Math.PI * -0.5;
-  //   plane.position.y = -160;
-  //   scene.add(plane);
-
-
    // background-glow
     planeGeometry = new THREE.PlaneGeometry( 400, 400, 1 );
     planeMaterial = new THREE.MeshBasicMaterial({
@@ -81,21 +65,6 @@ $( document ).ready( function(){
 	
 	//earth object	
 	window.earthRadius = 100
-	//my custom bump map
-	// var earthBumpImage = THREE.ImageUtils.loadTexture( "media/worldTexuture.jpg" );
-	// var earthBumpMaterial = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture( 'media/worldTexuture.jpg' ), transparency: true, opacity: 1, ambient: 0xffabe4, color: 0xace3ff, specular: 0xffabe4, shininess: 0, perPixel: true, metal: true } ); //bumpMap: earthBumpImage, bumpScale: 19, 
-	
-	// window.earth = new THREE.Mesh(
-	// 	new THREE.SphereGeometry(earthRadius, 32, 32), earthBumpMaterial
-	// );
-	
-	// earth.position.set( 0, 0, 0 )
-	// earth.receiveShadow = true
-	// earth.castShadow = true
-	// group.add( earth )
-
-
-
 	var geometry = new THREE.SphereGeometry(earthRadius, 40, 40)
 	var shader = Shaders['earth'];
 	uniforms = shader.uniforms;
@@ -112,11 +81,6 @@ $( document ).ready( function(){
 
 	
 
-
-
-
-
-
 	var sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
 	window.particlemMaterial =  new THREE.ParticleBasicMaterial( {
 		color: 0xFF0000,
@@ -126,7 +90,6 @@ $( document ).ready( function(){
 	    opacity: .036,
 		// blending: THREE.AdditiveBlending
 	 } )
-
 
 
     var geometry = new THREE.Geometry()
@@ -162,7 +125,7 @@ $( document ).ready( function(){
 					attributes.push(thisAttribute)
 					numberofParticles++
 				}
-				// console.log(thisPollution)
+
 		});
 
 		
@@ -183,12 +146,6 @@ $( document ).ready( function(){
 })
 
 
-// function fadeParticlesOut( particlemMaterial ){
-// 	particlemMaterial.opacity-= .004
-// }
-// function fadeParticlesIn( particlemMaterial ){
-// 	particlemMaterial.opacity+= .005
-// }
 
 function loadDataToParticles( year ){
 	group.remove( partGroup )
@@ -383,11 +340,6 @@ function loop(){
 		if(rotateY >= 179){
 			rotateY = 179
 		}
-		// console.log(rotateX+" "+rotateY)
-		
-		//roate just on the x axes
-		// camera.position.x = earth.position.x + Math.cos(rotateX * Math.PI/180) * cameraRadius;
-		// camera.position.z = earth.position.z + Math.sin(rotateX * Math.PI/180) * cameraRadius;
 
 		camera.position.x = earth.position.x + cameraRadius * Math.sin(rotateY * Math.PI/180) * Math.cos(rotateX * Math.PI/180)
 		camera.position.z = earth.position.y + cameraRadius * Math.sin(rotateY * Math.PI/180) * Math.sin(rotateX * Math.PI/180)
@@ -402,7 +354,7 @@ function loop(){
 
 	camera.up = new THREE.Vector3(0, 1, 0)
 	camera.lookAt( scene.position );
-	// words.lookAt( camera )
+
 
 			
 	render()
@@ -415,64 +367,14 @@ function loop(){
 
 
 
-function dropPin( latitude, longitude, color, markerLength){
-
-	var 
-	group1 = new THREE.Object3D(),
-	group2 = new THREE.Object3D();
-	marker = new THREE.Mesh(
-		new THREE.CubeGeometry( .5, markerLength, .5 ),
-		new THREE.MeshBasicMaterial({ 
-			color: color,
-			transparent: true,
-			opacity: .5,
-			visible: true
-		})
-	)
-	marker.position.y = markerLength/2+earthRadius
-
-	group1.add( marker )
-	group1.rotation.x = ( 90 - latitude  ).degreesToRadians()
-
-	group2.add( group1 )
-	group2.rotation.y = ( 90 + longitude ).degreesToRadians()
-
-	group2.markerLength = markerLength
-	group2.latitude = latitude
-	group2.longitude = longitude
-	group2.rotX = Math.abs( 90 - latitude  )
-	group2.rotY = Math.abs(longitude)
-
-	group2.marker = marker;
-
-	var markerLengthDest = 60
-	group2.growMarker = function(){
-		if(group2.markerLength < markerLengthDest){ //limit length point grows
-			var lerper = markerLengthDest - group2.markerLength
-			group2.markerLength += lerper/20;
-			group2.markerScaleY = group2.markerLength / markerLength //divide current size by original size
-			group2.marker.scale.y = group2.markerScaleY;
-			group2.marker.position.y = group2.markerLength/2+earthRadius	
-		}
-	}
-	
-	return group2
-}
 
 
-
-
-//  Why separate this simple line of code from the loop() function?
-//  So that our controls can also call it separately.
 function render(){				
 	renderer.render( scene, camera )
 }
 
 
 
-
-//  I'll leave this in for the moment for reference, but it seems to be
-//  having some issues ...
 
 function surfacePlot( params ){
 	params = cascade( params, {} )
@@ -545,7 +447,7 @@ function addLights(){
 	group.add( ambient )	
 	
 	
-	// //  Now let's create a Directional light as our pretend sunshine.
+	// //  Create a Directional light as pretend sunshine.
 	directional = new THREE.DirectionalLight( 0xCCCCCC, .7 )
 	directional.castShadow = true
 	scene.add( directional )
@@ -568,150 +470,6 @@ function addLights(){
 
 
 
-function streamTweets(){
-
-    var socket = io.connect('http://108.171.176.74:8080');
-
-	//messages received
-    socket.on('init', function(data) {        
-        $('#tweets').text(data)
-    });
-    socket.on('picture', function(data) {        
-        $('#tweetImg').attr("src", data);
-    });
-    socket.on('username', function(data) {        
-        $('#username').text(data);
-    });
-    socket.on('location', function(data) {        
-        $('#location').text(data);
-        tweetsLocation.push(data);
-    });
-
-	//ask for message
-	function requestData(){
-	    socket.emit("requestNewData", {"nothing":"here"});
-	}
-	requestData();//initial request on page load
-
-
-	//add new pin to world
-	var addPin = function(){
-		// if(tweetsLocation[tweetsLocation.length-1].length > 2){
-		// 	locateWithGoogleMaps( tweetsLocation[tweetsLocation.length-1] )
-		// }
-	}
-
-	setInterval(function(){
-		requestData();
-		addPin();
-	}, timePerTweet);
-}
-
-
-var j = 4;
-var markerLength = 2
-// function locateWithGoogleMaps( text ){	
-
-// 	geocoder.geocode( { 'address': text }, function( results, status ){
-
-// 		if( status == google.maps.GeocoderStatus.OK ){
-
-// 			console.log( '\nGoogle maps found a result for “'+ text +'”:' )
-// 			console.log( results[0].geometry.location )
-// 			// tweetLocationGeo.push({
-
-// 			// 	latitude:  results[0].geometry.location.lat(),
-// 			// 	longitude: results[0].geometry.location.lng()
-// 			// })
-// 			var lat = (Math.random()*180) -90
-// 			var lon = (Math.random()*360) - 180
-// 			var vector = surfacePlot( {latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng(), center: {x:0,y:0,z:0}, radius: earthRadius} )
-// 			var point = new THREE.Mesh(
-// 				new THREE.SphereGeometry( 5, 32 , 32 ), tweetPointMaterial
-// 			);
-// 			point.position.set( vector.x, vector.y, vector.z )
-// 			point.cameraDestination = new THREE.Vector3( vector.xC, vector.yC, vector.zC )
-// 			point.message = j
-// 			j++
-// 			tweetPoint.push(point)
-// 			group.add(point)
-
-// 			var dropName = dropPin(
-// 				 results[0].geometry.location.lat(),
-// 				 results[0].geometry.location.lng(),
-// 				0xFF0000,
-// 				markerLength
-// 			)
-// 			tweetPin.push(dropName)
-// 			group.add(dropName)
-// 		} 
-// 		else {
-
-// 			console.log( '\nNOPE. Even Google cound’t find “'+ text +'.”' )
-// 			console.log( 'Status code: '+ status )
-// 		}
-// 	})
-// }
-
-
-// function nextTweet(){
-	
-// 	if( tweetsIndex + 1 < tweetLocationGeo.length-1 ){
-
-// 		tweetsIndex ++
-
-// 		//  Ideas for you crazy kids to spruce up your homework:
-// 		//  1. Only shine the sun on the part of Earth that is actually
-// 		//     currently experience daylight!
-// 		//  2. Rotate the globe to face the tweet you’re plotting.
-// 		//  3. Don’t just place the pin, but animate its appearance;
-// 		//     maybe it grows out of the Earth?
-// 		//  4. Display the contents of the tweet. I know, I know. We haven’t
-// 		//     even talked about text in Three.js yet. That’s why you’d get
-// 		//     über bragging rights.
-
-// 		earth.add( dropPin(
-
-// 			tweetLocationGeo[ tweetsIndex ].latitude,
-// 			tweetLocationGeo[ tweetsIndex ].longitude,
-// 			0xFFFF00,
-// 			100
-// 		))
-		
-
-// 		//  I’m trying to be very mindful of Twitter’s rate limiting.
-// 		//  Let’s only try fetching more tweets only when we’ve exhausted our
-// 		//  tweets[] array supply.
-// 		//  But leave this commented out when testing!
-		
-// 		//if( tweetsIndex === tweets.length - 1 ) fetchTweets()
-// 	}	
-// 	setTimeout( nextTweet, timePerTweet )
-// }
-
-//// code to check for mouse clicks
-// var projector = new THREE.Projector();
-// document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-// function onDocumentMouseDown( event ) {
-
-// 	event.preventDefault();
-
-// 	var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, 
-// 		- ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
-// 	projector.unprojectVector( vector, camera );
-
-// 	var ray = new THREE.Ray( camera.position, vector.subSelf( camera.position ).normalize() );
-
-// 	var intersects = ray.intersectObjects( tweetPoint );
-	
-// 	if ( intersects.length > 0 ) {
-// 		if(!cameraTracking)cameraTracking=true
-// 		// change the point to look at the number of the object
-// 		tweetPointIndex = intersects[0].object.message
-// 		console.log(intersects[0].object.country)
-// 	}
-// }
-
 
 //resize method
 window.addEventListener( 'resize', onWindowResize, false );
@@ -722,6 +480,7 @@ function onWindowResize(){
 
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
+
 
 //larrow keys pressed
 // $(document).keydown(function(e){
@@ -764,6 +523,7 @@ var mouseX = 0, mouseY = 0, pmouseX = 0, pmouseY = 0;
 $(document).mousedown(function() {
 	dragging=true
 })
+
 $(document).mousemove(function(event) {
 	//set mouse variables
 	pmouseX = mouseX;
@@ -779,7 +539,8 @@ $(document).mousemove(function(event) {
 		rotateVX += (mouseX - pmouseX) / 2 * Math.PI / 180 *3;
 	    rotateVY += (mouseY - pmouseY) / 2 * Math.PI / 180 *3;
 	}     	
-});
+})
+
 $(document).mouseup(function() {
 	dragging=false
 })

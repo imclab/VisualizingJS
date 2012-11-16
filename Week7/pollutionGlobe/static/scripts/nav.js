@@ -92,10 +92,6 @@ function createPieChart(year){
 	$('body').append( $( '<div>' ).attr('id','pie-chart') )
 	renderChart( year )
 	
-// 	setTimeout(function(){
-// $('#pie-chart').append( $('<h2>').attr('id','pie-title').text('Continent').fadeIn(500) )
-// 	}, 100)
-
 	pieChart = true
 }
 
