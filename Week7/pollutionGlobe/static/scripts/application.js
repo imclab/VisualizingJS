@@ -34,6 +34,9 @@ var fadeOut = false
 var fadeIn = false
 
 $( document ).ready( function(){
+	if(BrowserDetect.browser != "Chrome")
+		alert('This website uses webGL.  For best performances please view this website Chrome')
+	
 	//group to place objects in
 	window.partGroup = new THREE.Object3D()
 	window.earthGroup = new THREE.Object3D()
