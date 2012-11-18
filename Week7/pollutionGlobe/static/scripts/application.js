@@ -83,9 +83,19 @@ $( document ).ready( function(){
 
 	
 
+
+	// var shaderP = THREE.ShaderExtras[ "focus" ]
+	// uniformsP = shader.uniforms;
+
+	// materialP = new THREE.ShaderMaterial({
+	//       uniforms: uniforms,
+	//       vertexShader: shader.vertexShader,
+	//       fragmentShader: shader.fragmentShader
+ //    });
+
 	var sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
 	window.particlemMaterial =  new THREE.ParticleBasicMaterial( {
-		color: 0xFF0000,
+		color: 0x000000,
 		size: 100, 
 		map: sprite,
 	    transparent: true,
