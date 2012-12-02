@@ -35,7 +35,7 @@ var fadeIn = false
 
 $( document ).ready( function(){
 	if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-	
+
 	//group to place objects in
 	window.partGroup = new THREE.Object3D()
 	window.earthGroup = new THREE.Object3D()
@@ -43,7 +43,7 @@ $( document ).ready( function(){
 
 	setupThree()
 	addLights()
-	
+
 
 
    // background-glow
@@ -64,7 +64,7 @@ $( document ).ready( function(){
 
 
 
-	
+
 	//earth object	
 	window.earthRadius = 100
 	var geometry = new THREE.SphereGeometry(earthRadius, 40, 40)
@@ -81,7 +81,7 @@ $( document ).ready( function(){
 	earth.matrixAutoUpdate = false
 	earthGroup.add( earth )
 
-	
+
 
 
 	// var shaderP = THREE.ShaderExtras[ "focus" ]
@@ -93,14 +93,17 @@ $( document ).ready( function(){
 	//       fragmentShader: shader.fragmentShader
  //    });
 
-	var sprite = THREE.ImageUtils.loadTexture('media/smoke.png')
+	var sprite = THREE.ImageUtils.loadTexture('media/smoke2.png')
 	window.particlemMaterial =  new THREE.ParticleBasicMaterial( {
 		color: 0x000000,
 		size: 100, 
 		map: sprite,
 	    transparent: true,
 	    opacity: .036,
-		// blending: THREE.AdditiveBlending
+		blending: THREE.CustomBlending,
+		blendSrc: THREE.SrcAlphaSaturateFactor,
+		//blendDst: THREE.OneFactor,
+		blendEquation: THREE.AddEquation
 	 } )
 
 
@@ -110,16 +113,16 @@ $( document ).ready( function(){
 		window.numberofParticles = 0
 
 		$.each(data, function(key, val) {
-			
+
 				var vector = surfacePlot( {latitude: parseFloat(val.latitude), longitude: parseFloat(val.longitude), center: {x:0,y:0,z:0}, radius: earthRadius} )
-				
+
 				//normalize the vector direction it should travel
 				var vecLength = Math.sqrt( vector.x*vector.x + vector.y*vector.y + vector.z*vector.z)
 				var velocityX = vector.x / vecLength //normalize it
 				var velocityY = vector.y / vecLength
 				var velocityZ = vector.z / vecLength
 				var velocity = new THREE.Vector3(velocityX, velocityY, velocityZ)
-				
+
 				var thisPollution = val.pollution["2010"]
 
 				if(thisPollution > 1){
@@ -140,7 +143,7 @@ $( document ).ready( function(){
 
 		});
 
-		
+
 		window.particleSys = new THREE.ParticleSystem( geometry, particlemMaterial )
 		particleSys.sortParticles = true
 		partGroup.add(particleSys)
@@ -169,8 +172,10 @@ function loadDataToParticles( year ){
 		size: 100, 
 		map: sprite,
 	    transparent: true,
-	    // opacity: .036,
-		// blending: THREE.AdditiveBlending
+		blending: THREE.CustomBlending,
+		blendSrc: THREE.SrcAlphaSaturateFactor,
+		//blendDst: THREE.OneFactor,
+		blendEquation: THREE.AddEquation
 	 } )
 
 
@@ -182,16 +187,16 @@ function loadDataToParticles( year ){
 		window.numberofParticles = 0
 
 		$.each(data, function(key, val) {
-			
+
 				var vector = surfacePlot( {latitude: parseFloat(val.latitude), longitude: parseFloat(val.longitude), center: {x:0,y:0,z:0}, radius: earthRadius} )
-				
+
 				//normalize the vector direction it should travel
 				var vecLength = Math.sqrt( vector.x*vector.x + vector.y*vector.y + vector.z*vector.z)
 				var velocityX = vector.x / vecLength //normalize it
 				var velocityY = vector.y / vecLength
 				var velocityZ = vector.z / vecLength
 				var velocity = new THREE.Vector3(velocityX, velocityY, velocityZ)
-				
+
 				var thisPollution = val.pollution[year]
 
 				if(thisPollution > 1){
@@ -213,7 +218,7 @@ function loadDataToParticles( year ){
 
 				i++
 		});
-		
+
 
 		partGroup.remove(particleSys) //remove previous ps system
 		window.particleOpacity = map(numberofParticles, 2506, 2753, .01, .04)
@@ -285,7 +290,7 @@ var distance = function( point1, point2 ){
 	return dist
 }
 
-	
+
 var cameraRadius = 400;
 var angle = 1.0;
 var speed = .03;	
@@ -368,10 +373,10 @@ function loop(){
 	camera.lookAt( scene.position );
 
 
-			
+
 	render()
-	
-	
+
+
 	//  This function will attempt to call loop() at 60 frames per second.
 	//  See  this Mozilla developer page for details: https://developer.mozilla.org/en-US/docs/DOM/window.requestAnimationFrame
 	window.requestAnimationFrame( loop )
@@ -394,7 +399,7 @@ function surfacePlot( params ){
 	params.longitude = cascade( params.longitude.degreesToRadians(), 0 ) * -1
 	params.center    = cascade( params.center, new THREE.Vector3( 0, 0, 0 ))
 	params.radius    = cascade( params.radius, 60 )
-	
+
 	//calculate point on sphere
 	var 
 	x = params.center.x + params.latitude.cosine() * params.longitude.cosine() * params.radius,
@@ -425,7 +430,7 @@ function setupThree(){
 	ASPECT     = WIDTH / HEIGHT,
 	NEAR       = 0.1,
 	FAR        = 10000
-	
+
 	window.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR )
 	camera.position.set( 100, 100, 400 ) //starting position of camera - this is desregarded in the loop as its using spherical coordinates
 	camera.lookAt( scene.position )
@@ -439,7 +444,7 @@ function setupThree(){
 
 	//add canvas to div in DOM
 	$( '#three' ).append( renderer.domElement )
-	
+
 
 }
 
@@ -449,16 +454,16 @@ function setupThree(){
 
 
 function addLights(){
-	
-	
+
+
 	window.ambient
 	window.directional
-	
-	
+
+
 	ambient = new THREE.AmbientLight( 0x666666 )
 	group.add( ambient )	
-	
-	
+
+
 	// //  Create a Directional light as pretend sunshine.
 	directional = new THREE.DirectionalLight( 0xCCCCCC, .7 )
 	directional.castShadow = true
