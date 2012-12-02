@@ -1,8 +1,12 @@
 var elements = ['<input type="radio" checked>', 
-				'<input type="radio">',
-				'<input type="checkbox">',
+				'<input type="radio" checked>',
+				'<input type="checkbox" checked>',
 				'<input type="checkbox" checked>']
 
+
+
+//dom resolution
+var resolutionW, resolutionH, resolution
 
 //camera states
 var
@@ -131,7 +135,7 @@ function checkCamera(){
 function filterVideo(){
 
 	var
-	x, y, i,
+	x, y, i, loc
 	w = camera.width,
 	h = camera.height,
 	observerFrame = observerContext.getImageData( 0, 0, w, h )
@@ -142,44 +146,41 @@ function filterVideo(){
 	//  But breaking it apart into X and Y will help you conceptually
 	//  when trying to write your own functions that play with
 	//  individual rows, columns, or even specific pixels of the video.
-	
-	for( y = 0; y < h; y ++ ){
+	// var test = 0
+	for( y = 0; y < h; y += 13 ){
 		
-		for( x = 0; x < w; x ++ ){
+		for( x = 0; x < w; x += 13){
 		
 
 			//  Here's how we convert from X and Y to the proper pixel index:
 
 			i  = ( y * w + x ) * 4
-
-
-			//  FILTER: GRAYSCALE
-			//  Take the average brightness of the Red (i), Green (i+1), 
-			//  and Blue (i+2) channels from the "observerFrame" and apply
-			//  that average to the "filterFrame".
-			//  Don't forget to set the Alpha channel (i+3) up to 255!
-
-			if( filterMethod === FILTER_GRAYSCALE ){
+			loc = y * w + x
 				
-				var average = Math.round((
+			var average = Math.round((
 
-					observerFrame[ 'data' ][ i   ] +
-					observerFrame[ 'data' ][ i+1 ] +
-					observerFrame[ 'data' ][ i+2 ]
-				) / 3 )
-				observerFrame[ 'data' ][ i   ] = average
-				observerFrame[ 'data' ][ i+1 ] = average
-				observerFrame[ 'data' ][ i+2 ] = average
-				observerFrame[ 'data' ][ i+3 ] = 255
-			}else {
+				observerFrame[ 'data' ][ i   ] +
+				observerFrame[ 'data' ][ i+1 ] +
+				observerFrame[ 'data' ][ i+2 ]
+			) / 3 )
 
-				observerFrame[ 'data' ][ i   ] = observerFrame[ 'data' ][ i   ]
-				observerFrame[ 'data' ][ i+1 ] = observerFrame[ 'data' ][ i+1 ]
-				observerFrame[ 'data' ][ i+2 ] = observerFrame[ 'data' ][ i+2 ]
-				observerFrame[ 'data' ][ i+3 ] = 255
-			}
+			
+			
+			var domIndex = Math.floor(map(loc, 0, w/13 * h/13, 0, resolution-1))
+			// console.log(domIndex)
+			if(average < 100) $('#domScreenWrapper').children()[domIndex].checked = false
+				else $('#domScreenWrapper').children()[domIndex].checked = true
+
+			// else $('#domScreenWrapper').children()[domIndex].checked = true
+			// console.log(domIndex)
+			// if(i % 13 == 0){
+			// 	test++
+			// 	// if(average > 100) $('#domScreenWrapper').children()[i].checked = false
+			// 	// else $('#domScreenWrapper').children()[i].checked = true
+			// }
 		}
 	}
+	// console.log("pixels "+test + " boxes " + $('#domScreenWrapper').children().size())
 
 }
 
@@ -198,7 +199,7 @@ function looper(){
 	if( cameraState === CAMERA_READY ){
 
 		observeCamera()
-		//filterVideo()
+		filterVideo()
 	}
 	else if( cameraState === CAMERA_ACCEPTED ){
 		
@@ -231,7 +232,6 @@ function looper(){
 	//  This function calls looper() again, attempting to use the new standard
 	//  window.requestAnimationFrame() if it's available.
 	//  See above where we define requestAnimFrame() for details.
-	console.log(cameraState)
 	requestAnimFrame( looper )
 }
 
@@ -240,13 +240,27 @@ function looper(){
 
 function populateDomElements(){
 	$('#domScreenWrapper').empty()
-	var resolution = Math.floor( $(window).width() / 13 ) * Math.floor( $(window).height() / 13 )
-	
+	resolutionW = Math.floor( $(window).width() / 13 )
+	resolutionH = Math.floor( $(window).height() / 13 )
+	resolution = resolutionW * resolutionH
+
 	for( var i =0; i < resolution; i++ ){
 		var randomNum = Math.floor( Math.random() * elements.length )
 		$('#domScreenWrapper').append(elements[randomNum])
 	}
 
+}
+
+
+function map(value, inputMin, inputMax, outputMin, outputMax){
+	outVal = ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);	
+	if(outVal >  outputMax){
+		outVal = outputMax;
+	}
+	if(outVal <  outputMin){
+		outVal = outputMin;
+	}	
+	return outVal;
 }
 
 
