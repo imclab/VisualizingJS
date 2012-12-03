@@ -1,16 +1,27 @@
+
+
 body
 {
 	margin: 0;
-	padding: 0px;
-	background-color: #FFF;
+	padding: 12px;
+	background-color: #DDD;
 	font-family: "Lucida Grande", Geneva, Verdana, Arial, sans-serif;
 	font-size:    9pt;
 	line-height: 15pt;
 }
 
-input{margin: 0px; padding: 0px; position: relative; float: left; width: 50px; height: 50px;}
 
+#square{width: 300; height: 300;}
 
+.floatingBlock
+{	
+	display: block;
+	float: left;
+	width:  320px;
+	height: 300px;
+	margin: 0 8px 8px 0;
+	overflow: hidden;
+}
 video, canvas
 {
 	display: block;
@@ -28,7 +39,3 @@ video, canvas
 {
 	clear: both;
 }
-
-#camera{display: none;}
-#observer{display: none;}
-#domScreenWrapper{overflow: hidden;}

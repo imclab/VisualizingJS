@@ -146,16 +146,15 @@ function filterVideo(){
 	//  But breaking it apart into X and Y will help you conceptually
 	//  when trying to write your own functions that play with
 	//  individual rows, columns, or even specific pixels of the video.
-	// var test = 0
-	for( y = 0; y < h; y += 13 ){
+	var test = 0
+	for( y = 0; y < h; y += 50 ){
 		
-		for( x = 0; x < w; x += 13){
+		for( x = 0; x < w; x += 50 ){
 		
 
 			//  Here's how we convert from X and Y to the proper pixel index:
 
 			i  = ( y * w + x ) * 4
-			loc = y * w + x
 				
 			var average = Math.round((
 
@@ -166,18 +165,13 @@ function filterVideo(){
 
 			
 			
-			var domIndex = Math.floor(map(loc, 0, w/13 * h/13, 0, resolution-1))
-			// console.log(domIndex)
-			if(average < 100) $('#domScreenWrapper').children()[domIndex].checked = false
-				else $('#domScreenWrapper').children()[domIndex].checked = true
-
-			// else $('#domScreenWrapper').children()[domIndex].checked = true
-			// console.log(domIndex)
-			// if(i % 13 == 0){
-			// 	test++
-			// 	// if(average > 100) $('#domScreenWrapper').children()[i].checked = false
-			// 	// else $('#domScreenWrapper').children()[i].checked = true
-			// }
+			// var domIndex = Math.floor(map(i, 0, w * h, 0, resolution-1))
+			if(i % 50 == 0){
+				// console.log(average)
+				if(average < 100) $('#domScreenWrapper').children()[test].checked = true
+					else $('#domScreenWrapper').children()[test].checked = false
+			}
+			test++
 		}
 	}
 	// console.log("pixels "+test + " boxes " + $('#domScreenWrapper').children().size())
@@ -240,8 +234,8 @@ function looper(){
 
 function populateDomElements(){
 	$('#domScreenWrapper').empty()
-	resolutionW = Math.floor( $(window).width() / 13 )
-	resolutionH = Math.floor( $(window).height() / 13 )
+	resolutionW = Math.floor( $(window).width() / 50 )
+	resolutionH = Math.floor( $(window).height() / 50 )
 	resolution = resolutionW * resolutionH
 
 	for( var i =0; i < resolution; i++ ){
