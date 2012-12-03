@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="styles/base.css" />
+		<title>Webcam template</title>
+		<style type="text/css">
+			body{resize:none;}
+		</style>
+	</head>
+	<body>
+
+
+		<video  width="320" height="240" id="camera" autoplay></video>
+		<canvas width="320" height="240" id="observer"></canvas>
+		
+
+<!-- 		<input type="radio" checked>
+		<input type="radio">
+		<input type="checkbox">
+		<input type="checkbox" checked>
+		<input type="submit" value="         "> -->
+		<div id="domScreenWrapper"></div>
+
+
+		<div id="error">
+				Oh no! Webcam’s no good.
+		</div>
+		
+		<div class="clear"></div>
+
+
+		<script charset="utf-8" src="scripts/jquery.js"></script>
+		<script charset="utf-8" src="scripts/skip.js"></script>
+		<script charset="utf-8" src="scripts/application.js"></script>
+	</body>
+</html>

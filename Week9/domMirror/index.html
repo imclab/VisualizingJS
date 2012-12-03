@@ -8,27 +8,13 @@
 	<body>
 
 
-		<video  width="320" height="240" id="camera" autoplay></video>
-		<canvas width="320" height="240" id="observer"></canvas>
-		
-
-<!-- 		<input type="radio" checked>
-		<input type="radio">
-		<input type="checkbox">
-		<input type="checkbox" checked>
-		<input type="submit" value="         "> -->
-		<div id="domScreenWrapper"></div>
-
-
-		<div id="error">
-				Oh no! Webcam’s no good.
-		</div>
-		
-		<div class="clear"></div>
-
+		<button>OPEN BUTTON</button>
 
 		<script charset="utf-8" src="scripts/jquery.js"></script>
-		<script charset="utf-8" src="scripts/skip.js"></script>
-		<script charset="utf-8" src="scripts/application.js"></script>
+		<script type="text/javascript">
+			$('button').click(function(){
+				window.open("domMirror.html", "DOM Mirror", "resizable=no,height=640,width=480");
+			});
+		</script>
 	</body>
 </html>

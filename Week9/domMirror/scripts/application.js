@@ -135,25 +135,18 @@ function checkCamera(){
 function filterVideo(){
 
 	var
-	x, y, i, loc
+	x, y, i,
 	w = camera.width,
 	h = camera.height,
-	observerFrame = observerContext.getImageData( 0, 0, w, h )
+	observerFrame = observerContext.getImageData( 0, 0, w, h ),
+	cols = Math.floor(w/resolutionW),
+	rows = Math.floor(h/resolutionH)
 
 
-	//  You could just look through the whole data stream in one sweep
-	//  from i = 0, up to i = w * h.
-	//  But breaking it apart into X and Y will help you conceptually
-	//  when trying to write your own functions that play with
-	//  individual rows, columns, or even specific pixels of the video.
-	var test = 0
-	for( y = 0; y < h; y += 50 ){
+	var domIndex = 0
+	for( y = 0; y < h; y += cols ){		
+		for( x = 0; x < w; x += rows ){
 		
-		for( x = 0; x < w; x += 50 ){
-		
-
-			//  Here's how we convert from X and Y to the proper pixel index:
-
 			i  = ( y * w + x ) * 4
 				
 			var average = Math.round((
@@ -164,17 +157,15 @@ function filterVideo(){
 			) / 3 )
 
 			
-			
-			// var domIndex = Math.floor(map(i, 0, w * h, 0, resolution-1))
-			if(i % 50 == 0){
-				// console.log(average)
-				if(average < 100) $('#domScreenWrapper').children()[test].checked = true
-					else $('#domScreenWrapper').children()[test].checked = false
-			}
-			test++
+
+			if(average < 150) $('#domScreenWrapper').children()[domIndex].checked = true
+				else $('#domScreenWrapper').children()[domIndex].checked = false
+
+			if(domIndex < resolution-1) domIndex++
 		}
 	}
-	// console.log("pixels "+test + " boxes " + $('#domScreenWrapper').children().size())
+	console.log(i)
+
 
 }
 
@@ -234,8 +225,8 @@ function looper(){
 
 function populateDomElements(){
 	$('#domScreenWrapper').empty()
-	resolutionW = Math.floor( $(window).width() / 50 )
-	resolutionH = Math.floor( $(window).height() / 50 )
+	resolutionW = Math.floor( $(window).width() / 13 )
+	resolutionH = Math.floor( $(window).height() / 13 )
 	resolution = resolutionW * resolutionH
 
 	for( var i =0; i < resolution; i++ ){
@@ -269,7 +260,9 @@ $( document ).ready( function(){
 
 
 //on window resize
+var size = [640,480];
 $(window).resize(function() {
-  if( cameraState >= 3 ) populateDomElements()
+	window.resizeTo(size[0], size[1]);
+  // if( cameraState >= 3 ) populateDomElements()
 });
 
