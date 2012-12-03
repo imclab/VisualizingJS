@@ -6,7 +6,7 @@ var elements = ['<input type="radio" checked>',
 
 
 //dom resolution
-var resolutionW, resolutionH, resolution
+var resolutionW, resolutionH, resolution, myDOM = []
 
 //camera states
 var
@@ -144,9 +144,9 @@ function filterVideo(){
 
 
 	var domIndex = 0
-	for( y = 0; y < h; y += cols ){		
+	for( y = 0; y < h; y += cols ){	
 		for( x = 0; x < w; x += rows ){
-		
+
 			i  = ( y * w + x ) * 4
 				
 			var average = Math.round((
@@ -158,13 +158,14 @@ function filterVideo(){
 
 			
 
-			if(average < 150) $('#domScreenWrapper').children()[domIndex].checked = true
-				else $('#domScreenWrapper').children()[domIndex].checked = false
+			if(average < 100) myDom[domIndex].checked = true
+				else myDom[domIndex].checked = false
 
+			//if statement so last iteration doesn't push it out of bounds
 			if(domIndex < resolution-1) domIndex++
 		}
 	}
-	console.log(i)
+	
 
 
 }
@@ -234,6 +235,7 @@ function populateDomElements(){
 		$('#domScreenWrapper').append(elements[randomNum])
 	}
 
+	myDom = $('#domScreenWrapper').children()
 }
 
 
@@ -260,9 +262,8 @@ $( document ).ready( function(){
 
 
 //on window resize
-var size = [640,480];
+var size = [832,624];
 $(window).resize(function() {
 	window.resizeTo(size[0], size[1]);
   // if( cameraState >= 3 ) populateDomElements()
 });
-
