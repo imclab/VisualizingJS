@@ -9,7 +9,7 @@ body
 }
 
 input{margin: 0px; padding: 0px; position: relative; float: left; width: 13px; height: 13px;}
-
+button{width: 195px;}
 
 video, canvas
 {
@@ -31,4 +31,6 @@ video, canvas
 
 #camera{display: none;}
 #observer{display: none;}
-#domScreenWrapper{overflow: hidden;}
+
+#logo{width: 195px; height: 195px; float: left}
+#domScreenWrapper{width: 832px; height: 624px; float: left}

@@ -1,7 +1,8 @@
+var logo = '<input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox">'
 var elements = ['<input type="radio" checked>', 
-				'<input type="radio" checked>',
-				'<input type="checkbox" checked>',
-				'<input type="checkbox" checked>']
+	'<input type="radio" checked>',
+	'<input type="checkbox" checked>',
+	'<input type="checkbox" checked>']
 
 
 
@@ -144,6 +145,7 @@ function filterVideo(){
 
 
 	var domIndex = 0
+	var threshold = map(mouseX, 0, 832, 0, 255)
 	for( y = 0; y < h; y += cols ){	
 		for( x = 0; x < w; x += rows ){
 
@@ -158,13 +160,14 @@ function filterVideo(){
 
 			
 
-			if(average < 100) myDom[domIndex].checked = true
+			if(average < threshold) myDom[domIndex].checked = true
 				else myDom[domIndex].checked = false
 
 			//if statement so last iteration doesn't push it out of bounds
 			if(domIndex < resolution-1) domIndex++
 		}
 	}
+
 	
 
 
@@ -226,8 +229,8 @@ function looper(){
 
 function populateDomElements(){
 	$('#domScreenWrapper').empty()
-	resolutionW = Math.floor( $(window).width() / 13 )
-	resolutionH = Math.floor( $(window).height() / 13 )
+	resolutionW = Math.floor( $('#domScreenWrapper').width() / 13 )
+	resolutionH = Math.floor( $('#domScreenWrapper').height() / 13 )
 	resolution = resolutionW * resolutionH
 
 	for( var i =0; i < resolution; i++ ){
@@ -252,18 +255,25 @@ function map(value, inputMin, inputMax, outputMin, outputMax){
 
 
 
-//start everything
-$( document ).ready( function(){
-	//populateDomElements()
-
-	if( !hasGetUserMedia ) $( '#error' ).fadeIn()
-	else looper()	
-})
-
-
 //on window resize
 var size = [832,624];
 $(window).resize(function() {
 	window.resizeTo(size[0], size[1]);
   // if( cameraState >= 3 ) populateDomElements()
-});
+})
+
+var mouseX = 0;
+$( window ).mousemove( function(e) {
+   mouseX = e.pageX; 
+})
+
+
+
+//start everything
+$( document ).ready( function(){
+	$('#logo').append(logo)
+
+	if( !hasGetUserMedia ) $( '#error' ).fadeIn()
+	else looper()	
+})
+
