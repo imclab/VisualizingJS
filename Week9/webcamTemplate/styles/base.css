@@ -3,7 +3,7 @@
 body
 {
 	margin: 0;
-	padding: 12px;
+	padding: 0px;
 	background-color: #DDD;
 	font-family: "Lucida Grande", Geneva, Verdana, Arial, sans-serif;
 	font-size:    9pt;
@@ -38,3 +38,8 @@ video, canvas
 {
 	clear: both;
 }
+
+input{margin: 0px; padding: 0px; position: relative; float: left; width: 13px; height: 13px;}
+#observer{position: absolute; z-index: -999px; top: 0px; left: 0px;}
+#camera{display: none}
+#domScreenWrapper{position: absolute; left: 0px; top: 0px;}

@@ -1,4 +1,16 @@
-/*
+var elements = ['<input type="radio" checked>', 
+	'<input type="radio" checked>',
+	'<input type="checkbox" checked>',
+	'<input type="checkbox" checked>']
+
+//dom resolution
+var resolutionW, resolutionH, resolution, myDOM = []
+var scale = 13
+resolutionW = Math.floor( $(window).width() / scale )
+resolutionH = Math.floor( $(window).height() / scale )
+var windowW = $(window).width();
+var windowH = $(window).height();
+	/*
 
 	This template cannot run straight off your desktop, unfortunately.
 	Like some of our previous templates it must run from an HTTP server.
@@ -107,23 +119,7 @@ function startCamera(){
 	window.observerContext = observer.getContext( '2d' )
 
 
-	//  We'll use "storage" in a similar way to "observer":
-	//  for storing a frame of video. So why do it twice?
-	//  Because we'll update the "observer" immediately, and
-	//  only at the end of our cycle will we update "storage".
-	//  That means "storage" is basically always one frame 
-	//  behind "observer", allowing us to look for differences
-	//  and thereby detect motion.
 
-	window.storage = $( '#storage' )[0]
-	window.storageContext = storage.getContext( '2d' )
-
-
-	//  Finally, we want to visually alter our video in some way
-	//  and that means writing to one last <canvas>.
-
-	window.filter = $( '#filter' )[0]
-	window.filterContext = filter.getContext( '2d' )
 
 
 	//  The browser already alerts the user that they must Allow or Deny
@@ -223,129 +219,57 @@ function checkCamera(){
 
 function filterVideo(){
 
-	var
-	x, y, i,
-	w = camera.width,
-	h = camera.height,
-	observerFrame = observerContext.getImageData( 0, 0, w, h ),
-	storageFrame  = storageContext.getImageData( 0, 0, w, h ),
-	filterFrame   = filterContext.getImageData( 0, 0, w, h )
+	var x, y, i;
+
+	var windowW = $(window).width();
+	var windowH = $(window).height();
+
+	var cols = Math.floor( windowW / scale );
+	var rows = Math.floor( windowH / scale );
 
 
-	//  You could just look through the whole data stream in one sweep
-	//  from i = 0, up to i = w * h.
-	//  But breaking it apart into X and Y will help you conceptually
-	//  when trying to write your own functions that play with
-	//  individual rows, columns, or even specific pixels of the video.
-	
-	for( y = 0; y < h; y ++ ){
-		
-		for( x = 0; x < w; x ++ ){
-		
-
-			//  Here's how we convert from X and Y to the proper pixel index:
-
-			i  = ( y * w + x ) * 4
+	var videoW = $('#observer').width()
+	var videoH = $('#observer').height()
+	var observerFrame = observerContext.getImageData( 0, 0, videoW, videoH )
 
 
-			//  FILTER: GRAYSCALE
-			//  Take the average brightness of the Red (i), Green (i+1), 
-			//  and Blue (i+2) channels from the "observerFrame" and apply
-			//  that average to the "filterFrame".
-			//  Don't forget to set the Alpha channel (i+3) up to 255!
 
-			if( filterMethod === FILTER_GRAYSCALE ){
+	var videoScaleW = Math.floor( videoW / cols );
+	var videoScaleH = Math.floor( videoH / rows );
+	console.log(videoScaleW)
+
+
+
+	var domIndex = 0
+	var threshold = 100
+
+	for( y = 0; y < rows; y++ ){	
+		for( x = 0; x < cols; x++ ){
+
+			i  = ( y * videoScaleH * videoW + x * videoScaleW ) * 4
 				
-				var average = Math.round((
+			var average = Math.round((
 
-					observerFrame[ 'data' ][ i   ] +
-					observerFrame[ 'data' ][ i+1 ] +
-					observerFrame[ 'data' ][ i+2 ]
-				) / 3 )
-				filterFrame[ 'data' ][ i   ] = average
-				filterFrame[ 'data' ][ i+1 ] = average
-				filterFrame[ 'data' ][ i+2 ] = average
-				filterFrame[ 'data' ][ i+3 ] = 255
-			}
+				observerFrame[ 'data' ][ i   ] +
+				observerFrame[ 'data' ][ i+1 ] +
+				observerFrame[ 'data' ][ i+2 ]
+			) / 3 )
 
-
-			//  FILTER: INVERT
-			//  Each color channel contains values between 0 (off all the way)
-			//  and 255 (the brightest it can be). 
-			//  To invert a color channel we can start with 255 (brightest)
-			//  then subtract the channel's current value, like so:
-
-			else if( filterMethod === FILTER_INVERT ){
-
-				filterFrame[ 'data' ][ i   ] = 255 - observerFrame[ 'data' ][ i   ]
-				filterFrame[ 'data' ][ i+1 ] = 255 - observerFrame[ 'data' ][ i+1 ]
-				filterFrame[ 'data' ][ i+2 ] = 255 - observerFrame[ 'data' ][ i+2 ]
-				filterFrame[ 'data' ][ i+3 ] = 255
-			}
-
-
-			//  FILTER: SWAP RGB
-			//  Here we'll just mix up our Red, Green, and Blue channels like so:
-			//  Red -----> Blue
-			//  Green ---> Red
-			//  Blue ----> Green
-
-			else if( filterMethod === FILTER_SWAP_RGB ){
-
-				filterFrame[ 'data' ][ i   ] = observerFrame[ 'data' ][ i+2 ]
-				filterFrame[ 'data' ][ i+1 ] = observerFrame[ 'data' ][ i   ]
-				filterFrame[ 'data' ][ i+2 ] = observerFrame[ 'data' ][ i+1 ]
-				filterFrame[ 'data' ][ i+3 ] = 255
-			}
-
-
-			//  FILTER: MOTION
-			//  Let's compare the current frame stored in "observer" to the old frame
-			//  stored in "storage" and see what the average difference is per pixel.
-			//  (So averaging the Red, Green, Blue differences for each pixel.)
-			//  Then we'll show that difference as a nice blue-green highlight of the
-			//  video and dim out the highlight over the next few frames.
-
-			else if( filterMethod === FILTER_MOTION ){
-
-				var
-				averageChange = (
-
-					Math.abs( observerFrame[ 'data' ][ i   ] - storageFrame[ 'data' ][ i   ] ) +
-					Math.abs( observerFrame[ 'data' ][ i+1 ] - storageFrame[ 'data' ][ i+1 ] ) +
-					Math.abs( observerFrame[ 'data' ][ i+2 ] - storageFrame[ 'data' ][ i+2 ] )
-				) / 3
-				filterFrame[ 'data' ][ i   ] = 0
-				filterFrame[ 'data' ][ i+1 ] = averageChange + filterFrame[ 'data' ][ i+1 ] * 0.8
-				filterFrame[ 'data' ][ i+2 ] = averageChange + filterFrame[ 'data' ][ i+2 ] * 0.8
-				filterFrame[ 'data' ][ i+3 ] = 255
-			}
 			
+			// if(x < cols / 2) myDom[domIndex].checked = true
+			// 	else myDom[domIndex].checked = false
 
-			//  Or just straight copy the video data over.
 
-			else {
+			if(average < threshold) myDom[domIndex].checked = true
+				else myDom[domIndex].checked = false
 
-				filterFrame[ 'data' ][ i   ] = observerFrame[ 'data' ][ i   ]
-				filterFrame[ 'data' ][ i+1 ] = observerFrame[ 'data' ][ i+1 ]
-				filterFrame[ 'data' ][ i+2 ] = observerFrame[ 'data' ][ i+2 ]
-				filterFrame[ 'data' ][ i+3 ] = 255
-			}
+			//if statement so last iteration doesn't push it out of bounds
+			if(domIndex < resolution-1) domIndex++
 		}
 	}
 
 	
-	//  This will take all that hard work we've done altering the RGB's
-	//  and push it to the "filter" <canvas>.
 
-	filterContext.putImageData( filterFrame, 0, 0 )
-	
-
-	//  And now that we're done let's store the video frame we just worked with
-	//  so when we fetch a new frame in the next loop we can compare the two
-	//  and thereby do some motion detection if we wanted to...
-
-	storageContext.putImageData( observerFrame, 0, 0 )
 }
 
 
@@ -373,6 +297,7 @@ function looper(){
 			$( '#allow' ).fadeOut( 500 )
 			cameraState = CAMERA_READY
 			console.log( 'Camera is now streaming valid data.' )
+			populateDomElements()
 		}
 	}
 	else if( cameraState === CAMERA_REQUESTED ){
@@ -404,7 +329,19 @@ function looper(){
 
 
 
+function populateDomElements(){
+	$('#domScreenWrapper').empty()
+	resolutionW = Math.floor( $(window).width() / scale )
+	resolutionH = Math.floor( $(window).height() / scale )
+	resolution = resolutionW * resolutionH
 
+	for( var i =0; i < resolution; i++ ){
+		var randomNum = Math.floor( Math.random() * elements.length )
+		$('#domScreenWrapper').append(elements[randomNum])
+	}
+
+	myDom = $('#domScreenWrapper').children()
+}
 
 
 
@@ -416,9 +353,21 @@ function looper(){
 
 $( document ).ready( function(){
 	
+	 // if( $(window).width() > 320 || $(window).height()  > 240 )
+	 //     $('#observer').width($(window).width()).height($(window).height())
+
+
 	if( !hasGetUserMedia ) $( '#error' ).fadeIn()
 	else looper()	
 })
 
 
+
+$(window).resize(function() {
+ 
+	 // if( $(window).width() > 320 || $(window).height()  > 240 )
+	 //     $('#observer').width($(window).width()).height($(window).height())
+
+      if( cameraState >= 3 ){ $('#domScreenWrapper').empty(); populateDomElements() }
+});
 
