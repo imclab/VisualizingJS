@@ -1,7 +1,10 @@
-var elements = ['<input type="checkbox" checked>', '<input type="radio" checked>']
+var elements = ['<input type="checkbox">', '<input type="radio">']
 
-//dom resolution
-var cols, rows, resolution, myDOM = [], domType = 'both'
+//intro image
+var intro = true
+
+//dom resolution and vars
+var cols, rows, resolution, myDOM = [], domType = 'Radios'
 
 //scale of input
 var scale = 13
@@ -52,6 +55,10 @@ function startCamera(){
 	// Canvas context to hold RGB data from video tag
 	window.observer = $( '#observer' )[0]
 	window.observerContext = observer.getContext( '2d' )
+
+	// Canvas context to hold RGB data from image for intro
+	window.intro = $( '#intro' )[0]
+	window.introContext = intro.getContext( '2d' )
 
 
 
@@ -189,6 +196,7 @@ function looper(){
 			$( '#allow' ).fadeOut( 500 )
 			cameraState = CAMERA_READY
 			console.log( 'Camera is now streaming valid data.' )
+			intro = false //remove intro screen
 			populateDomElements()
 		}
 	}
@@ -255,25 +263,70 @@ function populateDomElements(){
 	//doing it here to avoid calculating this over and over
 	videoScaleW = Math.floor( videoW / cols );
 	videoScaleH = Math.floor( videoH / rows );
+
+
+	//if the webcam hasn't been accepted yet
+	//show an intro screen
+	if(intro){
+		var image = new Image()
+		image.src = "images/intro.png"
+		$(image).load(function() {  
+		    introContext.drawImage(image, 0, 0)
+
+		    var x, y, i,
+			introFrame = introContext.getImageData( 0, 0, videoW, videoH ),
+			domIndex = 0,
+			threshold = 100
+
+			//loop through the resolution of of our DOM elements
+			for( y = 0; y < rows; y++ ){	
+				for( x = 0; x < cols; x++ ){
+
+					//find the pixel in relation to our video resolution
+					i  = ( y * videoScaleH * videoW + x * videoScaleW ) * 4
+						
+					//calcualte the average color (grayscale)
+					var average = Math.round((
+						introFrame[ 'data' ][ i   ] +
+						introFrame[ 'data' ][ i+1 ] +
+						introFrame[ 'data' ][ i+2 ]
+					) / 3 )
+
+					// if it meets our threshold make it checked
+					if(average < threshold) myDom[domIndex].checked = true
+						else myDom[domIndex].checked = false
+
+					//if statement so last iteration doesn't push us out of bounds
+					if(domIndex < resolution-1) domIndex++
+				}
+			}
+		})
+
+
+	}
 }
+
+
+//on window resize clear dom and recalculate new grid
+$(window).resize(function() {
+
+      populateDomElements()
+});
+
+
+//on button click set domType and recalculate grid
+$('button').click(function(){
+	domType = $(this).text()
+	populateDomElements(domType)
+})
 
 
 
 //start everything
 $( document ).ready( function(){
+	populateDomElements()
 
 	if( !hasGetUserMedia ) $( '#error' ).fadeIn()
 	else looper()	
 })
 
-
-
-$(window).resize(function() {
-
-      if( cameraState >= 3 ) populateDomElements()
-});
-
-$('button').click(function(){
-	domType = $(this).text()
-	populateDomElements(domType)
-})
