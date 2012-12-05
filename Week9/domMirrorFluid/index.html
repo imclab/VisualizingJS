@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="styles/base.css" />
+		<title>Webcam template</title>
+	</head>
+	<body>
+
+
+
+
+		<video  width="320" height="240" id="camera" autoplay></video>
+		
+		<canvas width="320" height="240" id="observer"></canvas>
+
+		<div id="domScreenWrapper"></div>
+ 
+
+ 		<div id="buttonWrapper">
+			<button>Both</button>
+			<button>Checks</button>
+			<button>Radios</button>
+		</div>
+
+
+		<div class="floatingBlock" id="allow">
+			<div class="pad">
+				Click “Allow” above to start the webcam.
+			</div>
+		</div>
+		<div class="floatingBlock" id="error">
+				Oh no! Webcam’s no good.
+			</div>
+		</div>
+		<div class="clear"></div>
+
+
+		<script charset="utf-8" src="scripts/jquery.js"></script>
+		<script charset="utf-8" src="scripts/application.js"></script>
+	</body>
+</html>

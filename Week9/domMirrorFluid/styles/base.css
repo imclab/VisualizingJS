@@ -1,0 +1,47 @@
+
+
+body
+{
+	margin: 0;
+	padding: 0px;
+	background-color: #FFF;
+	font-family: "Lucida Grande", Geneva, Verdana, Arial, sans-serif;
+	font-size:    9pt;
+	line-height: 15pt;
+}
+
+
+
+.floatingBlock
+{	
+	display: block;
+	float: left;
+	width:  320px;
+	height: 300px;
+	margin: 0 8px 8px 0;
+	overflow: hidden;
+}
+video, canvas
+{
+	display: block;
+	background-color: #FFF;
+}
+#allow, #error
+{
+	display: none;
+}
+.pad
+{
+	padding: 8px;
+}
+.clear
+{
+	clear: both;
+}
+
+#buttonWrapper{position: absolute; bottom: 0px; background-color: white; width: 155px; height: 25px; border-radius: 5px}
+button{margin: 4px 0px 0px 0px;}
+input{margin: 0px; padding: 0px; position: relative; float: left; width: 13px; height: 13px;}
+#observer{display: none}
+#camera{display: none}
+#domScreenWrapper{position: absolute; left: 0px; top: 0px;}
