@@ -4,7 +4,7 @@ var elements = ['<input type="checkbox">', '<input type="radio">']
 var intro = true
 
 //dom resolution and vars
-var cols, rows, resolution, myDOM = [], domType = 'Radios'
+var cols, rows, resolution, myDOM = [], domType = 'Radios', threshold = 100
 
 //scale of input
 var scale = 13
@@ -147,8 +147,7 @@ function calculateDOMFromCamera(){
 	//set video to 320x240
 	observerFrame = observerContext.getImageData( 0, 0, videoW, videoH ),
 	
-	domIndex = 0,
-	threshold = 100
+	domIndex = 0
 
 	//loop through the resolution of of our DOM elements
 	for( y = 0; y < rows; y++ ){	
@@ -316,15 +315,23 @@ $(window).resize(function() {
 
 //on button click set domType and recalculate grid
 $('button').click(function(){
-	domType = $(this).text()
-	populateDomElements(domType)
+	
+	if( $(this).closest("div").attr("id") == "toggleButtons" ){
+		domType = $(this).text()
+		populateDomElements(domType)
+	}
+
+	if( $(this).closest("div").attr("id") == "contrastButtons" ){
+		if( $(this).text() == "Decrease Contrast") threshold-=10
+			else threshold+=10
+	}
 })
 
 
 
 //start everything
 $( document ).ready( function(){
-	populateDomElements()
+	// populateDomElements()
 
 	if( !hasGetUserMedia ) $( '#error' ).fadeIn()
 	else looper()	

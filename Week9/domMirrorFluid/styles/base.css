@@ -13,5 +13,6 @@ input{margin: 0px; padding: 0px; position: relative; float: left; width: 13px; h
 #camera{display: none}
 
 /* TOGGLE BUTTONS */
-#buttonWrapper{position: absolute; bottom: 0px; background-color: white; width: 155px; height: 25px; border-radius: 5px}
+#toggleButtons{position: absolute; bottom: 0px; background-color: white; width: 155px; height: 25px; border-radius: 5px;}
 button{margin: 4px 0px 0px 0px;}
+#contrastButtons{position: absolute; bottom: 0px; right: 0px; background-color: white; width: 228px; height: 25px; border-radius: 5px;}
